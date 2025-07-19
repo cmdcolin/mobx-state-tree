@@ -1,7 +1,7 @@
 import * as path from "path"
 import filesize from "rollup-plugin-filesize"
 import resolve from "rollup-plugin-node-resolve"
-import { terser } from "rollup-plugin-terser"
+import terser from "@rollup/plugin-terser"
 import replace from "rollup-plugin-replace"
 
 const devPlugins = () => [resolve(), filesize()]
