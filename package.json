@@ -28,21 +28,14 @@
     "test:dev": "cross-env NODE_ENV=development vitest --run",
     "test:prod": "cross-env NODE_ENV=production vitest --run",
     "tag-new-version": "yarn version && git push --tags",
-    "deduplicate": "yarn-deduplicate -s fewer yarn.lock",
     "build-docs": "yarn fix-typedoc && rimraf ./docs/API && typedoc --options ./typedocconfig.js",
     "publish-docs": "yarn build-docs && cd ./website && GIT_USER=jamonholmgren USE_SSH=true yarn publish-gh-pages",
     "start": "cd website && yarn start",
-    "prepare": "husky install",
     "lint": "tslint -c ./tslint.json 'src/**/*.ts'",
     "fix-typedoc": "rimraf ./node_modules/typedoc/node_modules/typescript",
     "prettier:list": "prettier --list-different \"src/**/*.ts\" \"__tests__/**/*.ts\"",
     "prettier:check": "prettier --check \"src/**/*.ts\" \"__tests__/**/*.ts\"",
     "prettier:write": "prettier --write \"src/**/*.ts\" \"__tests__/**/*.ts\""
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "prettier --write"
-    ]
   },
   "repository": {
     "type": "git",
@@ -61,8 +54,6 @@
     "concat": "^1.0.3",
     "cpr": "^3.0.1",
     "cross-env": "^7.0.3",
-    "husky": "^7.0.0",
-    "lint-staged": "^11.1.2",
     "mobx": "^6.3.0",
     "prettier": "^2.4.1",
     "rimraf": "^6.1.2",
