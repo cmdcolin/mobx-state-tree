@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import * as mst from "../../src"
 import { readFileSync } from "fs"
 

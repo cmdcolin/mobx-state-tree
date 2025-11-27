@@ -49,7 +49,7 @@ jobs:
           name: build-artifacts
           path: packages
 
-      - run: yarn test:dev -i
+      - run: yarn test:dev
 
   test-mst-prod:
     needs: build
@@ -69,4 +69,4 @@ jobs:
           name: build-artifacts
           path: packages
 
-      - run: yarn test:prod -i
+      - run: yarn test:prod

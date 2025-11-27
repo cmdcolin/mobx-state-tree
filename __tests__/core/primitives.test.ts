@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { isFinite, isFloat, isInteger } from "../../src/utils"
 import { types, applySnapshot, getSnapshot } from "../../src"
 

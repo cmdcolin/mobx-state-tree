@@ -1,5 +1,4 @@
-const mst = require("../../../dist/mobx-state-tree.umd")
-const { types } = mst
+import { types } from "../../../dist/index.mjs"
 
 // tiny
 export const Treasure = types.model("Treasure", {

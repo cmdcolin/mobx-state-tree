@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { types, unprotect } from "../../src"
 
 enum ColorEnum {

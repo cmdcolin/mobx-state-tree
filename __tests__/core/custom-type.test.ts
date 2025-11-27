@@ -1,3 +1,4 @@
+import { vi, test, expect } from "vitest"
 import {
   types,
   recordPatches,
@@ -109,7 +110,7 @@ class Decimal {
   })
 
   test("passes environment to fromSnapshot", () => {
-    const env = { test: jest.fn() }
+    const env = { test: vi.fn() }
     Wallet.create({ balance: "3.0" }, env)
     expect(env.test).toBeCalledWith("3.0")
   })

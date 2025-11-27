@@ -1,3 +1,4 @@
+import { test, vi, expect } from "vitest"
 import { reaction, autorun, isObservable, configure } from "mobx"
 import {
   types,
@@ -870,9 +871,9 @@ test("#1052 - Reference returns destroyed model after subtree replacing", () => 
   expect(store.last).toBe(undefined)
   expect(store.lastWithId).toBe(undefined)
 
-  const reactionFn = jest.fn()
+  const reactionFn = vi.fn()
   const reactionDisposer = reaction(() => store.last, reactionFn)
-  const reactionFn2 = jest.fn()
+  const reactionFn2 = vi.fn()
   const reactionDisposer2 = reaction(() => store.lastWithId, reactionFn2)
 
   try {

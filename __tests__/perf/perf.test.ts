@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { smallScenario, mediumScenario, largeScenario } from "./scenarios"
 import { start } from "./timer"
 

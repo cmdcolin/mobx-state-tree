@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`can handle async actions 1`] = `
 Array [
@@ -1225,6 +1225,966 @@ Array [
     },
     "parentId": 9,
     "rootId": 9,
+    "type": "flow_return",
+  },
+]
+`;
+
+exports[`flow gain back control when node become not alive during yield 1`] = `
+[
+  {
+    "allParentIds": [],
+    "args": [
+      "black",
+    ],
+    "id": 3,
+    "name": "startFetch",
+    "parentActionEvent": undefined,
+    "parentEvent": undefined,
+    "parentId": 0,
+    "rootId": 3,
+    "type": "action",
+  },
+  {
+    "allParentIds": [
+      3,
+    ],
+    "args": [
+      "black",
+    ],
+    "id": 4,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 3,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 3,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 3,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 3,
+      "type": "action",
+    },
+    "parentId": 3,
+    "rootId": 3,
+    "type": "flow_spawn",
+  },
+  {
+    "allParentIds": [
+      3,
+    ],
+    "args": [
+      undefined,
+    ],
+    "id": 4,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 3,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 3,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 3,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 3,
+      "type": "action",
+    },
+    "parentId": 3,
+    "rootId": 3,
+    "type": "flow_resume",
+  },
+  {
+    "allParentIds": [
+      3,
+    ],
+    "args": [
+      "drinking coffee",
+    ],
+    "id": 4,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 3,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 3,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 3,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 3,
+      "type": "action",
+    },
+    "parentId": 3,
+    "rootId": 3,
+    "type": "flow_resume",
+  },
+  {
+    "allParentIds": [
+      3,
+    ],
+    "args": [
+      "awake",
+    ],
+    "id": 4,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 3,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 3,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 3,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 3,
+      "type": "action",
+    },
+    "parentId": 3,
+    "rootId": 3,
+    "type": "flow_return",
+  },
+]
+`;
+
+exports[`flow gain back control when node become not alive during yield 2`] = `
+[
+  {
+    "allParentIds": [],
+    "args": [
+      "black",
+    ],
+    "id": 7,
+    "name": "startFetch",
+    "parentActionEvent": undefined,
+    "parentEvent": undefined,
+    "parentId": 0,
+    "rootId": 7,
+    "type": "action",
+  },
+  {
+    "allParentIds": [
+      7,
+    ],
+    "args": [
+      "black",
+    ],
+    "id": 8,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 7,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 7,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 7,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 7,
+      "type": "action",
+    },
+    "parentId": 7,
+    "rootId": 7,
+    "type": "flow_spawn",
+  },
+  {
+    "allParentIds": [
+      7,
+    ],
+    "args": [
+      undefined,
+    ],
+    "id": 8,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 7,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 7,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 7,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 7,
+      "type": "action",
+    },
+    "parentId": 7,
+    "rootId": 7,
+    "type": "flow_resume",
+  },
+  {
+    "allParentIds": [
+      7,
+    ],
+    "args": [
+      "tea",
+    ],
+    "id": 8,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 7,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 7,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 7,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 7,
+      "type": "action",
+    },
+    "parentId": 7,
+    "rootId": 7,
+    "type": "flow_resume_error",
+  },
+  {
+    "allParentIds": [
+      7,
+    ],
+    "args": [
+      "biscuit",
+    ],
+    "id": 8,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 7,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 7,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 7,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 7,
+      "type": "action",
+    },
+    "parentId": 7,
+    "rootId": 7,
+    "type": "flow_return",
+  },
+]
+`;
+
+exports[`flow gain back control when node become not alive during yield 3`] = `
+[
+  {
+    "allParentIds": [],
+    "args": [
+      "black",
+    ],
+    "id": 11,
+    "name": "startFetch",
+    "parentActionEvent": undefined,
+    "parentEvent": undefined,
+    "parentId": 0,
+    "rootId": 11,
+    "type": "action",
+  },
+  {
+    "allParentIds": [
+      11,
+    ],
+    "args": [
+      "black",
+    ],
+    "id": 12,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 11,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 11,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 11,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 11,
+      "type": "action",
+    },
+    "parentId": 11,
+    "rootId": 11,
+    "type": "flow_spawn",
+  },
+  {
+    "allParentIds": [
+      11,
+    ],
+    "args": [
+      undefined,
+    ],
+    "id": 12,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 11,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 11,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 11,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 11,
+      "type": "action",
+    },
+    "parentId": 11,
+    "rootId": 11,
+    "type": "flow_resume",
+  },
+  {
+    "allParentIds": [
+      11,
+    ],
+    "args": [
+      "x",
+    ],
+    "id": 12,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 11,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 11,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 11,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 11,
+      "type": "action",
+    },
+    "parentId": 11,
+    "rootId": 11,
+    "type": "flow_resume_error",
+  },
+  {
+    "allParentIds": [
+      11,
+    ],
+    "args": [
+      "x",
+    ],
+    "id": 12,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 11,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 11,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 11,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 11,
+      "type": "action",
+    },
+    "parentId": 11,
+    "rootId": 11,
+    "type": "flow_throw",
+  },
+]
+`;
+
+exports[`flow gain back control when node become not alive during yield 4`] = `
+[
+  {
+    "allParentIds": [],
+    "args": [
+      "black",
+    ],
+    "id": 23,
+    "name": "startFetch",
+    "parentActionEvent": undefined,
+    "parentEvent": undefined,
+    "parentId": 0,
+    "rootId": 23,
+    "type": "action",
+  },
+  {
+    "allParentIds": [
+      23,
+    ],
+    "args": [
+      "black",
+    ],
+    "id": 24,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentId": 23,
+    "rootId": 23,
+    "type": "flow_spawn",
+  },
+  {
+    "allParentIds": [
+      23,
+    ],
+    "args": [
+      undefined,
+    ],
+    "id": 24,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentId": 23,
+    "rootId": 23,
+    "type": "flow_resume",
+  },
+  {
+    "allParentIds": [
+      23,
+      24,
+    ],
+    "args": [
+      "drinking black",
+    ],
+    "id": 25,
+    "name": "uppercase2",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [
+        23,
+      ],
+      "args": [
+        undefined,
+      ],
+      "id": 24,
+      "name": "fetchData",
+      "parentActionEvent": {
+        "allParentIds": [],
+        "args": [
+          "black",
+        ],
+        "id": 23,
+        "name": "startFetch",
+        "parentActionEvent": undefined,
+        "parentEvent": undefined,
+        "parentId": 0,
+        "rootId": 23,
+        "type": "action",
+      },
+      "parentEvent": {
+        "allParentIds": [],
+        "args": [
+          "black",
+        ],
+        "id": 23,
+        "name": "startFetch",
+        "parentActionEvent": undefined,
+        "parentEvent": undefined,
+        "parentId": 0,
+        "rootId": 23,
+        "type": "action",
+      },
+      "parentId": 23,
+      "rootId": 23,
+      "type": "flow_resume",
+    },
+    "parentId": 24,
+    "rootId": 23,
+    "type": "flow_spawn",
+  },
+  {
+    "allParentIds": [
+      23,
+      24,
+    ],
+    "args": [
+      undefined,
+    ],
+    "id": 25,
+    "name": "uppercase2",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [
+        23,
+      ],
+      "args": [
+        undefined,
+      ],
+      "id": 24,
+      "name": "fetchData",
+      "parentActionEvent": {
+        "allParentIds": [],
+        "args": [
+          "black",
+        ],
+        "id": 23,
+        "name": "startFetch",
+        "parentActionEvent": undefined,
+        "parentEvent": undefined,
+        "parentId": 0,
+        "rootId": 23,
+        "type": "action",
+      },
+      "parentEvent": {
+        "allParentIds": [],
+        "args": [
+          "black",
+        ],
+        "id": 23,
+        "name": "startFetch",
+        "parentActionEvent": undefined,
+        "parentEvent": undefined,
+        "parentId": 0,
+        "rootId": 23,
+        "type": "action",
+      },
+      "parentId": 23,
+      "rootId": 23,
+      "type": "flow_resume",
+    },
+    "parentId": 24,
+    "rootId": 23,
+    "type": "flow_resume",
+  },
+  {
+    "allParentIds": [
+      23,
+      24,
+    ],
+    "args": [
+      "DRINKING BLACK",
+    ],
+    "id": 25,
+    "name": "uppercase2",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [
+        23,
+      ],
+      "args": [
+        undefined,
+      ],
+      "id": 24,
+      "name": "fetchData",
+      "parentActionEvent": {
+        "allParentIds": [],
+        "args": [
+          "black",
+        ],
+        "id": 23,
+        "name": "startFetch",
+        "parentActionEvent": undefined,
+        "parentEvent": undefined,
+        "parentId": 0,
+        "rootId": 23,
+        "type": "action",
+      },
+      "parentEvent": {
+        "allParentIds": [],
+        "args": [
+          "black",
+        ],
+        "id": 23,
+        "name": "startFetch",
+        "parentActionEvent": undefined,
+        "parentEvent": undefined,
+        "parentId": 0,
+        "rootId": 23,
+        "type": "action",
+      },
+      "parentId": 23,
+      "rootId": 23,
+      "type": "flow_resume",
+    },
+    "parentId": 24,
+    "rootId": 23,
+    "type": "flow_resume",
+  },
+  {
+    "allParentIds": [
+      23,
+      24,
+    ],
+    "args": [
+      "DRINKING BLACK",
+    ],
+    "id": 25,
+    "name": "uppercase2",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [
+        23,
+      ],
+      "args": [
+        undefined,
+      ],
+      "id": 24,
+      "name": "fetchData",
+      "parentActionEvent": {
+        "allParentIds": [],
+        "args": [
+          "black",
+        ],
+        "id": 23,
+        "name": "startFetch",
+        "parentActionEvent": undefined,
+        "parentEvent": undefined,
+        "parentId": 0,
+        "rootId": 23,
+        "type": "action",
+      },
+      "parentEvent": {
+        "allParentIds": [],
+        "args": [
+          "black",
+        ],
+        "id": 23,
+        "name": "startFetch",
+        "parentActionEvent": undefined,
+        "parentEvent": undefined,
+        "parentId": 0,
+        "rootId": 23,
+        "type": "action",
+      },
+      "parentId": 23,
+      "rootId": 23,
+      "type": "flow_resume",
+    },
+    "parentId": 24,
+    "rootId": 23,
+    "type": "flow_return",
+  },
+  {
+    "allParentIds": [
+      23,
+    ],
+    "args": [
+      "DRINKING BLACK",
+    ],
+    "id": 24,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentId": 23,
+    "rootId": 23,
+    "type": "flow_resume",
+  },
+  {
+    "allParentIds": [
+      23,
+    ],
+    "args": [
+      "DRINKING BLACK",
+    ],
+    "id": 24,
+    "name": "fetchData",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
+        "black",
+      ],
+      "id": 23,
+      "name": "startFetch",
+      "parentActionEvent": undefined,
+      "parentEvent": undefined,
+      "parentId": 0,
+      "rootId": 23,
+      "type": "action",
+    },
+    "parentId": 23,
+    "rootId": 23,
     "type": "flow_return",
   },
 ]

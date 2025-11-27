@@ -1,3 +1,4 @@
+import { test, expect, describe } from "vitest"
 import { getSnapshot, types, unprotect } from "../../src"
 
 describe("null as default", () => {

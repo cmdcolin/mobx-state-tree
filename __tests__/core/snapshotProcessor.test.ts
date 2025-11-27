@@ -1,3 +1,4 @@
+import { vi, test, expect, describe } from "vitest"
 import { observable } from "mobx"
 import {
   types,
@@ -101,7 +102,7 @@ describe("snapshotProcessor", () => {
       model = Model.create({
         m: { x: "5" }
       })
-      const newSnapshot = jest.fn()
+      const newSnapshot = vi.fn()
       onSnapshot(model, newSnapshot)
       expect(getSnapshot(model).m.val).toBe("foo")
       atom.set("bar")

@@ -1,3 +1,4 @@
+import { test, expect, describe } from "vitest"
 import { t } from "../../src"
 import { Hook, NodeLifeCycle } from "../../src/internal"
 

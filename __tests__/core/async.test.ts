@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { configure, reaction } from "mobx"
 import {
   addMiddleware,

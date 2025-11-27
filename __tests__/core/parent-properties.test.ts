@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { types, getEnv, getParent, getPath, cast, Instance } from "../../src"
 
 const ChildModel = types

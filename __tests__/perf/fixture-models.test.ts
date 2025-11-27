@@ -1,6 +1,6 @@
+import { test, expect } from "vitest"
 import { Hero, Monster, Treasure } from "./fixtures/fixture-models"
-const mst = require("../../dist/mobx-state-tree.umd")
-const { unprotect } = mst
+import { unprotect } from "../../dist/index.mjs"
 
 const SAMPLE_HERO = {
   id: 1,
