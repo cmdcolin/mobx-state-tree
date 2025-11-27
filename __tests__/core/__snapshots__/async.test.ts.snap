@@ -1,184 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`can handle async actions 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
-      "black",
-    ],
-    "id": 3,
-    "name": "startFetch",
-    "parentActionEvent": undefined,
-    "parentEvent": undefined,
-    "parentId": 0,
-    "rootId": 3,
-    "type": "action",
-  },
-  Object {
-    "allParentIds": Array [
-      3,
-    ],
-    "args": Array [
-      "black",
-    ],
-    "id": 4,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentId": 3,
-    "rootId": 3,
-    "type": "flow_spawn",
-  },
-  Object {
-    "allParentIds": Array [
-      3,
-    ],
-    "args": Array [
-      undefined,
-    ],
-    "id": 4,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentId": 3,
-    "rootId": 3,
-    "type": "flow_resume",
-  },
-  Object {
-    "allParentIds": Array [
-      3,
-    ],
-    "args": Array [
-      "drinking coffee",
-    ],
-    "id": 4,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentId": 3,
-    "rootId": 3,
-    "type": "flow_resume",
-  },
-  Object {
-    "allParentIds": Array [
-      3,
-    ],
-    "args": Array [
-      "awake",
-    ],
-    "id": 4,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentId": 3,
-    "rootId": 3,
-    "type": "flow_return",
-  },
-]
-`;
-
 exports[`can handle erroring actions 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
+[
+  {
+    "allParentIds": [],
+    "args": [
       "black",
     ],
     "id": 5,
@@ -189,18 +15,18 @@ Array [
     "rootId": 5,
     "type": "action",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       5,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 6,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -211,9 +37,9 @@ Array [
       "rootId": 5,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -228,18 +54,18 @@ Array [
     "rootId": 5,
     "type": "flow_spawn",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       5,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 6,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -250,9 +76,9 @@ Array [
       "rootId": 5,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -267,18 +93,18 @@ Array [
     "rootId": 5,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       5,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 6,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -289,9 +115,9 @@ Array [
       "rootId": 5,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -305,801 +131,15 @@ Array [
     "parentId": 5,
     "rootId": 5,
     "type": "flow_throw",
-  },
-]
-`;
-
-exports[`can handle nested async actions 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
-      "black",
-    ],
-    "id": 25,
-    "name": "startFetch",
-    "parentActionEvent": undefined,
-    "parentEvent": undefined,
-    "parentId": 0,
-    "rootId": 25,
-    "type": "action",
-  },
-  Object {
-    "allParentIds": Array [
-      25,
-    ],
-    "args": Array [
-      "black",
-    ],
-    "id": 26,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentId": 25,
-    "rootId": 25,
-    "type": "flow_spawn",
-  },
-  Object {
-    "allParentIds": Array [
-      25,
-    ],
-    "args": Array [
-      undefined,
-    ],
-    "id": 26,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentId": 25,
-    "rootId": 25,
-    "type": "flow_resume",
-  },
-  Object {
-    "allParentIds": Array [
-      25,
-      26,
-    ],
-    "args": Array [
-      "drinking black",
-    ],
-    "id": 27,
-    "name": "uppercase",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [
-        25,
-      ],
-      "args": Array [
-        undefined,
-      ],
-      "id": 26,
-      "name": "fetchData",
-      "parentActionEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
-          "black",
-        ],
-        "id": 25,
-        "name": "startFetch",
-        "parentActionEvent": undefined,
-        "parentEvent": undefined,
-        "parentId": 0,
-        "rootId": 25,
-        "type": "action",
-      },
-      "parentEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
-          "black",
-        ],
-        "id": 25,
-        "name": "startFetch",
-        "parentActionEvent": undefined,
-        "parentEvent": undefined,
-        "parentId": 0,
-        "rootId": 25,
-        "type": "action",
-      },
-      "parentId": 25,
-      "rootId": 25,
-      "type": "flow_resume",
-    },
-    "parentId": 26,
-    "rootId": 25,
-    "type": "flow_spawn",
-  },
-  Object {
-    "allParentIds": Array [
-      25,
-      26,
-    ],
-    "args": Array [
-      undefined,
-    ],
-    "id": 27,
-    "name": "uppercase",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [
-        25,
-      ],
-      "args": Array [
-        undefined,
-      ],
-      "id": 26,
-      "name": "fetchData",
-      "parentActionEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
-          "black",
-        ],
-        "id": 25,
-        "name": "startFetch",
-        "parentActionEvent": undefined,
-        "parentEvent": undefined,
-        "parentId": 0,
-        "rootId": 25,
-        "type": "action",
-      },
-      "parentEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
-          "black",
-        ],
-        "id": 25,
-        "name": "startFetch",
-        "parentActionEvent": undefined,
-        "parentEvent": undefined,
-        "parentId": 0,
-        "rootId": 25,
-        "type": "action",
-      },
-      "parentId": 25,
-      "rootId": 25,
-      "type": "flow_resume",
-    },
-    "parentId": 26,
-    "rootId": 25,
-    "type": "flow_resume",
-  },
-  Object {
-    "allParentIds": Array [
-      25,
-      26,
-    ],
-    "args": Array [
-      "DRINKING BLACK",
-    ],
-    "id": 27,
-    "name": "uppercase",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [
-        25,
-      ],
-      "args": Array [
-        undefined,
-      ],
-      "id": 26,
-      "name": "fetchData",
-      "parentActionEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
-          "black",
-        ],
-        "id": 25,
-        "name": "startFetch",
-        "parentActionEvent": undefined,
-        "parentEvent": undefined,
-        "parentId": 0,
-        "rootId": 25,
-        "type": "action",
-      },
-      "parentEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
-          "black",
-        ],
-        "id": 25,
-        "name": "startFetch",
-        "parentActionEvent": undefined,
-        "parentEvent": undefined,
-        "parentId": 0,
-        "rootId": 25,
-        "type": "action",
-      },
-      "parentId": 25,
-      "rootId": 25,
-      "type": "flow_resume",
-    },
-    "parentId": 26,
-    "rootId": 25,
-    "type": "flow_resume",
-  },
-  Object {
-    "allParentIds": Array [
-      25,
-      26,
-    ],
-    "args": Array [
-      "DRINKING BLACK",
-    ],
-    "id": 27,
-    "name": "uppercase",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [
-        25,
-      ],
-      "args": Array [
-        undefined,
-      ],
-      "id": 26,
-      "name": "fetchData",
-      "parentActionEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
-          "black",
-        ],
-        "id": 25,
-        "name": "startFetch",
-        "parentActionEvent": undefined,
-        "parentEvent": undefined,
-        "parentId": 0,
-        "rootId": 25,
-        "type": "action",
-      },
-      "parentEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
-          "black",
-        ],
-        "id": 25,
-        "name": "startFetch",
-        "parentActionEvent": undefined,
-        "parentEvent": undefined,
-        "parentId": 0,
-        "rootId": 25,
-        "type": "action",
-      },
-      "parentId": 25,
-      "rootId": 25,
-      "type": "flow_resume",
-    },
-    "parentId": 26,
-    "rootId": 25,
-    "type": "flow_return",
-  },
-  Object {
-    "allParentIds": Array [
-      25,
-    ],
-    "args": Array [
-      "DRINKING BLACK",
-    ],
-    "id": 26,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentId": 25,
-    "rootId": 25,
-    "type": "flow_resume",
-  },
-  Object {
-    "allParentIds": Array [
-      25,
-    ],
-    "args": Array [
-      "DRINKING BLACK",
-    ],
-    "id": 26,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 25,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 25,
-      "type": "action",
-    },
-    "parentId": 25,
-    "rootId": 25,
-    "type": "flow_return",
-  },
-]
-`;
-
-exports[`can handle throw from yielded promise works 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
-      "black",
-    ],
-    "id": 11,
-    "name": "startFetch",
-    "parentActionEvent": undefined,
-    "parentEvent": undefined,
-    "parentId": 0,
-    "rootId": 11,
-    "type": "action",
-  },
-  Object {
-    "allParentIds": Array [
-      11,
-    ],
-    "args": Array [
-      "black",
-    ],
-    "id": 12,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 11,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 11,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 11,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 11,
-      "type": "action",
-    },
-    "parentId": 11,
-    "rootId": 11,
-    "type": "flow_spawn",
-  },
-  Object {
-    "allParentIds": Array [
-      11,
-    ],
-    "args": Array [
-      undefined,
-    ],
-    "id": 12,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 11,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 11,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 11,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 11,
-      "type": "action",
-    },
-    "parentId": 11,
-    "rootId": 11,
-    "type": "flow_resume",
-  },
-  Object {
-    "allParentIds": Array [
-      11,
-    ],
-    "args": Array [
-      "x",
-    ],
-    "id": 12,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 11,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 11,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 11,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 11,
-      "type": "action",
-    },
-    "parentId": 11,
-    "rootId": 11,
-    "type": "flow_resume_error",
-  },
-  Object {
-    "allParentIds": Array [
-      11,
-    ],
-    "args": Array [
-      "x",
-    ],
-    "id": 12,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 11,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 11,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 11,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 11,
-      "type": "action",
-    },
-    "parentId": 11,
-    "rootId": 11,
-    "type": "flow_throw",
-  },
-]
-`;
-
-exports[`can handle try catch 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
-      "black",
-    ],
-    "id": 7,
-    "name": "startFetch",
-    "parentActionEvent": undefined,
-    "parentEvent": undefined,
-    "parentId": 0,
-    "rootId": 7,
-    "type": "action",
-  },
-  Object {
-    "allParentIds": Array [
-      7,
-    ],
-    "args": Array [
-      "black",
-    ],
-    "id": 8,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 7,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 7,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 7,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 7,
-      "type": "action",
-    },
-    "parentId": 7,
-    "rootId": 7,
-    "type": "flow_spawn",
-  },
-  Object {
-    "allParentIds": Array [
-      7,
-    ],
-    "args": Array [
-      undefined,
-    ],
-    "id": 8,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 7,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 7,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 7,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 7,
-      "type": "action",
-    },
-    "parentId": 7,
-    "rootId": 7,
-    "type": "flow_resume",
-  },
-  Object {
-    "allParentIds": Array [
-      7,
-    ],
-    "args": Array [
-      "tea",
-    ],
-    "id": 8,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 7,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 7,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 7,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 7,
-      "type": "action",
-    },
-    "parentId": 7,
-    "rootId": 7,
-    "type": "flow_resume_error",
-  },
-  Object {
-    "allParentIds": Array [
-      7,
-    ],
-    "args": Array [
-      "biscuit",
-    ],
-    "id": 8,
-    "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 7,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 7,
-      "type": "action",
-    },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
-        "black",
-      ],
-      "id": 7,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 7,
-      "type": "action",
-    },
-    "parentId": 7,
-    "rootId": 7,
-    "type": "flow_return",
   },
 ]
 `;
 
 exports[`empty sequence works 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
+[
+  {
+    "allParentIds": [],
+    "args": [
       "black",
     ],
     "id": 9,
@@ -1110,18 +150,18 @@ Array [
     "rootId": 9,
     "type": "action",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       9,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 10,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1132,9 +172,9 @@ Array [
       "rootId": 9,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1149,18 +189,18 @@ Array [
     "rootId": 9,
     "type": "flow_spawn",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       9,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 10,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1171,9 +211,9 @@ Array [
       "rootId": 9,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1188,18 +228,18 @@ Array [
     "rootId": 9,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       9,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 10,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1210,9 +250,9 @@ Array [
       "rootId": 9,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1237,180 +277,6 @@ exports[`flow gain back control when node become not alive during yield 1`] = `
     "args": [
       "black",
     ],
-    "id": 3,
-    "name": "startFetch",
-    "parentActionEvent": undefined,
-    "parentEvent": undefined,
-    "parentId": 0,
-    "rootId": 3,
-    "type": "action",
-  },
-  {
-    "allParentIds": [
-      3,
-    ],
-    "args": [
-      "black",
-    ],
-    "id": 4,
-    "name": "fetchData",
-    "parentActionEvent": {
-      "allParentIds": [],
-      "args": [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentEvent": {
-      "allParentIds": [],
-      "args": [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentId": 3,
-    "rootId": 3,
-    "type": "flow_spawn",
-  },
-  {
-    "allParentIds": [
-      3,
-    ],
-    "args": [
-      undefined,
-    ],
-    "id": 4,
-    "name": "fetchData",
-    "parentActionEvent": {
-      "allParentIds": [],
-      "args": [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentEvent": {
-      "allParentIds": [],
-      "args": [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentId": 3,
-    "rootId": 3,
-    "type": "flow_resume",
-  },
-  {
-    "allParentIds": [
-      3,
-    ],
-    "args": [
-      "drinking coffee",
-    ],
-    "id": 4,
-    "name": "fetchData",
-    "parentActionEvent": {
-      "allParentIds": [],
-      "args": [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentEvent": {
-      "allParentIds": [],
-      "args": [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentId": 3,
-    "rootId": 3,
-    "type": "flow_resume",
-  },
-  {
-    "allParentIds": [
-      3,
-    ],
-    "args": [
-      "awake",
-    ],
-    "id": 4,
-    "name": "fetchData",
-    "parentActionEvent": {
-      "allParentIds": [],
-      "args": [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentEvent": {
-      "allParentIds": [],
-      "args": [
-        "black",
-      ],
-      "id": 3,
-      "name": "startFetch",
-      "parentActionEvent": undefined,
-      "parentEvent": undefined,
-      "parentId": 0,
-      "rootId": 3,
-      "type": "action",
-    },
-    "parentId": 3,
-    "rootId": 3,
-    "type": "flow_return",
-  },
-]
-`;
-
-exports[`flow gain back control when node become not alive during yield 2`] = `
-[
-  {
-    "allParentIds": [],
-    "args": [
-      "black",
-    ],
     "id": 7,
     "name": "startFetch",
     "parentActionEvent": undefined,
@@ -1578,7 +444,7 @@ exports[`flow gain back control when node become not alive during yield 2`] = `
 ]
 `;
 
-exports[`flow gain back control when node become not alive during yield 3`] = `
+exports[`flow gain back control when node become not alive during yield 2`] = `
 [
   {
     "allParentIds": [],
@@ -1752,7 +618,7 @@ exports[`flow gain back control when node become not alive during yield 3`] = `
 ]
 `;
 
-exports[`flow gain back control when node become not alive during yield 4`] = `
+exports[`flow gain back control when node become not alive during yield 3`] = `
 [
   {
     "allParentIds": [],
