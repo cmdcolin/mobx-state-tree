@@ -1,6 +1,6 @@
 {
   "name": "@jbrowse/mobx-state-tree",
-  "version": "5.4.4",
+  "version": "5.4.5",
   "description": "Fork of mobx-state-tree starting from v5.4.2 for use in jbrowse 2",
   "type": "module",
   "types": "./dist/index.d.ts",
@@ -38,6 +38,7 @@
   "devDependencies": {
     "@types/node": "^24.10.1",
     "concat": "^1.0.3",
+    "cpr": "^3.0.1",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.1",
     "eslint-plugin-import": "^2.32.0",
@@ -66,8 +67,5 @@
   ],
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "cpr": "^3.0.1"
   }
 }
