@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { protect, unprotect, applySnapshot, types, isProtected, getParent, cast } from "../../src"
 
 const Todo = types

@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { getSnapshot, types, unprotect } from "../../src"
 
 test("it should accept any serializable value", () => {

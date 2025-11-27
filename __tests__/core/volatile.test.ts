@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { types, getSnapshot, recordPatches, unprotect } from "../../src"
 import { reaction, isObservableProp, isObservable, autorun, observable } from "mobx"
 

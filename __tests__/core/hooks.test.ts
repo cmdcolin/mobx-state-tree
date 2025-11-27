@@ -1,3 +1,4 @@
+import { vi, test, expect } from "vitest"
 import {
   addDisposer,
   destroy,
@@ -365,7 +366,7 @@ test("snapshot processors can be composed", () => {
 })
 
 test("addDisposer must return the passed disposer", () => {
-  const listener = jest.fn()
+  const listener = vi.fn()
   const M = types.model({}).actions((self) => {
     expect(addDisposer(self, listener)).toBe(listener)
     return {}

@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { types } from "../../src"
 import { LateTodo2, LateStore2 } from "./circular2.test"
 // combine function hosting with types.late to support circular refs between files!

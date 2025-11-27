@@ -1,5 +1,4 @@
-const mst = require("../../../dist/mobx-state-tree.umd")
-const { types } = mst
+import { types } from "../../../dist/index.mjs"
 
 // tiny
 export const Treasure = types.model("Treasure", {
@@ -14,7 +13,7 @@ export const Hero = types
     name: types.string,
     description: types.string,
     level: types.optional(types.number, 1),
-    role: types.union(...exports.HeroRoles.map(types.literal))
+    role: types.union(...HeroRoles.map(types.literal))
   })
   .views((self: any) => ({
     get descriptionLength() {
@@ -31,8 +30,8 @@ export const Monster = types
     hp: types.number,
     warning: types.maybeNull(types.string),
     createdAt: types.maybeNull(types.Date),
-    treasures: types.optional(types.array(exports.Treasure), []),
-    eatenHeroes: types.maybeNull(types.array(exports.Hero)),
+    treasures: types.optional(types.array(Treasure), []),
+    eatenHeroes: types.maybeNull(types.array(Hero)),
     hasFangs: types.optional(types.boolean, false),
     hasClaws: types.optional(types.boolean, false),
     hasWings: types.optional(types.boolean, false),

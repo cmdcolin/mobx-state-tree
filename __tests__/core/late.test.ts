@@ -1,3 +1,4 @@
+import { test, expect, vi } from "vitest"
 import { types, typecheck, IAnyModelType } from "../../src"
 
 if (process.env.NODE_ENV !== "production") {
@@ -49,7 +50,7 @@ test("should typecheck", () => {
 })
 
 test("typecheck should throw an Error when called at runtime, but not log the error", () => {
-  const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {})
+  const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {})
 
   const NodeObject = types.model("NodeObject", {
     id: types.identifierNumber,

@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { getSnapshot, types, unprotect, applySnapshot, cast } from "../../src"
 
 test("it should provide a default value, if no snapshot is provided", () => {

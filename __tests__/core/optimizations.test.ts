@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { getSnapshot, applySnapshot, unprotect, types } from "../../src"
 
 test("it should avoid processing patch if is exactly the current one in applySnapshot", () => {

@@ -1,3 +1,4 @@
+import { vi, test, expect } from "vitest"
 import { deprecated } from "../../src/utils"
 import { flow, createFlowSpawner } from "../../src/core/flow"
 import { process as mstProcess, createProcessSpawner } from "../../src/core/process"
@@ -8,7 +9,7 @@ function createDeprecationListener() {
   // save console.warn native implementation
   const originalWarn = console.warn
   // create spy to track warning call
-  const spyWarn = (console.warn = jest.fn())
+  const spyWarn = (console.warn = vi.fn())
   // return callback to check if warn was called properly
   return function isDeprecated() {
     // replace original implementation

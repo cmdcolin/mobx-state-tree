@@ -1,10 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`can handle async actions 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
+[
+  {
+    "allParentIds": [],
+    "args": [
       "black",
     ],
     "id": 3,
@@ -15,18 +15,18 @@ Array [
     "rootId": 3,
     "type": "action",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       3,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 4,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 3,
@@ -37,9 +37,9 @@ Array [
       "rootId": 3,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 3,
@@ -54,18 +54,18 @@ Array [
     "rootId": 3,
     "type": "flow_spawn",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       3,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 4,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 3,
@@ -76,9 +76,9 @@ Array [
       "rootId": 3,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 3,
@@ -93,18 +93,18 @@ Array [
     "rootId": 3,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       3,
     ],
-    "args": Array [
+    "args": [
       "drinking coffee",
     ],
     "id": 4,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 3,
@@ -115,9 +115,9 @@ Array [
       "rootId": 3,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 3,
@@ -132,18 +132,18 @@ Array [
     "rootId": 3,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       3,
     ],
-    "args": Array [
+    "args": [
       "awake",
     ],
     "id": 4,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 3,
@@ -154,9 +154,9 @@ Array [
       "rootId": 3,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 3,
@@ -175,10 +175,10 @@ Array [
 `;
 
 exports[`can handle erroring actions 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
+[
+  {
+    "allParentIds": [],
+    "args": [
       "black",
     ],
     "id": 5,
@@ -189,18 +189,18 @@ Array [
     "rootId": 5,
     "type": "action",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       5,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 6,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -211,9 +211,9 @@ Array [
       "rootId": 5,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -228,18 +228,18 @@ Array [
     "rootId": 5,
     "type": "flow_spawn",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       5,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 6,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -250,9 +250,9 @@ Array [
       "rootId": 5,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -267,18 +267,18 @@ Array [
     "rootId": 5,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       5,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 6,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -289,9 +289,9 @@ Array [
       "rootId": 5,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 5,
@@ -310,10 +310,10 @@ Array [
 `;
 
 exports[`can handle nested async actions 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
+[
+  {
+    "allParentIds": [],
+    "args": [
       "black",
     ],
     "id": 25,
@@ -324,18 +324,18 @@ Array [
     "rootId": 25,
     "type": "action",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       25,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 26,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -346,9 +346,9 @@ Array [
       "rootId": 25,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -363,18 +363,18 @@ Array [
     "rootId": 25,
     "type": "flow_spawn",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       25,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 26,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -385,9 +385,9 @@ Array [
       "rootId": 25,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -402,19 +402,19 @@ Array [
     "rootId": 25,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       25,
       26,
     ],
-    "args": Array [
+    "args": [
       "drinking black",
     ],
     "id": 27,
-    "name": "uppercase",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "name": "uppercase2",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -425,18 +425,18 @@ Array [
       "rootId": 25,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [
+    "parentEvent": {
+      "allParentIds": [
         25,
       ],
-      "args": Array [
+      "args": [
         undefined,
       ],
       "id": 26,
       "name": "fetchData",
-      "parentActionEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
+      "parentActionEvent": {
+        "allParentIds": [],
+        "args": [
           "black",
         ],
         "id": 25,
@@ -447,9 +447,9 @@ Array [
         "rootId": 25,
         "type": "action",
       },
-      "parentEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
+      "parentEvent": {
+        "allParentIds": [],
+        "args": [
           "black",
         ],
         "id": 25,
@@ -468,19 +468,19 @@ Array [
     "rootId": 25,
     "type": "flow_spawn",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       25,
       26,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 27,
-    "name": "uppercase",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "name": "uppercase2",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -491,18 +491,18 @@ Array [
       "rootId": 25,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [
+    "parentEvent": {
+      "allParentIds": [
         25,
       ],
-      "args": Array [
+      "args": [
         undefined,
       ],
       "id": 26,
       "name": "fetchData",
-      "parentActionEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
+      "parentActionEvent": {
+        "allParentIds": [],
+        "args": [
           "black",
         ],
         "id": 25,
@@ -513,9 +513,9 @@ Array [
         "rootId": 25,
         "type": "action",
       },
-      "parentEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
+      "parentEvent": {
+        "allParentIds": [],
+        "args": [
           "black",
         ],
         "id": 25,
@@ -534,19 +534,19 @@ Array [
     "rootId": 25,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       25,
       26,
     ],
-    "args": Array [
+    "args": [
       "DRINKING BLACK",
     ],
     "id": 27,
-    "name": "uppercase",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "name": "uppercase2",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -557,18 +557,18 @@ Array [
       "rootId": 25,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [
+    "parentEvent": {
+      "allParentIds": [
         25,
       ],
-      "args": Array [
+      "args": [
         undefined,
       ],
       "id": 26,
       "name": "fetchData",
-      "parentActionEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
+      "parentActionEvent": {
+        "allParentIds": [],
+        "args": [
           "black",
         ],
         "id": 25,
@@ -579,9 +579,9 @@ Array [
         "rootId": 25,
         "type": "action",
       },
-      "parentEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
+      "parentEvent": {
+        "allParentIds": [],
+        "args": [
           "black",
         ],
         "id": 25,
@@ -600,19 +600,19 @@ Array [
     "rootId": 25,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       25,
       26,
     ],
-    "args": Array [
+    "args": [
       "DRINKING BLACK",
     ],
     "id": 27,
-    "name": "uppercase",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "name": "uppercase2",
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -623,18 +623,18 @@ Array [
       "rootId": 25,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [
+    "parentEvent": {
+      "allParentIds": [
         25,
       ],
-      "args": Array [
+      "args": [
         undefined,
       ],
       "id": 26,
       "name": "fetchData",
-      "parentActionEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
+      "parentActionEvent": {
+        "allParentIds": [],
+        "args": [
           "black",
         ],
         "id": 25,
@@ -645,9 +645,9 @@ Array [
         "rootId": 25,
         "type": "action",
       },
-      "parentEvent": Object {
-        "allParentIds": Array [],
-        "args": Array [
+      "parentEvent": {
+        "allParentIds": [],
+        "args": [
           "black",
         ],
         "id": 25,
@@ -666,18 +666,18 @@ Array [
     "rootId": 25,
     "type": "flow_return",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       25,
     ],
-    "args": Array [
+    "args": [
       "DRINKING BLACK",
     ],
     "id": 26,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -688,9 +688,9 @@ Array [
       "rootId": 25,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -705,18 +705,18 @@ Array [
     "rootId": 25,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       25,
     ],
-    "args": Array [
+    "args": [
       "DRINKING BLACK",
     ],
     "id": 26,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -727,9 +727,9 @@ Array [
       "rootId": 25,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 25,
@@ -748,10 +748,10 @@ Array [
 `;
 
 exports[`can handle throw from yielded promise works 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
+[
+  {
+    "allParentIds": [],
+    "args": [
       "black",
     ],
     "id": 11,
@@ -762,18 +762,18 @@ Array [
     "rootId": 11,
     "type": "action",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       11,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 12,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 11,
@@ -784,9 +784,9 @@ Array [
       "rootId": 11,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 11,
@@ -801,18 +801,18 @@ Array [
     "rootId": 11,
     "type": "flow_spawn",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       11,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 12,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 11,
@@ -823,9 +823,9 @@ Array [
       "rootId": 11,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 11,
@@ -840,18 +840,18 @@ Array [
     "rootId": 11,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       11,
     ],
-    "args": Array [
+    "args": [
       "x",
     ],
     "id": 12,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 11,
@@ -862,9 +862,9 @@ Array [
       "rootId": 11,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 11,
@@ -879,18 +879,18 @@ Array [
     "rootId": 11,
     "type": "flow_resume_error",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       11,
     ],
-    "args": Array [
+    "args": [
       "x",
     ],
     "id": 12,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 11,
@@ -901,9 +901,9 @@ Array [
       "rootId": 11,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 11,
@@ -922,10 +922,10 @@ Array [
 `;
 
 exports[`can handle try catch 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
+[
+  {
+    "allParentIds": [],
+    "args": [
       "black",
     ],
     "id": 7,
@@ -936,18 +936,18 @@ Array [
     "rootId": 7,
     "type": "action",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       7,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 8,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 7,
@@ -958,9 +958,9 @@ Array [
       "rootId": 7,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 7,
@@ -975,18 +975,18 @@ Array [
     "rootId": 7,
     "type": "flow_spawn",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       7,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 8,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 7,
@@ -997,9 +997,9 @@ Array [
       "rootId": 7,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 7,
@@ -1014,18 +1014,18 @@ Array [
     "rootId": 7,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       7,
     ],
-    "args": Array [
+    "args": [
       "tea",
     ],
     "id": 8,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 7,
@@ -1036,9 +1036,9 @@ Array [
       "rootId": 7,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 7,
@@ -1053,18 +1053,18 @@ Array [
     "rootId": 7,
     "type": "flow_resume_error",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       7,
     ],
-    "args": Array [
+    "args": [
       "biscuit",
     ],
     "id": 8,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 7,
@@ -1075,9 +1075,9 @@ Array [
       "rootId": 7,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 7,
@@ -1096,10 +1096,10 @@ Array [
 `;
 
 exports[`empty sequence works 1`] = `
-Array [
-  Object {
-    "allParentIds": Array [],
-    "args": Array [
+[
+  {
+    "allParentIds": [],
+    "args": [
       "black",
     ],
     "id": 9,
@@ -1110,18 +1110,18 @@ Array [
     "rootId": 9,
     "type": "action",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       9,
     ],
-    "args": Array [
+    "args": [
       "black",
     ],
     "id": 10,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1132,9 +1132,9 @@ Array [
       "rootId": 9,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1149,18 +1149,18 @@ Array [
     "rootId": 9,
     "type": "flow_spawn",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       9,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 10,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1171,9 +1171,9 @@ Array [
       "rootId": 9,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1188,18 +1188,18 @@ Array [
     "rootId": 9,
     "type": "flow_resume",
   },
-  Object {
-    "allParentIds": Array [
+  {
+    "allParentIds": [
       9,
     ],
-    "args": Array [
+    "args": [
       undefined,
     ],
     "id": 10,
     "name": "fetchData",
-    "parentActionEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentActionEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,
@@ -1210,9 +1210,9 @@ Array [
       "rootId": 9,
       "type": "action",
     },
-    "parentEvent": Object {
-      "allParentIds": Array [],
-      "args": Array [
+    "parentEvent": {
+      "allParentIds": [],
+      "args": [
         "black",
       ],
       "id": 9,

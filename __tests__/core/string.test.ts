@@ -1,17 +1,16 @@
+import { it, test, expect, describe } from "vitest"
 import { types } from "../../src"
 import { Hook, NodeLifeCycle } from "../../src/internal"
 
 describe("types.string", () => {
   describe("methods", () => {
     describe("create", () => {
-      describe("with no arguments", () => {
-        if (process.env.NODE_ENV !== "production") {
-          it("should throw an error in development", () => {
-            expect(() => {
-              types.string.create()
-            }).toThrow()
-          })
-        }
+      describe.runIf(process.env.NODE_ENV !== "production")("with no arguments", () => {
+        it("should throw an error in development", () => {
+          expect(() => {
+            types.string.create()
+          }).toThrow()
+        })
       })
       describe("with a string argument", () => {
         it("should return a string", () => {
@@ -19,25 +18,26 @@ describe("types.string", () => {
           expect(typeof s).toBe("string")
         })
       })
-      describe("with argument of different types", () => {
-        const testCases = [
-          null,
-          undefined,
-          1,
-          true,
-          [],
-          function () {},
-          new Date(),
-          /a/,
-          new Map(),
-          new Set(),
-          Symbol(),
-          new Error(),
-          NaN,
-          Infinity
-        ]
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with argument of different types",
+        () => {
+          const testCases = [
+            null,
+            undefined,
+            1,
+            true,
+            [],
+            function () {},
+            new Date(),
+            /a/,
+            new Map(),
+            new Set(),
+            Symbol(),
+            new Error(),
+            NaN,
+            Infinity
+          ]
 
-        if (process.env.NODE_ENV !== "production") {
           testCases.forEach((testCase) => {
             it(`should throw an error when passed ${JSON.stringify(testCase)}`, () => {
               expect(() => {
@@ -46,7 +46,7 @@ describe("types.string", () => {
             })
           })
         }
-      })
+      )
     })
     describe("describe", () => {
       it("should return the value 'string'", () => {
@@ -68,16 +68,14 @@ describe("types.string", () => {
       })
     })
     describe("instantiate", () => {
-      if (process.env.NODE_ENV !== "production") {
-        describe("with invalid arguments", () => {
-          it("should not throw an error", () => {
-            expect(() => {
-              // @ts-ignore
-              types.string.instantiate()
-            }).not.toThrow()
-          })
+      describe.runIf(process.env.NODE_ENV !== "production")("with invalid arguments", () => {
+        it("should not throw an error", () => {
+          expect(() => {
+            // @ts-ignore
+            types.string.instantiate()
+          }).not.toThrow()
         })
-      }
+      })
       describe("with a string argument", () => {
         it("should return an object", () => {
           const s = types.string.instantiate(null, "", {}, "foo")
@@ -284,35 +282,33 @@ describe("types.string", () => {
           expect(called).toBe(true)
         })
       })
-      describe("setParent", () => {
-        if (process.env.NODE_ENV !== "production") {
-          describe("with null", () => {
-            it("should throw an error", () => {
-              const s = types.string.instantiate(null, "", {}, "foo")
-              expect(() => {
-                s.setParent(null, "foo")
-              }).toThrow()
-            })
+      describe.runIf(process.env.NODE_ENV !== "production")("setParent", () => {
+        describe("with null", () => {
+          it("should throw an error", () => {
+            const s = types.string.instantiate(null, "", {}, "foo")
+            expect(() => {
+              s.setParent(null, "foo")
+            }).toThrow()
           })
-          describe("with a parent object", () => {
-            it("should throw an error", () => {
-              const Parent = types.model({
-                child: types.string
-              })
-
-              const parent = Parent.create({ child: "foo" })
-
-              const s = types.string.instantiate(null, "", {}, "bar")
-
-              expect(() => {
-                // @ts-ignore
-                s.setParent(parent, "bar")
-              }).toThrow(
-                "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
-              )
+        })
+        describe("with a parent object", () => {
+          it("should throw an error", () => {
+            const Parent = types.model({
+              child: types.string
             })
+
+            const parent = Parent.create({ child: "foo" })
+
+            const s = types.string.instantiate(null, "", {}, "bar")
+
+            expect(() => {
+              // @ts-ignore
+              s.setParent(parent, "bar")
+            }).toThrow(
+              "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
+            )
           })
-        }
+        })
       })
     })
   })

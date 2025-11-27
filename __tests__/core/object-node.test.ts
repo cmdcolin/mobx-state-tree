@@ -1,8 +1,9 @@
+import { test, expect, describe, vi, beforeEach, it } from "vitest"
 import { t } from "../../src/index"
 import { Hook, ObjectNode, onPatch, unprotect } from "../../src/internal"
 
-const warnMock = jest.fn()
-jest.spyOn(console, "warn").mockImplementation(warnMock)
+const warnMock = vi.fn()
+vi.spyOn(console, "warn").mockImplementation(warnMock)
 
 const TestModel = t.model("TestModel", {
   title: t.string
@@ -30,7 +31,7 @@ const TestModelWithIdentifier = t.model("TestModelWithIdentifier", {
  */
 describe("ObjectNode", () => {
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
   describe("constructor", () => {
     // Since ObjectNode is not exported as part of the MST API, we don't have tests for invalid parameters, but we expect an error in this scenario.
@@ -49,7 +50,7 @@ describe("ObjectNode", () => {
       describe("if the observable node is unitialized", () => {
         it("does not call the onAboutToDie hook", () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-          const hook = jest.fn()
+          const hook = vi.fn()
           node.registerHook(Hook.beforeDestroy, hook)
           node.aboutToDie()
           expect(hook).not.toBeCalled()
@@ -58,7 +59,7 @@ describe("ObjectNode", () => {
       describe("if the observable node is initialized", () => {
         it("calls the onAboutToDie hook", () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-          const hook = jest.fn()
+          const hook = vi.fn()
           node.registerHook(Hook.beforeDestroy, hook)
           node.createObservableInstance() // createObservableInstance calls finalizeCreation internally, and marks the observable node as being created.
           node.aboutToDie()
@@ -69,7 +70,7 @@ describe("ObjectNode", () => {
     describe("addDisposer", () => {
       it("adds a disposer to the node", () => {
         const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-        const disposer = jest.fn()
+        const disposer = vi.fn()
         node.addDisposer(disposer)
         node.createObservableInstance()
         expect(node.hasDisposer(disposer)).toBe(true)
@@ -78,7 +79,7 @@ describe("ObjectNode", () => {
     describe("addMiddleWare", () => {
       it("adds a middleware to the node", () => {
         const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-        const middleware = jest.fn((call, next) => {
+        const middleware = vi.fn((call, next) => {
           next(call)
         })
         node.addMiddleWare(middleware)
@@ -432,7 +433,7 @@ describe("ObjectNode", () => {
       describe("if the node is unititalized", () => {
         it("does not call the onAboutToDie hooks", () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-          const hook = jest.fn()
+          const hook = vi.fn()
           node.registerHook(Hook.beforeDestroy, hook)
           node.die()
           expect(hook).not.toBeCalled()
@@ -441,7 +442,7 @@ describe("ObjectNode", () => {
       describe("if the die method gets past lifecycle checks", () => {
         it('calls the "aboutToDie" hook', () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-          const hook = jest.fn()
+          const hook = vi.fn()
           node.registerHook(Hook.beforeDestroy, hook)
           node.createObservableInstance()
           node.die()
@@ -461,8 +462,8 @@ describe("ObjectNode", () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
           const identifierCache = node.root.identifierCache
           const identifierCacheNotifySpy = identifierCache
-            ? jest.spyOn(identifierCache, "notifyDied")
-            : jest.fn()
+            ? vi.spyOn(identifierCache, "notifyDied")
+            : vi.fn()
           node.createObservableInstance()
           node.die()
           expect(identifierCacheNotifySpy).toBeCalledWith(node)
@@ -515,7 +516,7 @@ describe("ObjectNode", () => {
       it("emits the patch and a reverse patch", () => {
         const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
         node.createObservableInstance()
-        const patchMock = jest.fn()
+        const patchMock = vi.fn()
         onPatch(node.storedValue, patchMock)
         node.emitPatch(
           {
@@ -542,7 +543,7 @@ describe("ObjectNode", () => {
       })
       it("emits the patch and a reverse patch through its parent", () => {
         const parent = Parent.create({ child: { title: "hello" } })
-        const patchMock = jest.fn()
+        const patchMock = vi.fn()
         onPatch(parent, patchMock)
         parent.child!.$treenode.emitPatch(
           {
@@ -583,7 +584,7 @@ describe("ObjectNode", () => {
       describe("when a node has no parent", () => {
         it("calls the afterCreationFinalization hook", () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-          const hook = jest.fn()
+          const hook = vi.fn()
           node.registerHook(Hook.afterCreationFinalization, hook)
           node.state = 1 // Force the state to CREATED so we don't bail out in the isAlive check as per the prior test
           node.finalizeCreation()
@@ -601,7 +602,7 @@ describe("ObjectNode", () => {
           it("does not call the afterAttach hook", () => {
             const parent = new ObjectNode(Parent as any, null, "", {}, {})
             const child = new ObjectNode(TestModel as any, parent, "", {}, { title: "hello" })
-            const hook = jest.fn()
+            const hook = vi.fn()
             child.registerHook(Hook.afterCreationFinalization, hook)
             child.setParent(parent, "child")
             child.state = 1 // Force the state to CREATED in the child so we don't bail out in the isAlive check as per the prior test
@@ -621,7 +622,7 @@ describe("ObjectNode", () => {
           it("calls the afterAttach hook", () => {
             const parent = new ObjectNode(Parent as any, null, "", {}, {})
             const child = new ObjectNode(TestModel as any, parent, "", {}, { title: "hello" })
-            const hook = jest.fn()
+            const hook = vi.fn()
             child.registerHook(Hook.afterCreationFinalization, hook)
             child.setParent(parent, "child")
             child.state = 1 // Force the state to CREATED in the child so we don't bail out in the isAlive check as per the prior test
@@ -646,7 +647,7 @@ describe("ObjectNode", () => {
           const child = new ObjectNode(TestModel as any, null, "", env, { title: "hello" })
           const parent = new ObjectNode(Parent as any, null, "", env, { child: child.storedValue })
           child.setParent(parent, "child")
-          const hook = jest.fn()
+          const hook = vi.fn()
           parent.registerHook(Hook.afterCreationFinalization, hook)
           child.state = 1
           expect(hook).not.toBeCalled()
@@ -660,7 +661,7 @@ describe("ObjectNode", () => {
           const parent = new ObjectNode(Parent as any, null, "", env, { child: child.storedValue })
           child.setParent(parent, "child")
           const c = parent.getChildNode("child")
-          const hook = jest.fn()
+          const hook = vi.fn()
           c.registerHook(Hook.afterAttach, hook)
           c.state = 1
           expect(hook).not.toBeCalled()
@@ -685,7 +686,7 @@ describe("ObjectNode", () => {
     describe("finalizeDeath", () => {
       it("does everything die() does without calling aboutToDie()", () => {
         const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-        const hook = jest.fn()
+        const hook = vi.fn()
         node.registerHook(Hook.beforeDestroy, hook)
         node.createObservableInstance()
         node.finalizeDeath()
@@ -780,7 +781,7 @@ describe("ObjectNode", () => {
     describe("onPatch", () => {
       it("registers the patch listener", () => {
         const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-        const listener = jest.fn()
+        const listener = vi.fn()
         node.onPatch(listener)
         node.createObservableInstance()
         node.applyPatches([{ op: "replace", path: "/title", value: "world" }])
@@ -801,7 +802,7 @@ describe("ObjectNode", () => {
     describe("onSnapshot", () => {
       it("registers the snapshot listener", () => {
         const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-        const listener = jest.fn()
+        const listener = vi.fn()
         node.onSnapshot(listener)
         node.createObservableInstance()
         node.applySnapshot({ title: "world" })
@@ -812,7 +813,7 @@ describe("ObjectNode", () => {
       describe("afterCreate", () => {
         it("works", () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-          const hook = jest.fn()
+          const hook = vi.fn()
           node.registerHook(Hook.afterCreate, hook)
           // We call afterCreate during observable instance creation
           node.createObservableInstance()
@@ -823,7 +824,7 @@ describe("ObjectNode", () => {
         describe("for a root node", () => {
           it("does not get called", () => {
             const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-            const hook = jest.fn()
+            const hook = vi.fn()
             node.registerHook(Hook.afterAttach, hook)
             // We call afterAttach during observable instance creation
             node.createObservableInstance()
@@ -839,7 +840,7 @@ describe("ObjectNode", () => {
             })
             child.setParent(parent, "child")
             const c = parent.getChildNode("child")
-            const hook = jest.fn()
+            const hook = vi.fn()
             c.registerHook(Hook.afterAttach, hook)
             parent.createObservableInstance()
             expect(hook).toBeCalled()
@@ -849,7 +850,7 @@ describe("ObjectNode", () => {
       describe("afterCreationFinalization", () => {
         it("works", () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-          const hook = jest.fn()
+          const hook = vi.fn()
           node.registerHook(Hook.afterCreationFinalization, hook)
           // We call afterCreationFinalization during observable instance creation
           node.createObservableInstance()
@@ -860,7 +861,7 @@ describe("ObjectNode", () => {
         describe("for a root node", () => {
           it("does not get called", () => {
             const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-            const hook = jest.fn()
+            const hook = vi.fn()
             node.registerHook(Hook.beforeDetach, hook)
             node.createObservableInstance()
             node.detach()
@@ -875,7 +876,7 @@ describe("ObjectNode", () => {
               child: child.storedValue
             })
             child.setParent(parent, "child")
-            const hook = jest.fn()
+            const hook = vi.fn()
             child.registerHook(Hook.beforeDetach, hook)
             parent.createObservableInstance()
             unprotect(parent.storedValue) // In order to detach a child node directly, we need to unprotect the root here
@@ -887,7 +888,7 @@ describe("ObjectNode", () => {
       describe("beforeDestroy", () => {
         it("works", () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-          const hook = jest.fn()
+          const hook = vi.fn()
           node.registerHook(Hook.beforeDestroy, hook)
           // We need to create an observable instance before we can destroy it and get the hook to fire
           node.createObservableInstance()
@@ -1024,7 +1025,7 @@ describe("ObjectNode", () => {
           const env = {}
           const parent = new ObjectNode(Parent as any, null, "", env, {})
           const node = new ObjectNode(TestModel as any, null, "", env, { title: "hello" })
-          const hook = jest.fn()
+          const hook = vi.fn()
           node.registerHook(Hook.afterAttach, hook)
           node.setParent(parent, "child")
           expect(hook).toBeCalled()
@@ -1286,7 +1287,7 @@ describe("ObjectNode", () => {
       })
       it("returns the middlewares", () => {
         const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
-        const middleware = jest.fn()
+        const middleware = vi.fn()
         node.addMiddleWare(middleware)
         expect(node.middlewares).toBeDefined()
       })

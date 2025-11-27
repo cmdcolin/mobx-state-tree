@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { getSnapshot, types } from "../../src"
 
 test("it should allow if type and predicate is correct", () => {

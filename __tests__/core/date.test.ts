@@ -1,17 +1,16 @@
+import { it, test, expect, describe } from "vitest"
 import { t } from "../../src"
 import { Hook, NodeLifeCycle } from "../../src/internal"
 
 describe("types.date", () => {
   describe("methods", () => {
     describe("create", () => {
-      describe("with no arguments", () => {
-        if (process.env.NODE_ENV !== "production") {
-          it("should throw an error in development", () => {
-            expect(() => {
-              t.Date.create()
-            }).toThrow()
-          })
-        }
+      describe.runIf(process.env.NODE_ENV !== "production")("with no arguments", () => {
+        it("should throw an error in development", () => {
+          expect(() => {
+            t.Date.create()
+          }).toThrow()
+        })
       })
       describe("with a number argument", () => {
         it("should return a Date object", () => {
@@ -27,22 +26,23 @@ describe("types.date", () => {
         })
       })
     })
-    describe("with argument of different types", () => {
-      const testCases = [
-        null,
-        undefined,
-        true,
-        [],
-        function () {},
-        "2022-01-01T00:00:00.000Z",
-        /a/,
-        new Map(),
-        new Set(),
-        Symbol(),
-        new Error()
-      ]
+    describe.runIf(process.env.NODE_ENV !== "production")(
+      "with argument of different types",
+      () => {
+        const testCases = [
+          null,
+          undefined,
+          true,
+          [],
+          function () {},
+          "2022-01-01T00:00:00.000Z",
+          /a/,
+          new Map(),
+          new Set(),
+          Symbol(),
+          new Error()
+        ]
 
-      if (process.env.NODE_ENV !== "production") {
         testCases.forEach((testCase) => {
           it(`should throw an error when passed ${JSON.stringify(testCase)}`, () => {
             expect(() => {
@@ -51,7 +51,7 @@ describe("types.date", () => {
           })
         })
       }
-    })
+    )
   })
   describe("describe", () => {
     it("should return the value 'Date'", () => {
@@ -79,16 +79,14 @@ describe("types.date", () => {
     })
   })
   describe("instantiate", () => {
-    if (process.env.NODE_ENV !== "production") {
-      describe("with invalid arguments", () => {
-        it("should not throw an error", () => {
-          expect(() => {
-            // @ts-ignore
-            t.Date.instantiate()
-          }).not.toThrow()
-        })
+    describe.runIf(process.env.NODE_ENV !== "production")("with invalid arguments", () => {
+      it("should not throw an error", () => {
+        expect(() => {
+          // @ts-ignore
+          t.Date.instantiate()
+        }).not.toThrow()
       })
-    }
+    })
     describe("with a Date argument", () => {
       it("should return an object", () => {
         const s = t.Date.instantiate(null, "", {}, new Date())
@@ -316,35 +314,33 @@ describe("types.date", () => {
           expect(called).toBe(true)
         })
       })
-      describe("setParent", () => {
-        if (process.env.NODE_ENV !== "production") {
-          describe("with null", () => {
-            it("should throw an error", () => {
-              const d = t.Date.instantiate(null, "", {}, new Date())
-              expect(() => {
-                d.setParent(null, "foo")
-              }).toThrow()
-            })
+      describe.runIf(process.env.NODE_ENV !== "production")("setParent", () => {
+        describe("with null", () => {
+          it("should throw an error", () => {
+            const d = t.Date.instantiate(null, "", {}, new Date())
+            expect(() => {
+              d.setParent(null, "foo")
+            }).toThrow()
           })
-          describe("with a parent object", () => {
-            it("should throw an error", () => {
-              const Parent = t.model({
-                child: t.Date
-              })
-
-              const parent = Parent.create({ child: new Date() })
-
-              const d = t.Date.instantiate(null, "", {}, new Date())
-
-              expect(() => {
-                // @ts-ignore
-                d.setParent(parent, "bar")
-              }).toThrow(
-                "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
-              )
+        })
+        describe("with a parent object", () => {
+          it("should throw an error", () => {
+            const Parent = t.model({
+              child: t.Date
             })
+
+            const parent = Parent.create({ child: new Date() })
+
+            const d = t.Date.instantiate(null, "", {}, new Date())
+
+            expect(() => {
+              // @ts-ignore
+              d.setParent(parent, "bar")
+            }).toThrow(
+              "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
+            )
           })
-        }
+        })
       })
     })
   })

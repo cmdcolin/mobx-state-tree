@@ -1,3 +1,4 @@
+import { test, expect } from "vitest"
 import { types, unprotect, IAnyModelType, castToReferenceSnapshot } from "../../src"
 
 function Pointer<IT extends IAnyModelType>(Model: IT) {
