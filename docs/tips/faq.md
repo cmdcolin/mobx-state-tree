@@ -38,12 +38,12 @@ Yes, with MST it is pretty straight forward to setup hot reloading for your stor
 
 So far this might look a lot like an immutable state tree as found for example in Redux apps, but there're are only so many reasons to use Redux as per [article linked at the very top of Redux guide](https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367) that MST covers too, meanwhile:
 
--   Like Redux, and unlike MobX, MST prescribes a very specific state architecture.
--   mobx-state-tree allows direct modification of any value in the tree. It is not necessary to construct a new tree in your actions.
--   mobx-state-tree allows for fine-grained and efficient observation of any point in the state tree.
--   mobx-state-tree generates JSON patches for any modification that is made.
--   mobx-state-tree provides utilities to turn any MST tree into a valid Redux store.
--   Having multiple MSTs in a single application is perfectly fine.
+- Like Redux, and unlike MobX, MST prescribes a very specific state architecture.
+- mobx-state-tree allows direct modification of any value in the tree. It is not necessary to construct a new tree in your actions.
+- mobx-state-tree allows for fine-grained and efficient observation of any point in the state tree.
+- mobx-state-tree generates JSON patches for any modification that is made.
+- mobx-state-tree provides utilities to turn any MST tree into a valid Redux store.
+- Having multiple MSTs in a single application is perfectly fine.
 
 ### Where is the `any` type?
 

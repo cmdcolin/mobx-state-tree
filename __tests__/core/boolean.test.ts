@@ -5,13 +5,16 @@ import { Hook, NodeLifeCycle } from "../../src/internal"
 describe("types.boolean", () => {
   describe("methods", () => {
     describe("create", () => {
-      describe.runIf(process.env.NODE_ENV !== "production")("with no arguments", () => {
-        it("should throw an error in development", () => {
-          expect(() => {
-            t.boolean.create()
-          }).toThrow()
-        })
-      })
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with no arguments",
+        () => {
+          it("should throw an error in development", () => {
+            expect(() => {
+              t.boolean.create()
+            }).toThrow()
+          })
+        }
+      )
       describe("with a boolean argument", () => {
         it("should return a boolean", () => {
           const n = t.boolean.create(true)
@@ -38,7 +41,7 @@ describe("types.boolean", () => {
             NaN
           ]
 
-          testCases.forEach((testCase) => {
+          testCases.forEach(testCase => {
             it(`should throw an error when passed ${JSON.stringify(testCase)}`, () => {
               expect(() => {
                 t.boolean.create(testCase as any)
@@ -68,14 +71,17 @@ describe("types.boolean", () => {
       })
     })
     describe("instantiate", () => {
-      describe.runIf(process.env.NODE_ENV !== "production")("with invalid arguments", () => {
-        it("should not throw an error", () => {
-          expect(() => {
-            // @ts-ignore
-            t.boolean.instantiate()
-          }).not.toThrow()
-        })
-      })
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with invalid arguments",
+        () => {
+          it("should not throw an error", () => {
+            expect(() => {
+              // @ts-ignore
+              t.boolean.instantiate()
+            }).not.toThrow()
+          })
+        }
+      )
       describe("with a boolean argument", () => {
         it("should return an object", () => {
           const b = t.boolean.instantiate(null, "", {}, true)
@@ -108,7 +114,7 @@ describe("types.boolean", () => {
           NaN
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return false when passed ${JSON.stringify(testCase)}`, () => {
             const result = t.boolean.is(testCase as any)
             expect(result).toBe(false)
@@ -137,7 +143,7 @@ describe("types.boolean", () => {
           t.undefined
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return false when passed ${JSON.stringify(testCase)}`, () => {
             const result = t.boolean.isAssignableFrom(testCase as any)
             expect(result).toBe(false)
@@ -172,7 +178,7 @@ describe("types.boolean", () => {
           NaN
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return with a validation error when passed ${JSON.stringify(
             testCase
           )}`, () => {

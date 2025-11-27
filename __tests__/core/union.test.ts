@@ -28,7 +28,9 @@ const createTestFactories = () => {
   const Plane = types.union(Square, Box)
   const Heighed = types.union(Box, Cube)
   const DispatchPlane = types.union(
-    { dispatcher: (snapshot) => (snapshot && "height" in snapshot ? Box : Square) },
+    {
+      dispatcher: snapshot => (snapshot && "height" in snapshot ? Box : Square)
+    },
     Box,
     Square
   )
@@ -102,7 +104,9 @@ test("it should compute exact union types - 2", () => {
   expect(DispatchPlane.is(Box.create({ width: 3, height: 2 }))).toEqual(true)
   expect(
     DispatchPlane.is(
-      Square.create({ width: 3, height: 2 } as any /* incorrect type, superfluous attr!*/)
+      Square.create(
+        { width: 3, height: 2 } as any /* incorrect type, superfluous attr!*/
+      )
     )
   ).toEqual(true)
 })
@@ -138,7 +142,7 @@ test("dispatch", () => {
     .model({
       value: types.number
     })
-    .actions((self) => ({
+    .actions(self => ({
       isOdd() {
         return true
       },
@@ -146,7 +150,7 @@ test("dispatch", () => {
         return false
       }
     }))
-  const Even = types.model({ value: types.number }).actions((self) => ({
+  const Even = types.model({ value: types.number }).actions(self => ({
     isOdd() {
       return false
     },
@@ -155,7 +159,7 @@ test("dispatch", () => {
     }
   }))
   const Num = types.union(
-    { dispatcher: (snapshot) => (snapshot.value % 2 === 0 ? Even : Odd) },
+    { dispatcher: snapshot => (snapshot.value % 2 === 0 ? Even : Odd) },
     Even,
     Odd
   )
@@ -264,44 +268,65 @@ describe("1045 - secondary union types with applySnapshot and ids", () => {
 
         expect(store.length).toBe(1)
         expect(store[0]).toEqual(expected)
-        expect(getType(store[0])).toBe(useSnapshot ? submodel.getSubTypes() : submodel)
+        expect(getType(store[0])).toBe(
+          useSnapshot ? submodel.getSubTypes() : submodel
+        )
       }
     }
   }
 
   for (const useSnapshot of [false, true]) {
-    describe(useSnapshot ? "with snapshotProcessor" : "without snapshotProcessor", () => {
-      for (const submodel1First of [true, false]) {
-        describe(submodel1First ? "submodel1 first" : "submodel2 first", () => {
-          for (const useCreate of [false, true]) {
-            describe(useCreate ? "using create" : "not using create", () => {
-              for (const type of [2, 1]) {
-                describe(`snapshot is of type Submodel${type}`, () => {
-                  it(`apply snapshot works when the node is not touched`, () => {
-                    configure({
-                      useProxies: "never"
-                    })
+    describe(
+      useSnapshot ? "with snapshotProcessor" : "without snapshotProcessor",
+      () => {
+        for (const submodel1First of [true, false]) {
+          describe(
+            submodel1First ? "submodel1 first" : "submodel2 first",
+            () => {
+              for (const useCreate of [false, true]) {
+                describe(
+                  useCreate ? "using create" : "not using create",
+                  () => {
+                    for (const type of [2, 1]) {
+                      describe(`snapshot is of type Submodel${type}`, () => {
+                        it(`apply snapshot works when the node is not touched`, () => {
+                          configure({
+                            useProxies: "never"
+                          })
 
-                    const t = initTest(useSnapshot, useCreate, submodel1First, type)
-                    t.applySn()
-                  })
+                          const t = initTest(
+                            useSnapshot,
+                            useCreate,
+                            submodel1First,
+                            type
+                          )
+                          t.applySn()
+                        })
 
-                  it(`apply snapshot works when the node is touched`, () => {
-                    configure({
-                      useProxies: "never"
-                    })
+                        it(`apply snapshot works when the node is touched`, () => {
+                          configure({
+                            useProxies: "never"
+                          })
 
-                    const t = initTest(useSnapshot, useCreate, submodel1First, type)
-                    // tslint:disable-next-line:no-unused-expression
-                    t.store[0]
-                    t.applySn()
-                  })
-                })
+                          const t = initTest(
+                            useSnapshot,
+                            useCreate,
+                            submodel1First,
+                            type
+                          )
+                          // tslint:disable-next-line:no-unused-expression
+                          t.store[0]
+                          t.applySn()
+                        })
+                      })
+                    }
+                  }
+                )
               }
-            })
-          }
-        })
+            }
+          )
+        }
       }
-    })
+    )
   }
 })

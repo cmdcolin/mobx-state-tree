@@ -22,7 +22,9 @@ test("it should use the snapshot if provided", () => {
     rows: types.optional(types.array(Row), [{ name: "test" }])
   })
   const doc = Factory.create({ rows: [{ name: "snapshot", quantity: 0 }] })
-  expect(getSnapshot(doc)).toEqual({ rows: [{ name: "snapshot", quantity: 0 }] })
+  expect(getSnapshot(doc)).toEqual({
+    rows: [{ name: "snapshot", quantity: 0 }]
+  })
 })
 
 if (process.env.NODE_ENV !== "production") {
@@ -107,7 +109,9 @@ test("an instance is not a valid default value, snapshot or function that create
 
   // passing a node directly, without a generator function
   expect(() => {
-    types.model({ rows: types.optional(types.array(Row), types.array(Row).create()) })
+    types.model({
+      rows: types.optional(types.array(Row), types.array(Row).create())
+    })
   }).toThrow(
     "default value cannot be an instance, pass a snapshot or a function that creates an instance/snapshot instead"
   )

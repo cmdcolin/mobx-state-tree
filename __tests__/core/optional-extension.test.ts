@@ -63,7 +63,9 @@ describe("null as default", () => {
 
   test("when the underlying type accepts undefined it should be ok", () => {
     const M = types.model({
-      a: types.optional(types.union(types.undefined, types.number), undefined, [null]),
+      a: types.optional(types.union(types.undefined, types.number), undefined, [
+        null
+      ]),
       b: types.optional(types.union(types.undefined, types.number), 5, [null])
     })
 
@@ -202,8 +204,14 @@ describe("'empty' or false as default", () => {
 
   test("when the underlying type accepts undefined it should be ok", () => {
     const M = types.model({
-      a: types.optional(types.union(types.undefined, types.number), undefined, ["empty", false]),
-      b: types.optional(types.union(types.undefined, types.number), 5, ["empty", false])
+      a: types.optional(types.union(types.undefined, types.number), undefined, [
+        "empty",
+        false
+      ]),
+      b: types.optional(types.union(types.undefined, types.number), 5, [
+        "empty",
+        false
+      ])
     })
 
     {

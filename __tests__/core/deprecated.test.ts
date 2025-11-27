@@ -1,7 +1,10 @@
 import { vi, test, expect } from "vitest"
 import { deprecated } from "../../src/utils"
 import { flow, createFlowSpawner } from "../../src/core/flow"
-import { process as mstProcess, createProcessSpawner } from "../../src/core/process"
+import {
+  process as mstProcess,
+  createProcessSpawner
+} from "../../src/core/process"
 
 function createDeprecationListener() {
   // clear previous deprecation dedupe keys

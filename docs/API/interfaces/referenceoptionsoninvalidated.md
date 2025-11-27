@@ -8,22 +8,22 @@ sidebar_label: "ReferenceOptionsOnInvalidated"
 
 ## Type parameters
 
-▪ **IT**: *[IAnyComplexType](ianycomplextype.md)*
+▪ **IT**: _[IAnyComplexType](ianycomplextype.md)_
 
 ## Hierarchy
 
-* **ReferenceOptionsOnInvalidated**
+- **ReferenceOptionsOnInvalidated**
 
 ## Index
 
 ### Properties
 
-* [onInvalidated](referenceoptionsoninvalidated.md#oninvalidated)
+- [onInvalidated](referenceoptionsoninvalidated.md#oninvalidated)
 
 ## Properties
 
-###  onInvalidated
+### onInvalidated
 
-• **onInvalidated**: *[OnReferenceInvalidated](../index.md#onreferenceinvalidated)‹ReferenceT‹IT››*
+• **onInvalidated**: _[OnReferenceInvalidated](../index.md#onreferenceinvalidated)‹ReferenceT‹IT››_
 
-*Defined in [src/types/utility-types/reference.ts:448](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/reference.ts#L448)*
+_Defined in [src/types/utility-types/reference.ts:448](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/reference.ts#L448)_

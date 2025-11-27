@@ -50,7 +50,7 @@ describe("Model instantiation", () => {
         Infinity
       ]
 
-      testCases.forEach((testCase) => {
+      testCases.forEach(testCase => {
         test(`Providing ${JSON.stringify(
           testCase
         )} as the first argument should set the model's name as 'AnonymousModel'.`, () => {
@@ -215,7 +215,7 @@ describe("Model instantiation", () => {
           id: types.identifier,
           name: types.string
         })
-        .views((user) => ({
+        .views(user => ({
           get name() {
             return user.name
           }
@@ -235,7 +235,7 @@ describe("Model properties objects", () => {
     test("it throws an error", () => {
       const hookValues = Object.values(Hook)
 
-      hookValues.forEach((hook) => {
+      hookValues.forEach(hook => {
         expect(() => {
           types.model({
             [hook]: types.string

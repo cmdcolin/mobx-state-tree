@@ -36,7 +36,8 @@ function _isActionContextThisOrChildOf(
   sameOrParent: number | IActionContext | IMiddlewareEvent,
   includeSame: boolean
 ) {
-  const parentId = typeof sameOrParent === "number" ? sameOrParent : sameOrParent.id
+  const parentId =
+    typeof sameOrParent === "number" ? sameOrParent : sameOrParent.id
 
   let current: IActionContext | IMiddlewareEvent | undefined = includeSame
     ? actionContext

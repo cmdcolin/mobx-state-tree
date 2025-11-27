@@ -11,7 +11,7 @@ http://jsonpatch.com/
 
 ## Hierarchy
 
-* **IJsonPatch**
+- **IJsonPatch**
 
   ↳ [IReversibleJsonPatch](ireversiblejsonpatch.md)
 
@@ -19,30 +19,30 @@ http://jsonpatch.com/
 
 ### Properties
 
-* [op](ijsonpatch.md#op)
-* [path](ijsonpatch.md#path)
-* [value](ijsonpatch.md#optional-value)
+- [op](ijsonpatch.md#op)
+- [path](ijsonpatch.md#path)
+- [value](ijsonpatch.md#optional-value)
 
 ## Properties
 
-###  op
+### op
 
-• **op**: *"replace" | "add" | "remove"*
+• **op**: _"replace" | "add" | "remove"_
 
-*Defined in [src/core/json-patch.ts:8](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L8)*
+_Defined in [src/core/json-patch.ts:8](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L8)_
 
-___
+---
 
-###  path
+### path
 
-• **path**: *string*
+• **path**: _string_
 
-*Defined in [src/core/json-patch.ts:9](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L9)*
+_Defined in [src/core/json-patch.ts:9](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L9)_
 
-___
+---
 
 ### `Optional` value
 
-• **value**? : *any*
+• **value**? : _any_
 
-*Defined in [src/core/json-patch.ts:10](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L10)*
+_Defined in [src/core/json-patch.ts:10](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L10)_

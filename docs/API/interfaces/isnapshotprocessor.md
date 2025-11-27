@@ -10,7 +10,7 @@ A type that has its snapshots processed.
 
 ## Type parameters
 
-▪ **IT**: *[IAnyType](ianytype.md)*
+▪ **IT**: _[IAnyType](ianytype.md)_
 
 ▪ **CustomC**
 
@@ -18,7 +18,7 @@ A type that has its snapshots processed.
 
 ## Hierarchy
 
-* [IType](itype.md)‹_CustomOrOther‹CustomC, IT["CreationType"]›, _CustomOrOther‹CustomS, IT["SnapshotType"]›, IT["TypeWithoutSTN"]›
+- [IType](itype.md)‹\_CustomOrOther‹CustomC, IT["CreationType"]›, \_CustomOrOther‹CustomS, IT["SnapshotType"]›, IT["TypeWithoutSTN"]›
 
   ↳ **ISnapshotProcessor**
 
@@ -26,118 +26,118 @@ A type that has its snapshots processed.
 
 ### Properties
 
-* [identifierAttribute](isnapshotprocessor.md#optional-identifierattribute)
-* [name](isnapshotprocessor.md#name)
+- [identifierAttribute](isnapshotprocessor.md#optional-identifierattribute)
+- [name](isnapshotprocessor.md#name)
 
 ### Methods
 
-* [create](isnapshotprocessor.md#create)
-* [describe](isnapshotprocessor.md#describe)
-* [is](isnapshotprocessor.md#is)
-* [validate](isnapshotprocessor.md#validate)
+- [create](isnapshotprocessor.md#create)
+- [describe](isnapshotprocessor.md#describe)
+- [is](isnapshotprocessor.md#is)
+- [validate](isnapshotprocessor.md#validate)
 
 ## Properties
 
 ### `Optional` identifierAttribute
 
-• **identifierAttribute**? : *undefined | string*
+• **identifierAttribute**? : _undefined | string_
 
-*Inherited from [IType](itype.md).[identifierAttribute](itype.md#optional-identifierattribute)*
+_Inherited from [IType](itype.md).[identifierAttribute](itype.md#optional-identifierattribute)_
 
-*Defined in [src/core/type/type.ts:89](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L89)*
+_Defined in [src/core/type/type.ts:89](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L89)_
 
 Name of the identifier attribute or null if none.
 
-___
+---
 
-###  name
+### name
 
-• **name**: *string*
+• **name**: _string_
 
-*Inherited from [IType](itype.md).[name](itype.md#name)*
+_Inherited from [IType](itype.md).[name](itype.md#name)_
 
-*Defined in [src/core/type/type.ts:84](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L84)*
+_Defined in [src/core/type/type.ts:84](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L84)_
 
 Friendly type name.
 
 ## Methods
 
-###  create
+### create
 
-▸ **create**(`snapshot?`: [C](undefined), `env?`: any): *this["Type"]*
+▸ **create**(`snapshot?`: [C](undefined), `env?`: any): _this["Type"]_
 
-*Inherited from [IType](itype.md).[create](itype.md#create)*
+_Inherited from [IType](itype.md).[create](itype.md#create)_
 
-*Defined in [src/core/type/type.ts:96](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L96)*
+_Defined in [src/core/type/type.ts:96](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L96)_
 
 Creates an instance for the type given an snapshot input.
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`snapshot?` | [C](undefined) |
-`env?` | any |
+| Name        | Type           |
+| ----------- | -------------- |
+| `snapshot?` | [C](undefined) |
+| `env?`      | any            |
 
-**Returns:** *this["Type"]*
+**Returns:** _this["Type"]_
 
 An instance of that type.
 
-___
+---
 
-###  describe
+### describe
 
-▸ **describe**(): *string*
+▸ **describe**(): _string_
 
-*Inherited from [IType](itype.md).[describe](itype.md#describe)*
+_Inherited from [IType](itype.md).[describe](itype.md#describe)_
 
-*Defined in [src/core/type/type.ts:118](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L118)*
+_Defined in [src/core/type/type.ts:118](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L118)_
 
 Gets the textual representation of the type as a string.
 
-**Returns:** *string*
+**Returns:** _string_
 
-___
+---
 
-###  is
+### is
 
-▸ **is**(`thing`: any): *thing is _CustomOrOther<CustomC, IT["CreationType"]> | this["Type"]*
+▸ **is**(`thing`: any): _thing is \_CustomOrOther<CustomC, IT["CreationType"]> | this["Type"]_
 
-*Inherited from [IType](itype.md).[is](itype.md#is)*
+_Inherited from [IType](itype.md).[is](itype.md#is)_
 
-*Defined in [src/core/type/type.ts:104](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L104)*
+_Defined in [src/core/type/type.ts:104](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L104)_
 
 Checks if a given snapshot / instance is of the given type.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`thing` | any | Snapshot or instance to be checked. |
+| Name    | Type | Description                         |
+| ------- | ---- | ----------------------------------- |
+| `thing` | any  | Snapshot or instance to be checked. |
 
-**Returns:** *thing is _CustomOrOther<CustomC, IT["CreationType"]> | this["Type"]*
+**Returns:** _thing is \_CustomOrOther<CustomC, IT["CreationType"]> | this["Type"]_
 
 true if the value is of the current type, false otherwise.
 
-___
+---
 
-###  validate
+### validate
 
-▸ **validate**(`thing`: _CustomOrOther‹CustomC, IT["CreationType"]›, `context`: [IValidationContext](../index.md#ivalidationcontext)): *[IValidationResult](../index.md#ivalidationresult)*
+▸ **validate**(`thing`: \_CustomOrOther‹CustomC, IT["CreationType"]›, `context`: [IValidationContext](../index.md#ivalidationcontext)): _[IValidationResult](../index.md#ivalidationresult)_
 
-*Inherited from [IType](itype.md).[validate](itype.md#validate)*
+_Inherited from [IType](itype.md).[validate](itype.md#validate)_
 
-*Defined in [src/core/type/type.ts:113](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L113)*
+_Defined in [src/core/type/type.ts:113](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type.ts#L113)_
 
 Run's the type's typechecker on the given value with the given validation context.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`thing` | _CustomOrOther‹CustomC, IT["CreationType"]› | Value to be checked, either a snapshot or an instance. |
-`context` | [IValidationContext](../index.md#ivalidationcontext) | Validation context, an array of { subpaths, subtypes } that should be validated |
+| Name      | Type                                                 | Description                                                                     |
+| --------- | ---------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `thing`   | \_CustomOrOther‹CustomC, IT["CreationType"]›         | Value to be checked, either a snapshot or an instance.                          |
+| `context` | [IValidationContext](../index.md#ivalidationcontext) | Validation context, an array of { subpaths, subtypes } that should be validated |
 
-**Returns:** *[IValidationResult](../index.md#ivalidationresult)*
+**Returns:** _[IValidationResult](../index.md#ivalidationresult)_
 
 The validation result, an array with the list of validation errors.

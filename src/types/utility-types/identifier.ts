@@ -18,7 +18,10 @@ import {
 abstract class BaseIdentifierType<T> extends SimpleType<T, T, T> {
   readonly flags = TypeFlags.Identifier
 
-  constructor(name: string, private readonly validType: "string" | "number") {
+  constructor(
+    name: string,
+    private readonly validType: "string" | "number"
+  ) {
     super(name)
   }
 
@@ -29,12 +32,19 @@ abstract class BaseIdentifierType<T> extends SimpleType<T, T, T> {
     initialValue: this["C"]
   ): this["N"] {
     if (!parent || !(parent.type instanceof ModelType))
-      throw fail(`Identifier types can only be instantiated as direct child of a model type`)
+      throw fail(
+        `Identifier types can only be instantiated as direct child of a model type`
+      )
 
     return createScalarNode(this, parent, subpath, environment, initialValue)
   }
 
-  reconcile(current: this["N"], newValue: this["C"], parent: AnyObjectNode, subpath: string) {
+  reconcile(
+    current: this["N"],
+    newValue: this["C"],
+    parent: AnyObjectNode,
+    subpath: string
+  ) {
     // we don't consider detaching here since identifier are scalar nodes, and scalar nodes cannot be detached
     if (current.storedValue !== newValue)
       throw fail(
@@ -44,7 +54,10 @@ abstract class BaseIdentifierType<T> extends SimpleType<T, T, T> {
     return current
   }
 
-  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
+  isValidSnapshot(
+    value: this["C"],
+    context: IValidationContext
+  ): IValidationResult {
     if (typeof value !== this.validType) {
       return typeCheckFailure(
         context,
@@ -130,9 +143,9 @@ export const identifierNumber: ISimpleType<number> = new IdentifierNumberType()
  * @param type
  * @returns
  */
-export function isIdentifierType<IT extends typeof identifier | typeof identifierNumber>(
-  type: IT
-): type is IT {
+export function isIdentifierType<
+  IT extends typeof identifier | typeof identifierNumber
+>(type: IT): type is IT {
   return isType(type) && (type.flags & TypeFlags.Identifier) > 0
 }
 
@@ -161,6 +174,9 @@ export function isValidIdentifier(id: any): id is ReferenceIdentifier {
  * @internal
  * @hidden
  */
-export function assertIsValidIdentifier(id: ReferenceIdentifier, argNumber: number | number[]) {
+export function assertIsValidIdentifier(
+  id: ReferenceIdentifier,
+  argNumber: number | number[]
+) {
   assertArg(id, isValidIdentifier, "string or number (identifier)", argNumber)
 }

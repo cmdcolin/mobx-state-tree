@@ -8,7 +8,7 @@ sidebar_label: "IModelReflectionPropertiesData"
 
 ## Hierarchy
 
-* **IModelReflectionPropertiesData**
+- **IModelReflectionPropertiesData**
 
   ↳ [IModelReflectionData](imodelreflectiondata.md)
 
@@ -16,25 +16,25 @@ sidebar_label: "IModelReflectionPropertiesData"
 
 ### Properties
 
-* [name](imodelreflectionpropertiesdata.md#name)
-* [properties](imodelreflectionpropertiesdata.md#properties)
+- [name](imodelreflectionpropertiesdata.md#name)
+- [properties](imodelreflectionpropertiesdata.md#properties)
 
 ## Properties
 
-###  name
+### name
 
-• **name**: *string*
+• **name**: _string_
 
-*Defined in [src/core/mst-operations.ts:804](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L804)*
+_Defined in [src/core/mst-operations.ts:804](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L804)_
 
-___
+---
 
-###  properties
+### properties
 
-• **properties**: *object*
+• **properties**: _object_
 
-*Defined in [src/core/mst-operations.ts:805](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L805)*
+_Defined in [src/core/mst-operations.ts:805](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L805)_
 
 #### Type declaration:
 
-* \[ **K**: *string*\]: [IAnyType](ianytype.md)
+- \[ **K**: _string_\]: [IAnyType](ianytype.md)

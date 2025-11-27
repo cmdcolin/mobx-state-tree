@@ -6,14 +6,13 @@ title: Handle circular dependencies between files and types using `late`
 
 <div id="codefund"></div>
 
-
 In the exporting file:
 
 ```javascript
 export function LateStore() {
-    return types.model({
-        title: types.string
-    })
+  return types.model({
+    title: types.string
+  })
 }
 ```
 
@@ -31,8 +30,8 @@ If you are using TypeScript and you get errors about circular or self-referencin
 
 ```ts
 const Node = types.model({
-    x: 5, // as an example
-    me: types.maybe(types.late((): IAnyModelType => Node))
+  x: 5, // as an example
+  me: types.maybe(types.late((): IAnyModelType => Node))
 })
 ```
 

@@ -51,8 +51,8 @@ test("it should emit snapshots", () => {
   const { Factory, ItemFactory } = createTestFactories()
   const doc = Factory.create()
   unprotect(doc)
-  let snapshots: typeof Factory.SnapshotType[] = []
-  onSnapshot(doc, (snapshot) => snapshots.push(snapshot))
+  let snapshots: (typeof Factory.SnapshotType)[] = []
+  onSnapshot(doc, snapshot => snapshots.push(snapshot))
   doc.push(ItemFactory.create())
   expect(snapshots).toEqual([[{ to: "world" }]])
 })
@@ -75,9 +75,11 @@ test("it should emit add patches", () => {
   const doc = Factory.create()
   unprotect(doc)
   let patches: IJsonPatch[] = []
-  onPatch(doc, (patch) => patches.push(patch))
+  onPatch(doc, patch => patches.push(patch))
   doc.push(ItemFactory.create({ to: "universe" }))
-  expect(patches).toEqual([{ op: "add", path: "/0", value: { to: "universe" } }])
+  expect(patches).toEqual([
+    { op: "add", path: "/0", value: { to: "universe" } }
+  ])
 })
 test("it should apply an add patch", () => {
   const { Factory, ItemFactory } = createTestFactories()
@@ -91,9 +93,11 @@ test("it should emit update patches", () => {
   unprotect(doc)
   doc.push(ItemFactory.create())
   let patches: IJsonPatch[] = []
-  onPatch(doc, (patch) => patches.push(patch))
+  onPatch(doc, patch => patches.push(patch))
   doc[0] = ItemFactory.create({ to: "universe" })
-  expect(patches).toEqual([{ op: "replace", path: "/0", value: { to: "universe" } }])
+  expect(patches).toEqual([
+    { op: "replace", path: "/0", value: { to: "universe" } }
+  ])
 })
 test("it should apply an update patch", () => {
   const { Factory, ItemFactory } = createTestFactories()
@@ -107,7 +111,7 @@ test("it should emit remove patches", () => {
   unprotect(doc)
   doc.push(ItemFactory.create())
   let patches: IJsonPatch[] = []
-  onPatch(doc, (patch) => patches.push(patch))
+  onPatch(doc, patch => patches.push(patch))
   doc.splice(0)
   expect(patches).toEqual([{ op: "remove", path: "/0" }])
 })
@@ -201,7 +205,7 @@ test("items should be reconciled correctly when splicing - 1", () => {
     "You are trying to read or write to an object that is no longer part of a state tree. (Object type: 'Task', Path upon death: '/todos/1', Subpath: '', Action: ''). Either detach nodes first, or don't use objects after removing / replacing them in the tree."
   )
   store.todos.splice(0, 1, clone(a), clone(c), clone(d))
-  expect(store.todos.map((_) => _.x)).toEqual(["a", "c", "d"])
+  expect(store.todos.map(_ => _.x)).toEqual(["a", "c", "d"])
 })
 test("items should be reconciled correctly when splicing - 2", () => {
   const Task = types.model("Task", {
@@ -267,9 +271,13 @@ test("it should reconciliate keyed instances correctly", () => {
       { id: "3", task: "biscuit", done: false }
     ]
   })
-  expect(store.todos.map((todo) => todo.task)).toEqual(["coffee", "tea", "biscuit"])
-  expect(store.todos.map((todo) => todo.done)).toEqual([false, false, false])
-  expect(store.todos.map((todo) => todo.id)).toEqual(["1", "2", "3"])
+  expect(store.todos.map(todo => todo.task)).toEqual([
+    "coffee",
+    "tea",
+    "biscuit"
+  ])
+  expect(store.todos.map(todo => todo.done)).toEqual([false, false, false])
+  expect(store.todos.map(todo => todo.id)).toEqual(["1", "2", "3"])
   const coffee = store.todos[0]
   const tea = store.todos[1]
   const biscuit = store.todos[2]
@@ -281,9 +289,14 @@ test("it should reconciliate keyed instances correctly", () => {
       { id: "5", task: "stuffz", done: false }
     ]
   })
-  expect(store.todos.map((todo) => todo.task)).toEqual(["Tee", "coffee", "biscuit", "stuffz"])
-  expect(store.todos.map((todo) => todo.done)).toEqual([true, true, false, false])
-  expect(store.todos.map((todo) => todo.id)).toEqual(["2", "1", "4", "5"])
+  expect(store.todos.map(todo => todo.task)).toEqual([
+    "Tee",
+    "coffee",
+    "biscuit",
+    "stuffz"
+  ])
+  expect(store.todos.map(todo => todo.done)).toEqual([true, true, false, false])
+  expect(store.todos.map(todo => todo.id)).toEqual(["2", "1", "4", "5"])
   expect(store.todos[0] === tea).toBe(true)
   expect(store.todos[1] === coffee).toBe(true)
   expect(store.todos[2] === biscuit).toBe(false)
@@ -381,7 +394,7 @@ test("it should correctly handle re-adding of the same objects", () => {
     .model("Task", {
       objects: types.array(types.maybe(types.frozen()))
     })
-    .actions((self) => ({
+    .actions(self => ({
       setObjects(objects: {}[]) {
         self.objects.replace(objects)
       }
@@ -430,7 +443,7 @@ test("it should keep unchanged for structrual equalled snapshot", () => {
 
   const values: boolean[][] = []
   autorun(() => {
-    values.push(store.todos.map((todo) => todo.done))
+    values.push(store.todos.map(todo => todo.done))
   })
   applySnapshot(store.todos, [
     { id: "1", task: "coffee", done: false },
@@ -465,7 +478,7 @@ test("#1105 - it should return pop/shift'ed values for scalar arrays", () => {
     .model({
       array: types.array(types.number)
     })
-    .actions((self) => {
+    .actions(self => {
       return {
         shift() {
           return self.array.shift()
@@ -485,7 +498,7 @@ test("it should return pop/shift'ed values for object arrays", () => {
     .model({
       array: types.array(TestObject)
     })
-    .actions((self) => {
+    .actions(self => {
       return {
         shift() {
           return self.array.shift()
@@ -542,9 +555,9 @@ test("assigning filtered instances works", () => {
     .model({
       todos: types.array(Task)
     })
-    .actions((self) => ({
+    .actions(self => ({
       clearFinishedTodos() {
-        self.todos = cast(self.todos.filter((todo) => !todo.done))
+        self.todos = cast(self.todos.filter(todo => !todo.done))
       }
     }))
     .create({
@@ -552,14 +565,14 @@ test("assigning filtered instances works", () => {
     })
 
   expect(store.todos.length).toBe(3)
-  const done = store.todos.filter((t) => t.done)
-  const notDone = store.todos.filter((t) => !t.done)
-  expect(store.todos.every((t) => isAlive(t)))
+  const done = store.todos.filter(t => t.done)
+  const notDone = store.todos.filter(t => !t.done)
+  expect(store.todos.every(t => isAlive(t)))
   store.clearFinishedTodos()
   expect(store.todos.length).toBe(1)
   expect(store.todos[0]).toBe(notDone[0])
-  expect(done.every((t) => !isAlive(t))).toBe(true)
-  expect(notDone.every((t) => isAlive(t))).toBe(true)
+  expect(done.every(t => !isAlive(t))).toBe(true)
+  expect(notDone.every(t => isAlive(t))).toBe(true)
 })
 
 test("#1676 - should accept read-only arrays", () => {

@@ -49,7 +49,7 @@ test("it should emit snapshots", () => {
   const doc = Factory.create()
   unprotect(doc)
   let snapshots: SnapshotOut<typeof doc>[] = []
-  onSnapshot(doc, (snapshot) => snapshots.push(snapshot))
+  onSnapshot(doc, snapshot => snapshots.push(snapshot))
   doc.set("hello", ItemFactory.create())
   expect(snapshots).toEqual([{ hello: { to: "world" } }])
 })
@@ -86,9 +86,11 @@ test("it should emit add patches", () => {
   const doc = Factory.create()
   unprotect(doc)
   let patches: IJsonPatch[] = []
-  onPatch(doc, (patch) => patches.push(patch))
+  onPatch(doc, patch => patches.push(patch))
   doc.set("hello", ItemFactory.create({ to: "universe" }))
-  expect(patches).toEqual([{ op: "add", path: "/hello", value: { to: "universe" } }])
+  expect(patches).toEqual([
+    { op: "add", path: "/hello", value: { to: "universe" } }
+  ])
 })
 test("it should apply an add patch", () => {
   const { Factory, ItemFactory } = createTestFactories()
@@ -102,9 +104,11 @@ test("it should emit update patches", () => {
   unprotect(doc)
   doc.set("hello", ItemFactory.create())
   let patches: IJsonPatch[] = []
-  onPatch(doc, (patch) => patches.push(patch))
+  onPatch(doc, patch => patches.push(patch))
   doc.set("hello", ItemFactory.create({ to: "universe" }))
-  expect(patches).toEqual([{ op: "replace", path: "/hello", value: { to: "universe" } }])
+  expect(patches).toEqual([
+    { op: "replace", path: "/hello", value: { to: "universe" } }
+  ])
 })
 test("it should apply an update patch", () => {
   const { Factory, ItemFactory } = createTestFactories()
@@ -119,7 +123,7 @@ test("it should emit remove patches", () => {
   unprotect(doc)
   doc.set("hello", ItemFactory.create())
   let patches: IJsonPatch[] = []
-  onPatch(doc, (patch) => patches.push(patch))
+  onPatch(doc, patch => patches.push(patch))
   doc.delete("hello")
   expect(patches).toEqual([{ op: "remove", path: "/hello" }])
 })
@@ -177,7 +181,9 @@ test("it should support identifiers", () => {
   expect(store.todos.get("19")!.id).toBe("19")
   expect("" + store.todos.get("19")).toBe("AnonymousModel@/todos/19(id: 19)")
   if (process.env.NODE_ENV !== "production") {
-    expect(() => applySnapshot(store.todos, { "17": { id: "18" } })).toThrowError(
+    expect(() =>
+      applySnapshot(store.todos, { "17": { id: "18" } })
+    ).toThrowError(
       "[mobx-state-tree] A map of objects containing an identifier should always store the object under their own identifier. Trying to store key '18', but expected: '17'"
     )
   }
@@ -194,12 +200,15 @@ test("#184 - types.map().get(key) should not throw if key doesnt exists", () => 
   }).not.toThrow()
 })
 test("#192 - put should not throw when identifier is a number", () => {
-  const Todo = types.model("Todo", { todo_id: types.identifierNumber, title: types.string })
+  const Todo = types.model("Todo", {
+    todo_id: types.identifierNumber,
+    title: types.string
+  })
   const TodoStore = types
     .model("TodoStore", {
       todos: types.optional(types.map(Todo), {})
     })
-    .actions((self) => {
+    .actions(self => {
       function addTodo(todo: typeof Todo.Type | typeof Todo.CreationType) {
         self.todos.put(todo)
       }
@@ -223,12 +232,15 @@ test("#192 - put should not throw when identifier is a number", () => {
   }
 })
 test("#192 - map should not mess up keys when putting twice", () => {
-  const Todo = types.model("Todo", { todo_id: types.identifierNumber, title: types.string })
+  const Todo = types.model("Todo", {
+    todo_id: types.identifierNumber,
+    title: types.string
+  })
   const TodoStore = types
     .model("TodoStore", {
       todos: types.optional(types.map(Todo), {})
     })
-    .actions((self) => {
+    .actions(self => {
       function addTodo(todo: typeof Todo.Type | typeof Todo.CreationType) {
         self.todos.put(todo)
       }
@@ -241,12 +253,16 @@ test("#192 - map should not mess up keys when putting twice", () => {
     todo_id: 1,
     title: "Test"
   })
-  expect(getSnapshot(todoStore.todos)).toEqual({ "1": { todo_id: 1, title: "Test" } })
+  expect(getSnapshot(todoStore.todos)).toEqual({
+    "1": { todo_id: 1, title: "Test" }
+  })
   todoStore.addTodo({
     todo_id: 1,
     title: "Test Edited"
   })
-  expect(getSnapshot(todoStore.todos)).toEqual({ "1": { todo_id: 1, title: "Test Edited" } })
+  expect(getSnapshot(todoStore.todos)).toEqual({
+    "1": { todo_id: 1, title: "Test Edited" }
+  })
 })
 test("#694 - map.put should return new node", () => {
   configure({
@@ -261,8 +277,10 @@ test("#694 - map.put should return new node", () => {
     .model("TodoStore", {
       todos: types.map(Todo)
     })
-    .actions((self) => {
-      function addAndReturnTodo(todo: typeof Todo.Type | typeof Todo.CreationType) {
+    .actions(self => {
+      function addAndReturnTodo(
+        todo: typeof Todo.Type | typeof Todo.CreationType
+      ) {
         return self.todos.put(todo)
       }
       return {
@@ -286,7 +304,10 @@ test("#694 - map.put should return new node", () => {
     title: "Test 1 Edited"
   })
   expect(isStateTreeNode(editedTodo)).toEqual(true)
-  expect(getSnapshot(editedTodo)).toEqual({ todo_id: "1", title: "Test 1 Edited" })
+  expect(getSnapshot(editedTodo)).toEqual({
+    todo_id: "1",
+    title: "Test 1 Edited"
+  })
   expect(editedTodo).toEqual(addedTodo)
 
   const addedTodo2 = todoStore.addAndReturnTodo({
@@ -302,7 +323,7 @@ test("it should not throw when removing a non existing item from a map", () => {
       .model({
         myMap: types.map(types.number)
       })
-      .actions((self) => {
+      .actions(self => {
         function something() {
           return self.myMap.delete("1020")
         }
@@ -319,7 +340,7 @@ test("it should get map keys from reversePatch when deleted an item from a neste
     .model({
       value: types.map(types.map(types.map(types.number)))
     })
-    .actions((self) => ({
+    .actions(self => ({
       remove(k: string) {
         self.value.delete(k)
       }
@@ -327,7 +348,11 @@ test("it should get map keys from reversePatch when deleted an item from a neste
   const store = AppModel.create({ value: { a: { b: { c: 10 } } } })
   onPatch(store, (patch, reversePatch) => {
     expect(patch).toEqual({ op: "remove", path: "/value/a" })
-    expect(reversePatch).toEqual({ op: "add", path: "/value/a", value: { b: { c: 10 } } })
+    expect(reversePatch).toEqual({
+      op: "add",
+      path: "/value/a",
+      value: { b: { c: 10 } }
+    })
   })
   store.remove("a")
 })
@@ -352,7 +377,7 @@ test("issue #876 - map.put works fine for models with preProcessSnapshot", () =>
       title: types.string,
       notes: types.array(Note)
     })
-    .preProcessSnapshot((snapshot) => {
+    .preProcessSnapshot(snapshot => {
       const result = Object.assign({}, snapshot)
       if (typeof result.title !== "string") result.title = ""
       return result
@@ -362,7 +387,7 @@ test("issue #876 - map.put works fine for models with preProcessSnapshot", () =>
     .model("Store", {
       items: types.optional(types.map(Item), {})
     })
-    .actions((self) => ({
+    .actions(self => ({
       afterCreate() {
         self.items.put({
           id: "1",
@@ -413,7 +438,7 @@ test("get should return value when key is a number", () => {
     .model("TodoStore", {
       todos: types.optional(types.map(Todo), {})
     })
-    .actions((self) => {
+    .actions(self => {
       function addTodo(aTodo: typeof Todo.Type | typeof Todo.CreationType) {
         self.todos.put(aTodo)
       }
@@ -480,7 +505,7 @@ describe("#826, adding stuff twice", () => {
     .model({
       map: types.optional(types.map(types.boolean), {})
     })
-    .actions((self) => ({
+    .actions(self => ({
       toogleMap: (id: string) => {
         self.map.set(id, !self.map.get(id))
       }
@@ -554,7 +579,9 @@ test("#1173 - detaching a map should not eliminate its children", () => {
 
 test("#1131 - put with optional identifier", () => {
   const Test = types.model({
-    id: types.optional(types.identifier, () => Math.random().toString(36).substr(2)),
+    id: types.optional(types.identifier, () =>
+      Math.random().toString(36).substr(2)
+    ),
     value: "hi"
   })
 

@@ -40,7 +40,9 @@ export function TasksProvider({ children }) {
 
   return (
     <TasksContext.Provider value={tasks}>
-      <TasksDispatchContext.Provider value={dispatch}>{children}</TasksDispatchContext.Provider>
+      <TasksDispatchContext.Provider value={dispatch}>
+        {children}
+      </TasksDispatchContext.Provider>
     </TasksContext.Provider>
   )
 }
@@ -66,7 +68,7 @@ function tasksReducer(tasks, action) {
       ]
     }
     case "changed": {
-      return tasks.map((t) => {
+      return tasks.map(t => {
         if (t.id === action.task.id) {
           return action.task
         } else {
@@ -75,7 +77,7 @@ function tasksReducer(tasks, action) {
       })
     }
     case "deleted": {
-      return tasks.filter((t) => t.id !== action.id)
+      return tasks.filter(t => t.id !== action.id)
     }
     default: {
       throw Error("Unknown action: " + action.type)
@@ -100,7 +102,9 @@ export function TasksProvider({ children }) {
 
   return (
     <TasksContext.Provider value={tasks}>
-      <TasksDispatchContext.Provider value={dispatch}>{children}</TasksDispatchContext.Provider>
+      <TasksDispatchContext.Provider value={dispatch}>
+        {children}
+      </TasksDispatchContext.Provider>
     </TasksContext.Provider>
   )
 }
@@ -126,7 +130,7 @@ function tasksReducer(tasks, action) {
       ]
     }
     case "changed": {
-      return tasks.map((t) => {
+      return tasks.map(t => {
         if (t.id === action.task.id) {
           return action.task
         } else {
@@ -135,7 +139,7 @@ function tasksReducer(tasks, action) {
       })
     }
     case "deleted": {
-      return tasks.filter((t) => t.id !== action.id)
+      return tasks.filter(t => t.id !== action.id)
     }
     default: {
       throw Error("Unknown action: " + action.type)
@@ -226,7 +230,7 @@ const Task = t
     done: t.optional(t.boolean, false),
     isBeingEdited: t.optional(t.boolean, false)
   })
-  .actions((self) => ({
+  .actions(self => ({
     setText(text: string) {
       self.text = text
     },
@@ -246,7 +250,7 @@ const ViewModel = t
     nextId: 0,
     tasks: t.array(Task)
   })
-  .actions((self) => ({
+  .actions(self => ({
     addTask() {
       const { nextId, taskInputText } = self
 
@@ -266,7 +270,7 @@ const ViewModel = t
       self.taskInputText = ""
     },
     deleteTask(id: number) {
-      const task = self.tasks.find((t) => t.id === id)
+      const task = self.tasks.find(t => t.id === id)
       if (task) {
         self.tasks.remove(task)
       }
@@ -521,7 +525,14 @@ You don't have to make any choices about the TypeScript design. Model out your s
 If you want to use React Context/Reducer with TypeScript, you'll need to specify your types from the ground up. Many teams might like this approach, but it does require you to take the time to do so. Here's one way you might type the context:
 
 ```tsx
-import React, { createContext, useContext, useReducer, ReactNode, Dispatch, JSX } from "react"
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  Dispatch,
+  JSX
+} from "react"
 
 export interface Task {
   id: number
@@ -537,12 +548,18 @@ type Action =
 const TasksContext = createContext<Task[] | null>(null)
 const TasksDispatchContext = createContext<Dispatch<Action> | null>(null)
 
-export function TasksProvider({ children }: { children: ReactNode }): JSX.Element {
+export function TasksProvider({
+  children
+}: {
+  children: ReactNode
+}): JSX.Element {
   const [tasks, dispatch] = useReducer(tasksReducer, initialTasks)
 
   return (
     <TasksContext.Provider value={tasks}>
-      <TasksDispatchContext.Provider value={dispatch}>{children}</TasksDispatchContext.Provider>
+      <TasksDispatchContext.Provider value={dispatch}>
+        {children}
+      </TasksDispatchContext.Provider>
     </TasksContext.Provider>
   )
 }
@@ -576,7 +593,7 @@ function tasksReducer(tasks: Task[], action: Action): Task[] {
       ]
     }
     case "changed": {
-      return tasks.map((t) => {
+      return tasks.map(t => {
         if (t.id === action.task.id) {
           return action.task
         } else {
@@ -585,7 +602,7 @@ function tasksReducer(tasks: Task[], action: Action): Task[] {
       })
     }
     case "deleted": {
-      return tasks.filter((t) => t.id !== action.id)
+      return tasks.filter(t => t.id !== action.id)
     }
     default: {
       throw Error("Unknown action: " + action)
@@ -698,7 +715,7 @@ const Task = t
     done: t.optional(t.boolean, false),
     isBeingEdited: t.optional(t.boolean, false)
   })
-  .actions((self) => ({
+  .actions(self => ({
     setText(text: string) {
       self.text = text
     },
@@ -728,7 +745,7 @@ MobX-State-Tree generates [snapshots](../concepts/snapshots.md), which are immut
 ```ts
 const initialSnapshot = JSON.stringify(getSnapshot(ViewModelSingleton))
 const timeTravel: string[] = [initialSnapshot]
-onSnapshot(ViewModelSingleton, (snapshot) => {
+onSnapshot(ViewModelSingleton, snapshot => {
   timeTravel.push(JSON.stringify(snapshot))
 })
 ```

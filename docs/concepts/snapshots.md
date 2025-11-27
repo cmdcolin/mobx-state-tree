@@ -46,15 +46,15 @@ console.dir(getSnapshot(coffeeTodo))
 
 Some interesting properties of snapshots:
 
--   Snapshots are immutable
--   Snapshots can be transported
--   Snapshots can be used to update models or restore them to a particular state
--   Snapshots are automatically converted to models when needed. So, the two following statements are equivalent: `store.todos.push(Todo.create({ title: "test" }))` and `store.todos.push({ title: "test" })`.
+- Snapshots are immutable
+- Snapshots can be transported
+- Snapshots can be used to update models or restore them to a particular state
+- Snapshots are automatically converted to models when needed. So, the two following statements are equivalent: `store.todos.push(Todo.create({ title: "test" }))` and `store.todos.push({ title: "test" })`.
 
 Useful methods:
 
--   `getSnapshot(model, applyPostProcess)`: returns a snapshot representing the current state of the model
--   `onSnapshot(model, callback)`: creates a listener that fires whenever a new snapshot is available (but only one per MobX transaction).
--   `applySnapshot(model, snapshot)`: updates the state of the model and all its descendants to the state represented by the snapshot
+- `getSnapshot(model, applyPostProcess)`: returns a snapshot representing the current state of the model
+- `onSnapshot(model, callback)`: creates a listener that fires whenever a new snapshot is available (but only one per MobX transaction).
+- `applySnapshot(model, snapshot)`: updates the state of the model and all its descendants to the state represented by the snapshot
 
 `mobx-state-tree` also supports customizing snapshots when they are generated or when they are applied with [`types.snapshotProcessor`](/overview/hooks).

@@ -24,7 +24,7 @@ const Todo = types
   .model({
     title: "test"
   })
-  .views((self) => ({
+  .views(self => ({
     get description() {
       return getEnv(self).useUppercase ? self.title.toUpperCase() : self.title
     }
@@ -109,7 +109,9 @@ test("it is possible to set a value inside a map of a map when using the same en
   // this should not throw
   mapOfMap.map.get("whatever")!.map.set("1234", EmptyModel.create({}, env))
   expect(getEnv(mapOfMap) === env).toBe(true)
-  expect(getEnv(mapOfMap.map.get("whatever")!.map.get("1234")!) === env).toBe(true)
+  expect(getEnv(mapOfMap.map.get("whatever")!.map.get("1234")!) === env).toBe(
+    true
+  )
 })
 test("clone preserves environnment", () => {
   const env = createEnvironment()
@@ -153,7 +155,7 @@ test("#1231", () => {
 
   function leafsFirst(root: IAnyStateTreeNode) {
     const nodes: IAnyStateTreeNode[] = []
-    walk(root, (i) => {
+    walk(root, i => {
       if (isStateTreeNode(i)) {
         nodes.push(i)
       }
@@ -165,7 +167,11 @@ test("#1231", () => {
     return nodes
   }
 
-  function check(root: Instance<typeof RS>, name: string, mode: "detach" | "destroy") {
+  function check(
+    root: Instance<typeof RS>,
+    name: string,
+    mode: "detach" | "destroy"
+  ) {
     function logFail(operation: string, n: any) {
       logs.push(`fail: (${name}) ${operation}: ${getPath(n)}, ${n}`)
     }
@@ -180,7 +186,7 @@ test("#1231", () => {
     const nodes = leafsFirst(root)
     expect(nodes.length).toBe(7)
 
-    nodes.forEach((i) => {
+    nodes.forEach(i => {
       const env = getEnv(i)
       const parent = hasParent(i)
       if (!parent && i !== root) {
@@ -196,7 +202,7 @@ test("#1231", () => {
     })
 
     unprotect(root)
-    nodes.forEach((i) => {
+    nodes.forEach(i => {
       const optional = optionalPaths.includes(getPath(i))
       if (mode === "detach") {
         log("detaching node", i)
@@ -229,12 +235,18 @@ test("#1231", () => {
         if (optional) {
           // optional (undefined) nodes will be assigned undefined and reconciled, therefore they will be kept alive
           if (!parent) {
-            logFail(`expected a parent after destroy (since it is optional), but none was found`, i)
+            logFail(
+              `expected a parent after destroy (since it is optional), but none was found`,
+              i
+            )
           } else {
             log(`had parent after destroy (since it is optional)`, i)
           }
           if (!alive) {
-            logFail("expected to be alive after destroy (since it is optional), but it was not", i)
+            logFail(
+              "expected to be alive after destroy (since it is optional), but it was not",
+              i
+            )
           } else {
             log("alive after destroy (since it is optional)", i)
           }
@@ -301,7 +313,7 @@ test("#1231", () => {
   check(rsCreate2, "using create", "destroy")
   check(rsSnap2, "using snapshot", "destroy")
 
-  const fails = logs.filter((l) => l.startsWith("fail:"))
+  const fails = logs.filter(l => l.startsWith("fail:"))
   if (fails.length > 0) {
     fail(`\n${fails.join("\n")}`)
   }

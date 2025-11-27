@@ -54,10 +54,12 @@ mediumScenario(500)
 largeScenario(100, 10, 10)
 // remember when this broke the internet?
 function leftPad(value: string, length: number, char = " "): string {
-  return value.toString().length < length ? leftPad(char + value, length) : value
+  return value.toString().length < length
+    ? leftPad(char + value, length)
+    : value
 }
 // let's start
-plan.forEach((fn) => {
+plan.forEach(fn => {
   // strings get printed, i guess.
   if (typeof fn === "string") {
     console.log(fn)

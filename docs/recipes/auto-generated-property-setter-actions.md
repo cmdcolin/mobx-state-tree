@@ -15,7 +15,7 @@ const UserModel = types
     name: types.string,
     age: types.number
   })
-  .actions((self) => ({
+  .actions(self => ({
     setName(newName: string) {
       self.name = newName
     },
@@ -36,11 +36,11 @@ const UserModel = types
     name: types.string,
     age: types.number
   })
-  .actions((self) => ({
-    setProp<K extends keyof SnapshotIn<typeof self>, V extends SnapshotIn<typeof self>[K]>(
-      field: K,
-      newValue: V
-    ) {
+  .actions(self => ({
+    setProp<
+      K extends keyof SnapshotIn<typeof self>,
+      V extends SnapshotIn<typeof self>[K]
+    >(field: K, newValue: V) {
       self[field] = newValue
     }
   }))
@@ -81,8 +81,13 @@ type OnlyProperties<T> = {
  *   user.setProp("age", 30)      // no type error
  *   user.setProp("age", "30")    // type error -- must be number
  */
-export const withSetPropAction = <T extends IStateTreeNode>(mstInstance: T) => ({
-  setProp<K extends keyof OnlyProperties<T>, V extends SnapshotIn<T>[K]>(field: K, newValue: V) {
+export const withSetPropAction = <T extends IStateTreeNode>(
+  mstInstance: T
+) => ({
+  setProp<K extends keyof OnlyProperties<T>, V extends SnapshotIn<T>[K]>(
+    field: K,
+    newValue: V
+  ) {
     ;(mstInstance as T & OnlyProperties<T>)[field] = newValue
   }
 })
@@ -98,12 +103,12 @@ const Person = t
   .model("Person", {
     name: t.string
   })
-  .views((self) => ({
+  .views(self => ({
     get lowercaseName() {
       return self.name.toLowerCase()
     }
   }))
-  .actions((self) => ({
+  .actions(self => ({
     setName(name: string) {
       self.name = name
     }

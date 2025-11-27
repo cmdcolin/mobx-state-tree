@@ -106,7 +106,9 @@ export function runWithActionContext(context: IMiddlewareEvent, fn: Function) {
  * @internal
  * @hidden
  */
-export function getParentActionContext(parentContext: IMiddlewareEvent | undefined) {
+export function getParentActionContext(
+  parentContext: IMiddlewareEvent | undefined
+) {
   if (!parentContext) return undefined
   if (parentContext.type === "action") return parentContext
   return parentContext.parentActionEvent
@@ -136,7 +138,9 @@ export function createActionInvoker<T extends FunctionWithFlag>(
         tree: getRoot(target),
         rootId: parentContext ? parentContext.rootId : id,
         parentId: parentContext ? parentContext.id : 0,
-        allParentIds: parentContext ? [...parentContext.allParentIds, parentContext.id] : [],
+        allParentIds: parentContext
+          ? [...parentContext.allParentIds, parentContext.id]
+          : [],
         parentEvent: parentContext,
         parentActionEvent: parentActionContext
       },
@@ -250,7 +254,8 @@ function runMiddleWares(
 ): any {
   const middlewares = new CollectedMiddlewares(node, originalFn)
   // Short circuit
-  if (middlewares.isEmpty) return mobxAction(originalFn).apply(null, baseCall.args)
+  if (middlewares.isEmpty)
+    return mobxAction(originalFn).apply(null, baseCall.args)
 
   let result: any = null
 
@@ -268,7 +273,10 @@ function runMiddleWares(
     }
 
     let nextInvoked = false
-    function next(call2: IMiddlewareEvent, callback?: (value: any) => any): void {
+    function next(
+      call2: IMiddlewareEvent,
+      callback?: (value: any) => any
+    ): void {
       nextInvoked = true
       // the result can contain
       // - the non manipulated return value from an action

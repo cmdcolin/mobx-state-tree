@@ -7,7 +7,12 @@ import {
   IActionTrackingMiddleware2Call
 } from "../../src"
 
-function createTestMiddleware(m: any, actionName: string, value: number, calls: string[]) {
+function createTestMiddleware(
+  m: any,
+  actionName: string,
+  value: number,
+  calls: string[]
+) {
   function checkCall(call: IActionTrackingMiddleware2Call<any>) {
     expect(call.name).toBe(actionName)
     expect(call.args).toEqual([value])
@@ -63,7 +68,7 @@ async function syncTest(mode: "success" | "fail") {
       y: 2,
       z: 3
     })
-    .actions((self) => ({
+    .actions(self => ({
       setX(v: number) {
         self.x = v
         if (mode === "fail") {
@@ -117,7 +122,7 @@ async function flowTest(mode: "success" | "fail") {
       y: 2,
       z: 3
     })
-    .actions((self) => ({
+    .actions(self => ({
       setX: flow(function* flowSetX(v: number) {
         yield Promise.resolve()
         yield _subFlow()
@@ -168,10 +173,10 @@ test("#1250", async () => {
       x: 0,
       y: 0
     })
-    .actions((self) => ({
+    .actions(self => ({
       setX: flow(function* () {
         self.x = 10
-        yield new Promise((resolve) => setTimeout(resolve, 1000))
+        yield new Promise(resolve => setTimeout(resolve, 1000))
       }),
       setY() {
         self.y = 10
@@ -181,7 +186,9 @@ test("#1250", async () => {
   const calls: string[] = []
   const mware = createActionTrackingMiddleware2({
     filter(call) {
-      calls.push(`${call.name} (${call.id}) <- (${call.parentCall && call.parentCall.id}) - filter`)
+      calls.push(
+        `${call.name} (${call.id}) <- (${call.parentCall && call.parentCall.id}) - filter`
+      )
       return true
     },
     onStart(call) {
@@ -209,10 +216,13 @@ test("#1250", async () => {
   const p = model.setX()
   expect(model.x).toBe(10)
   expect(model.y).toBe(0)
-  expect(calls).toEqual(["setX (21) <- (undefined) - filter", "setX (21) <- (undefined) - onStart"])
+  expect(calls).toEqual([
+    "setX (21) <- (undefined) - filter",
+    "setX (21) <- (undefined) - onStart"
+  ])
   calls.length = 0
 
-  await new Promise<void>((r) =>
+  await new Promise<void>(r =>
     setTimeout(() => {
       model.setY()
       r()
@@ -238,7 +248,7 @@ test("#1250", async () => {
  * Test that when createActionTrackingMiddleware2 is called with valid hooks and a synchronous action, it runs onStart and onFinish hooks.
  */
 test("successful execution", () => {
-  const M = types.model({}).actions((self) => ({
+  const M = types.model({}).actions(self => ({
     test() {}
   }))
 
@@ -262,14 +272,18 @@ test("successful execution", () => {
 
   model.test()
 
-  expect(calls).toEqual(["test - filter", "test - onStart", "test - onFinish (error: false)"])
+  expect(calls).toEqual([
+    "test - filter",
+    "test - onStart",
+    "test - onFinish (error: false)"
+  ])
 })
 
 /**
  * Test that when createActionTrackingMiddleware2 is called with valid hooks and an asynchronous action, it runs onStart and onFinish hooks.
  */
 test("successful execution with async action", async () => {
-  const M = types.model({}).actions((self) => ({
+  const M = types.model({}).actions(self => ({
     async test() {}
   }))
 
@@ -293,7 +307,11 @@ test("successful execution with async action", async () => {
 
   await model.test()
 
-  expect(calls).toEqual(["test - filter", "test - onStart", "test - onFinish (error: false)"])
+  expect(calls).toEqual([
+    "test - filter",
+    "test - onStart",
+    "test - onFinish (error: false)"
+  ])
 })
 
 /**
@@ -306,7 +324,7 @@ describe("filtering", () => {
    * which is the name provided to the `filter` function.
    */
   it("calls onStart and onFinish hooks for actions that pass the filter", () => {
-    const M = types.model({}).actions((self) => ({
+    const M = types.model({}).actions(self => ({
       trackThisOne() {},
       doNotTrackThisOne() {}
     }))
@@ -332,14 +350,17 @@ describe("filtering", () => {
     // We call this action to prove that it is not tracked since it fails - there's also a test for this below.
     model.doNotTrackThisOne()
 
-    expect(calls).toEqual(["trackThisOne - onStart", "trackThisOne - onFinish (error: false)"])
+    expect(calls).toEqual([
+      "trackThisOne - onStart",
+      "trackThisOne - onFinish (error: false)"
+    ])
   })
   /**
    * Test that when the filter returns false, the action is not tracked. We check
    * this by checking that the onStart and onFinish hooks are not called for `doNotTrackThisOne`,
    */
   it("does not call onStart and onFinish hooks for actions that do not pass the filter", () => {
-    const M = types.model({}).actions((self) => ({
+    const M = types.model({}).actions(self => ({
       trackThisOne() {},
       doNotTrackThisOne() {}
     }))
@@ -387,11 +408,11 @@ describe("nested actions", () => {
   test("complete in the expected recursive order", () => {
     const M = types
       .model({})
-      .actions((self) => ({
+      .actions(self => ({
         childAction1() {},
         childAction2() {}
       }))
-      .actions((self) => ({
+      .actions(self => ({
         parentAction() {
           self.childAction1()
           self.childAction2()

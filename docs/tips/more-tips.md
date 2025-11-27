@@ -46,7 +46,7 @@ const test_foo = { foo: ["test"] }
 const test_bar = { bar: [200] }
 
 const unionStore = Store.create({
-    foobars: [test_foo, test_bar]
+  foobars: [test_foo, test_bar]
 })
 
 const foo = unionStore.foobars[0]
@@ -65,17 +65,17 @@ You can provide first arg with a _dispatcher_ that provides _snapshot_ which can
 
 ```javascript
 const FooBar = types.union(
-    {
-        dispatcher: (snapshot) => {
-            console.log({ snapshot })
-            if (snapshot.foo) {
-                return Foo
-            }
-            return Bar
-        }
-    },
-    Foo,
-    Bar
+  {
+    dispatcher: snapshot => {
+      console.log({ snapshot })
+      if (snapshot.foo) {
+        return Foo
+      }
+      return Bar
+    }
+  },
+  Foo,
+  Bar
 )
 ```
 
@@ -85,13 +85,13 @@ Adding type literal to the Base Models to identify the type
 
 ```javascript
 const Foo = types.model({
-    foo: types.array(types.string),
-    type: types.literal("foo")
+  foo: types.array(types.string),
+  type: types.literal("foo")
 })
 
 const Bar = types.model({
-    bar: types.array(types.number),
-    type: types.literal("bar")
+  bar: types.array(types.number),
+  type: types.literal("bar")
 })
 ```
 

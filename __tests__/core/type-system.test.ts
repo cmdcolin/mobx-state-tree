@@ -70,12 +70,12 @@ test("it should do typescript type inference correctly", () => {
       x: types.number,
       y: types.maybeNull(types.string)
     })
-    .views((self) => ({
+    .views(self => ({
       get z(): string {
         return "hi"
       }
     }))
-    .actions((self) => {
+    .actions(self => {
       function method() {
         const x: string = self.z + self.x + self.y
         anotherMethod(x)
@@ -200,7 +200,7 @@ test("it is possible to refer to a type", () => {
     .model({
       title: types.string
     })
-    .actions((self) => {
+    .actions(self => {
       function setTitle(v: string) {}
       return {
         setTitle
@@ -221,7 +221,7 @@ test(".Type should not be callable", () => {
     .model({
       title: types.string
     })
-    .actions((self) => {
+    .actions(self => {
       function setTitle(v: string) {}
       return {
         setTitle
@@ -234,7 +234,7 @@ test(".SnapshotType should not be callable", () => {
     .model({
       title: types.string
     })
-    .actions((self) => {
+    .actions(self => {
       function setTitle(v: string) {}
       return {
         setTitle
@@ -243,13 +243,13 @@ test(".SnapshotType should not be callable", () => {
   expect(() => Todo.SnapshotType).toThrow()
 })
 test("types instances with compatible snapshots should not be interchangeable", () => {
-  const A = types.model("A", {}).actions((self) => {
+  const A = types.model("A", {}).actions(self => {
     function doA() {}
     return {
       doA
     }
   })
-  const B = types.model("B", {}).actions((self) => {
+  const B = types.model("B", {}).actions(self => {
     function doB() {}
     return {
       doB
@@ -281,7 +281,7 @@ test("it handles complex types correctly", () => {
     .model({
       title: types.string
     })
-    .actions((self) => {
+    .actions(self => {
       function setTitle(v: string) {}
       return {
         setTitle
@@ -291,7 +291,7 @@ test("it handles complex types correctly", () => {
     .model({
       todos: types.map(Todo)
     })
-    .views((self) => {
+    .views(self => {
       function getActualAmount() {
         return self.todos.size
       }
@@ -304,7 +304,7 @@ test("it handles complex types correctly", () => {
         }
       }
     })
-    .actions((self) => {
+    .actions(self => {
       function setAmount() {
         const x: number = self.todos.size + self.amount + self.getAmount()
       }
@@ -320,7 +320,7 @@ if (process.env.NODE_ENV !== "production") {
       .model({
         title: types.string
       })
-      .actions((self) => {
+      .actions(self => {
         function setTitle(v: string) {}
         return {
           setTitle
@@ -330,7 +330,7 @@ if (process.env.NODE_ENV !== "production") {
       .model({
         todos: types.map(Todo)
       })
-      .views((self) => ({
+      .views(self => ({
         get amount() {
           return self.todos.size
         },
@@ -338,7 +338,7 @@ if (process.env.NODE_ENV !== "production") {
           return self.todos.size + self.todos.size
         }
       }))
-      .actions((self) => {
+      .actions(self => {
         function setAmount() {
           const x: number = self.todos.size + self.amount + self.getAmount()
         }
@@ -368,7 +368,7 @@ test("it should type compose correctly", () => {
     .model({
       wheels: 3
     })
-    .actions((self) => {
+    .actions(self => {
       let connection = null as any as Promise<any>
       function drive() {}
       function afterCreate() {
@@ -383,14 +383,17 @@ test("it should type compose correctly", () => {
     .model({
       logNode: "test"
     })
-    .actions((self) => {
+    .actions(self => {
       function log(msg: string) {}
       return {
         log
       }
     })
   const LoggableCar = types.compose(Car, Logger)
-  const x = LoggableCar.create({ wheels: 3, logNode: "test" /* compile error: x: 7  */ })
+  const x = LoggableCar.create({
+    wheels: 3,
+    logNode: "test" /* compile error: x: 7  */
+  })
   // x.test() // compile error
   x.drive()
   x.log("z")
@@ -401,31 +404,31 @@ test("it should extend {pre,post}ProcessSnapshot on compose", () => {
       composedOf: types.array(types.string),
       composedWith: types.array(types.string)
     })
-    .preProcessSnapshot((snapshot) => ({
+    .preProcessSnapshot(snapshot => ({
       ...snapshot,
       composedOf: (snapshot.composedOf || []).concat("CompositionTracker")
     }))
-    .postProcessSnapshot((snapshot) => ({
+    .postProcessSnapshot(snapshot => ({
       ...snapshot,
       composedWith: (snapshot.composedWith || []).concat("WagonTracker")
     }))
   const Car = types
     .model({})
-    .preProcessSnapshot((snapshot) => ({
+    .preProcessSnapshot(snapshot => ({
       ...snapshot,
       composedOf: ((snapshot as any).composedOf || []).concat("Car")
     }))
-    .postProcessSnapshot((snapshot) => ({
+    .postProcessSnapshot(snapshot => ({
       ...snapshot,
       composedWith: ((snapshot as any).composedWith || []).concat("Wagon")
     }))
   const Logger = types
     .model({})
-    .preProcessSnapshot((snapshot) => ({
+    .preProcessSnapshot(snapshot => ({
       ...snapshot,
       composedOf: ((snapshot as any).composedOf || []).concat("CarLogger")
     }))
-    .postProcessSnapshot((snapshot) => ({
+    .postProcessSnapshot(snapshot => ({
       ...snapshot,
       composedWith: ((snapshot as any).composedWith || []).concat("WagonLogger")
     }))
@@ -442,14 +445,18 @@ test("it should extend {pre,post}ProcessSnapshot on compose", () => {
   expect(getSnapshot(x).composedWith).toContain("WagonTracker")
   expect(getSnapshot(x).composedWith).toContain("Wagon")
   expect(getSnapshot(x).composedWith).toContain("WagonLogger")
-  expect(getSnapshot(x).composedWith).toEqual(["WagonTracker", "Wagon", "WagonLogger"])
+  expect(getSnapshot(x).composedWith).toEqual([
+    "WagonTracker",
+    "Wagon",
+    "WagonLogger"
+  ])
 })
 test("it should extend types correctly", () => {
   const Car = types
     .model({
       wheels: 3
     })
-    .actions((self) => {
+    .actions(self => {
       function drive() {}
       return {
         drive
@@ -460,7 +467,7 @@ test("it should extend types correctly", () => {
     .props({
       logNode: "test"
     })
-    .actions((self) => {
+    .actions(self => {
       let connection: Promise<any>
       return {
         log(msg: string) {},
@@ -470,13 +477,16 @@ test("it should extend types correctly", () => {
       }
     })
   const LoggableCar = types.compose("LoggableCar", Car, Logger)
-  const x = LoggableCar.create({ wheels: 3, logNode: "test" /* compile error: x: 7  */ })
+  const x = LoggableCar.create({
+    wheels: 3,
+    logNode: "test" /* compile error: x: 7  */
+  })
   // x.test() // compile error
   x.drive()
   x.log("z")
 })
 test("self referring views", () => {
-  const Car = types.model({ x: 3 }).views((self) => {
+  const Car = types.model({ x: 3 }).views(self => {
     const views = {
       get tripple() {
         return self.x + views.double
@@ -533,7 +543,9 @@ test("#922", () => {
 
     const NonExtendedUser = types.model("User", {
       name: types.string,
-      clients: types.optional(NonExtendedUserClientList, () => NonExtendedUserClientList.create({}))
+      clients: types.optional(NonExtendedUserClientList, () =>
+        NonExtendedUserClientList.create({})
+      )
     })
 
     const you = NonExtendedUser.create({
@@ -548,7 +560,10 @@ test("#922", () => {
 
 test("#922 - 2", () => {
   expect(() => {
-    types.optional(types.enumeration("state", ["init", "pending", "done", "error"]), "init")
+    types.optional(
+      types.enumeration("state", ["init", "pending", "done", "error"]),
+      "init"
+    )
   }).not.toThrow()
 })
 
@@ -655,7 +670,7 @@ test("cast and SnapshotOrInstance", () => {
   const NumberMap = types.map(types.number)
   const A = types
     .model({ n: 123, n2: types.number, arr: NumberArray, map: NumberMap })
-    .actions((self) => ({
+    .actions(self => ({
       // for primitives (although not needed)
       setN(nn: SnapshotOrInstance<typeof self.n>) {
         self.n = cast(nn)
@@ -714,7 +729,7 @@ test("cast and SnapshotOrInstance", () => {
 
   const C = types
     .model({ a: A, maybeA: types.maybe(A), maybeNullA: types.maybeNull(A) })
-    .actions((self) => ({
+    .actions(self => ({
       // for submodels, using typeof self.var
       setA(na: SnapshotOrInstance<typeof self.a>) {
         self.a = cast(na)
@@ -828,7 +843,9 @@ test("#994", () => {
 
 test("castToSnapshot", () => {
   const firstModel = types.model({ brew1: types.map(types.number) })
-  const secondModel = types.model({ brew2: types.map(firstModel) }).actions((self) => ({ do() {} }))
+  const secondModel = types
+    .model({ brew2: types.map(firstModel) })
+    .actions(self => ({ do() {} }))
   const appMod = types.model({ aaa: secondModel })
 
   const storeSnapshot: SnapshotIn<typeof secondModel> = {
@@ -837,7 +854,8 @@ test("castToSnapshot", () => {
   const storeInstance = secondModel.create(storeSnapshot)
   const storeSnapshotOrInstance1: SnapshotOrInstance<typeof secondModel> =
     secondModel.create(storeSnapshot)
-  const storeSnapshotOrInstance2: SnapshotOrInstance<typeof secondModel> = storeSnapshot
+  const storeSnapshotOrInstance2: SnapshotOrInstance<typeof secondModel> =
+    storeSnapshot
 
   appMod.create({ aaa: castToSnapshot(storeInstance) })
   appMod.create({ aaa: castToSnapshot(storeSnapshot) })
@@ -852,7 +870,7 @@ test.skip("create correctly chooses if the snapshot is needed or not - #920", ()
     test: types.string
   })
   const T = types.model({
-    test: types.refinement(X, (s) => s.test.length > 5)
+    test: types.refinement(X, s => s.test.length > 5)
   })
   // T.create() // manual test: expects compilation error
   // T.create({}) // manual test: expects compilation error
@@ -912,10 +930,10 @@ test.skip("create correctly chooses if the snapshot is needed or not - #920", ()
 test("#1117", () => {
   const Failsafe = <C, S, T>(
     t: IType<C, S, T>,
-    handleProblem: (value: C, validationError: ReturnType<IType<C, S, T>["validate"]>) => void = (
-      value,
-      error
-    ) => {
+    handleProblem: (
+      value: C,
+      validationError: ReturnType<IType<C, S, T>["validate"]>
+    ) => void = (value, error) => {
       console.error("Skipping value: typecheck error on", value)
       console.error(error)
     }
@@ -953,14 +971,17 @@ test("MST array type should be assignable to plain array type", () => {
         done: false,
         name: types.string
       })
-      .actions((self) => ({
+      .actions(self => ({
         toggleDone() {
           self.done = !self.done
         }
       }))
     const TodoArray = types.array(Todo)
 
-    const todoArray = TodoArray.create([{ done: true, name: "todo1" }, { name: "todo2" }])
+    const todoArray = TodoArray.create([
+      { done: true, name: "todo1" },
+      { name: "todo2" }
+    ])
     unprotect(todoArray)
     const otherTodoArray: Array<Instance<typeof Todo>> = todoArray
     otherTodoArray.push(cast({ done: false, name: "todo2" }))
@@ -1048,7 +1069,7 @@ test("#1307 custom types failing", () => {
         someProp: types.boolean,
         someType: CustomType
       })
-      .views((self) => ({
+      .views(self => ({
         get isSomePropTrue(): boolean {
           return self.someProp
         }
@@ -1058,7 +1079,7 @@ test("#1307 custom types failing", () => {
 
 test("#1343", () => {
   function createTypeA<T extends ModelPropertiesDeclaration>(t: T) {
-    return types.model("TypeA", t).views((self) => ({
+    return types.model("TypeA", t).views(self => ({
       get someView() {
         return null
       }
@@ -1070,7 +1091,7 @@ test("#1343", () => {
       .model("TypeB", {
         a: createTypeA(t)
       })
-      .views((self) => ({
+      .views(self => ({
         get someViewFromA() {
           return self.a.someView
         }
@@ -1084,12 +1105,12 @@ test("#1330", () => {
       foo: types.string,
       bar: types.boolean
     })
-    .views((self) => ({
+    .views(self => ({
       get root(): IRootStore {
         return getRoot<IRootStore>(self)
       }
     }))
-    .actions((self) => ({
+    .actions(self => ({
       test() {
         const { childStore } = self.root
         // childStore and childStore.foo is properly inferred in TS 3.4 but not in 3.5

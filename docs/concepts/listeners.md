@@ -12,15 +12,15 @@ MST is powered by MobX. This means that it is immediately compatible with `obser
 import { autorun } from "mobx"
 
 autorun(() => {
-    console.log(storeInstance.selectedTodo.title)
+  console.log(storeInstance.selectedTodo.title)
 })
 ```
 
 Because MST keeps immutable snapshots in the background, it is also possible to be notified when a new snapshot of the tree is available. This is similar to `.subscribe` on a redux store:
 
 ```javascript
-onSnapshot(storeInstance, (newSnapshot) => {
-    console.info("Got new snapshot:", newSnapshot)
+onSnapshot(storeInstance, newSnapshot => {
+  console.info("Got new snapshot:", newSnapshot)
 })
 ```
 
@@ -61,8 +61,8 @@ It is even possible to intercept actions before they are applied by adding middl
 
 ```javascript
 addMiddleware(storeInstance, (call, next) => {
-    call.args[0] = call.args[0].replace(/tea/gi, "Coffee")
-    return next(call)
+  call.args[0] = call.args[0].replace(/tea/gi, "Coffee")
+  return next(call)
 })
 ```
 

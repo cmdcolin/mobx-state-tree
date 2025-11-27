@@ -56,7 +56,7 @@ const Todo = types
   .model({
     title: "hello"
   })
-  .actions((self) => ({
+  .actions(self => ({
     setTitle(v: string) {
       self.title = v
     }
@@ -84,7 +84,7 @@ const Example = types
   .model("Example", {
     prop: types.string
   })
-  .views((self) => ({
+  .views(self => ({
     get upperProp(): string {
       return self.prop.toUpperCase()
     },
@@ -97,7 +97,7 @@ const Example = types
 You can circumvent this situation by using `this` whenever you intend to use the newly declared computed values that are local to the current object:
 
 ```typescript
-const Example = types.model("Example", { prop: types.string }).views((self) => ({
+const Example = types.model("Example", { prop: types.string }).views(self => ({
   get upperProp(): string {
     return self.prop.toUpperCase()
   },
@@ -149,7 +149,7 @@ Similarly, when writing actions or views one can use helper functions:
 ```typescript
 import { types, flow } from "mobx-state-tree"
 
-const Example = types.model("Example", { prop: types.string }).actions((self) => {
+const Example = types.model("Example", { prop: types.string }).actions(self => {
   // Don't forget that async operations HAVE
   // to use `flow( ... )`.
   const fetchData = flow(function* fetchData() {

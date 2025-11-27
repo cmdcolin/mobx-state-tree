@@ -1,5 +1,10 @@
 import { test, expect } from "vitest"
-import { rando, createHeros, createMonsters, createTreasure } from "./fixtures/fixture-data"
+import {
+  rando,
+  createHeros,
+  createMonsters,
+  createTreasure
+} from "./fixtures/fixture-data"
 import { Hero, Monster, Treasure } from "./fixtures/fixture-models"
 
 test("createHeros", () => {

@@ -12,119 +12,119 @@ sidebar_label: "IActionTrackingMiddlewareHooks"
 
 ## Hierarchy
 
-* **IActionTrackingMiddlewareHooks**
+- **IActionTrackingMiddlewareHooks**
 
 ## Index
 
 ### Properties
 
-* [filter](iactiontrackingmiddlewarehooks.md#optional-filter)
-* [onFail](iactiontrackingmiddlewarehooks.md#onfail)
-* [onResume](iactiontrackingmiddlewarehooks.md#onresume)
-* [onStart](iactiontrackingmiddlewarehooks.md#onstart)
-* [onSuccess](iactiontrackingmiddlewarehooks.md#onsuccess)
-* [onSuspend](iactiontrackingmiddlewarehooks.md#onsuspend)
+- [filter](iactiontrackingmiddlewarehooks.md#optional-filter)
+- [onFail](iactiontrackingmiddlewarehooks.md#onfail)
+- [onResume](iactiontrackingmiddlewarehooks.md#onresume)
+- [onStart](iactiontrackingmiddlewarehooks.md#onstart)
+- [onSuccess](iactiontrackingmiddlewarehooks.md#onsuccess)
+- [onSuspend](iactiontrackingmiddlewarehooks.md#onsuspend)
 
 ## Properties
 
 ### `Optional` filter
 
-• **filter**? : *undefined | function*
+• **filter**? : _undefined | function_
 
-*Defined in [src/middlewares/create-action-tracking-middleware.ts:6](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L6)*
+_Defined in [src/middlewares/create-action-tracking-middleware.ts:6](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L6)_
 
-___
+---
 
-###  onFail
+### onFail
 
-• **onFail**: *function*
+• **onFail**: _function_
 
-*Defined in [src/middlewares/create-action-tracking-middleware.ts:11](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L11)*
-
-#### Type declaration:
-
-▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md), `context`: T, `error`: any): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`call` | [IMiddlewareEvent](imiddlewareevent.md) |
-`context` | T |
-`error` | any |
-
-___
-
-###  onResume
-
-• **onResume**: *function*
-
-*Defined in [src/middlewares/create-action-tracking-middleware.ts:8](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L8)*
+_Defined in [src/middlewares/create-action-tracking-middleware.ts:11](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L11)_
 
 #### Type declaration:
 
-▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md), `context`: T): *void*
+▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md), `context`: T, `error`: any): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`call` | [IMiddlewareEvent](imiddlewareevent.md) |
-`context` | T |
+| Name      | Type                                    |
+| --------- | --------------------------------------- |
+| `call`    | [IMiddlewareEvent](imiddlewareevent.md) |
+| `context` | T                                       |
+| `error`   | any                                     |
 
-___
+---
 
-###  onStart
+### onResume
 
-• **onStart**: *function*
+• **onResume**: _function_
 
-*Defined in [src/middlewares/create-action-tracking-middleware.ts:7](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L7)*
+_Defined in [src/middlewares/create-action-tracking-middleware.ts:8](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L8)_
 
 #### Type declaration:
 
-▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md)): *T*
+▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md), `context`: T): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`call` | [IMiddlewareEvent](imiddlewareevent.md) |
+| Name      | Type                                    |
+| --------- | --------------------------------------- |
+| `call`    | [IMiddlewareEvent](imiddlewareevent.md) |
+| `context` | T                                       |
 
-___
+---
 
-###  onSuccess
+### onStart
 
-• **onSuccess**: *function*
+• **onStart**: _function_
 
-*Defined in [src/middlewares/create-action-tracking-middleware.ts:10](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L10)*
+_Defined in [src/middlewares/create-action-tracking-middleware.ts:7](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L7)_
 
 #### Type declaration:
 
-▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md), `context`: T, `result`: any): *void*
+▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md)): _T_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`call` | [IMiddlewareEvent](imiddlewareevent.md) |
-`context` | T |
-`result` | any |
+| Name   | Type                                    |
+| ------ | --------------------------------------- |
+| `call` | [IMiddlewareEvent](imiddlewareevent.md) |
 
-___
+---
 
-###  onSuspend
+### onSuccess
 
-• **onSuspend**: *function*
+• **onSuccess**: _function_
 
-*Defined in [src/middlewares/create-action-tracking-middleware.ts:9](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L9)*
+_Defined in [src/middlewares/create-action-tracking-middleware.ts:10](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L10)_
 
 #### Type declaration:
 
-▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md), `context`: T): *void*
+▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md), `context`: T, `result`: any): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`call` | [IMiddlewareEvent](imiddlewareevent.md) |
-`context` | T |
+| Name      | Type                                    |
+| --------- | --------------------------------------- |
+| `call`    | [IMiddlewareEvent](imiddlewareevent.md) |
+| `context` | T                                       |
+| `result`  | any                                     |
+
+---
+
+### onSuspend
+
+• **onSuspend**: _function_
+
+_Defined in [src/middlewares/create-action-tracking-middleware.ts:9](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/create-action-tracking-middleware.ts#L9)_
+
+#### Type declaration:
+
+▸ (`call`: [IMiddlewareEvent](imiddlewareevent.md), `context`: T): _void_
+
+**Parameters:**
+
+| Name      | Type                                    |
+| --------- | --------------------------------------- |
+| `call`    | [IMiddlewareEvent](imiddlewareevent.md) |
+| `context` | T                                       |

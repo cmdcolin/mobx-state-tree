@@ -50,7 +50,10 @@ test("it should support prefixed paths in maps", () => {
   expect(store.user.name).toBe("Noa")
   expect(getSnapshot(store)).toEqual({
     user: "18",
-    users: { "17": { id: "17", name: "Michel" }, "18": { id: "18", name: "Noa" } }
+    users: {
+      "17": { id: "17", name: "Michel" },
+      "18": { id: "18", name: "Noa" }
+    }
   } as SnapshotOut<typeof store>)
 })
 
@@ -124,7 +127,7 @@ test("it should resolve refs during creation, when using path", () => {
     .model({
       book: types.reference(Book)
     })
-    .views((self) => ({
+    .views(self => ({
       get price() {
         return self.book.price * 2
       }
@@ -139,7 +142,7 @@ test("it should resolve refs during creation, when using path", () => {
   unprotect(s)
   reaction(
     () => s.entries.reduce((a, e) => a + e.price, 0),
-    (v) => values.push(v)
+    v => values.push(v)
   )
   s.entries.push({ book: castToReferenceSnapshot(s.books[0]) })
   expect(s.entries[0].price).toBe(4)
@@ -160,7 +163,7 @@ test("it should resolve refs over late types", () => {
     .model({
       book: types.reference(types.late(() => Book))
     })
-    .views((self) => ({
+    .views(self => ({
       get price() {
         return self.book.price * 2
       }
@@ -188,7 +191,7 @@ test("it should resolve refs during creation, when using generic reference", () 
     .model({
       book: types.reference(Book)
     })
-    .views((self) => ({
+    .views(self => ({
       get price() {
         return self.book.price * 2
       }
@@ -203,7 +206,7 @@ test("it should resolve refs during creation, when using generic reference", () 
   unprotect(s)
   reaction(
     () => s.entries.reduce((a, e) => a + e.price, 0),
-    (v) => values.push(v)
+    v => values.push(v)
   )
   s.entries.push({ book: castToReferenceSnapshot(s.books[0]) })
   expect(s.entries[0].price).toBe(4)
@@ -216,7 +219,7 @@ test("it should resolve refs during creation, when using generic reference", () 
 
 test("identifiers should support subtypes of types.string and types.number", () => {
   const M = types.model({
-    id: types.refinement(types.identifierNumber, (n) => n > 5)
+    id: types.refinement(types.identifierNumber, n => n > 5)
   })
   expect(M.is({})).toBe(false)
   expect(M.is({ id: "test" })).toBe(false)
@@ -272,7 +275,7 @@ test("self reference with a late type", () => {
     .model("Store", {
       books: types.array(Book)
     })
-    .actions((self) => {
+    .actions(self => {
       function addBook(book: SnapshotOrInstance<typeof Book>) {
         self.books.push(book)
       }
@@ -457,7 +460,10 @@ test("it should restore map of references from snapshot", () => {
 test("it should support relative lookups", () => {
   const Node = types.model({
     id: types.identifierNumber,
-    children: types.optional(types.array(types.late((): IAnyModelType => Node)), [])
+    children: types.optional(
+      types.array(types.late((): IAnyModelType => Node)),
+      []
+    )
   })
   const root = Node.create({
     id: 1,
@@ -485,7 +491,9 @@ test("it should support relative lookups", () => {
   })
   expect(resolveIdentifier(Node, root, 1)).toBe(root)
   expect(resolveIdentifier(Node, root, 4)).toBe(root.children[0].children[0])
-  expect(resolveIdentifier(Node, root.children[0].children[0], 3)).toBe(root.children[1])
+  expect(resolveIdentifier(Node, root.children[0].children[0], 3)).toBe(
+    root.children[1]
+  )
   const n2 = detach(root.children[0])
   unprotect(n2)
   expect(resolveIdentifier(Node, n2, 2)).toBe(n2)
@@ -540,7 +548,9 @@ test("References are non-nullable by default", () => {
     )
     store.maybeRef = undefined
     expect(store.maybeRef).toBe(undefined)
-    expect(() => ((store as any).ref = undefined)).toThrow(/Error while converting/)
+    expect(() => ((store as any).ref = undefined)).toThrow(
+      /Error while converting/
+    )
   }
 })
 
@@ -570,11 +580,13 @@ test("References in recursive structures", () => {
       children: types.array(types.late((): IAnyModelType => Tree)),
       data: types.maybeNull(types.reference(Folder))
     })
-    .actions((self) => {
+    .actions(self => {
       function addFolder(data: SnapshotOrInstance<typeof Folder>) {
         const folder3 = Folder.create(data)
         getRoot<typeof Storage>(self).putFolderHelper(folder3)
-        self.children.push(Tree.create({ data: castToReferenceSnapshot(folder3), children: [] }))
+        self.children.push(
+          Tree.create({ data: castToReferenceSnapshot(folder3), children: [] })
+        )
       }
       return { addFolder }
     })
@@ -584,12 +596,15 @@ test("References in recursive structures", () => {
       objects: types.map(Folder),
       tree: Tree
     })
-    .actions((self) => ({
+    .actions(self => ({
       putFolderHelper(aFolder: SnapshotOrInstance<typeof Folder>) {
         self.objects.put(aFolder)
       }
     }))
-  const store = Storage.create({ objects: {}, tree: { children: [], data: null } })
+  const store = Storage.create({
+    objects: {},
+    tree: { children: [], data: null }
+  })
   const folder = { id: 1, name: "Folder 1", files: ["a.jpg", "b.jpg"] }
   store.tree.addFolder(folder)
   expect(getSnapshot(store)).toEqual({
@@ -656,7 +671,7 @@ test("it should applyPatch references in array", () => {
       objects: types.map(Item),
       hovers: types.array(types.reference(Item))
     })
-    .actions((self) => {
+    .actions(self => {
       function addObject(anItem: typeof Item.Type) {
         self.objects.put(anItem)
       }
@@ -677,7 +692,7 @@ test("it should applyPatch references in array", () => {
   const item = folder.objects.get("item 1")!
   const snapshot = getSnapshot(folder)
   const newStore = Folder.create(snapshot)
-  onPatch(folder, (data) => {
+  onPatch(folder, data => {
     applyPatch(newStore, data)
   })
   folder.addHover(item)
@@ -768,7 +783,7 @@ test("array of references should work fine", () => {
       blocks: types.array(B),
       blockRefs: types.array(types.reference(B))
     })
-    .actions((self) => {
+    .actions(self => {
       return {
         order() {
           const res = self.blockRefs.slice()
@@ -776,7 +791,10 @@ test("array of references should work fine", () => {
         }
       }
     })
-  const a = S.create({ blocks: [{ id: "1" }, { id: "2" }], blockRefs: ["1", "2"] })
+  const a = S.create({
+    blocks: [{ id: "1" }, { id: "2" }],
+    blockRefs: ["1", "2"]
+  })
   a.order()
   expect(a.blocks[0].id).toBe("1")
   expect(a.blockRefs[0].id).toBe("2")
@@ -849,7 +867,7 @@ test("#1052 - Reference returns destroyed model after subtree replacing", () => 
       lastWithId: types.maybe(types.reference(Todo)),
       counter: -1
     })
-    .actions((self) => ({
+    .actions(self => ({
       load() {
         self.counter++
         self.todos = Todos.create({
@@ -926,7 +944,7 @@ test("#1080 - does not crash trying to resolve a reference to a destroyed+recrea
     .model("BranchStore", {
       activeBranch: types.maybeNull(types.reference(Branch))
     })
-    .actions((self) => ({
+    .actions(self => ({
       setActiveBranch(branchId: any) {
         self.activeBranch = branchId
       }
@@ -937,7 +955,7 @@ test("#1080 - does not crash trying to resolve a reference to a destroyed+recrea
       user: types.maybeNull(User),
       branchStore: types.maybeNull(BranchStore)
     })
-    .actions((self) => ({
+    .actions(self => ({
       setUser(snapshot: typeof userSnapshot) {
         self.user = cast(snapshot)
       },
@@ -968,7 +986,10 @@ test("#1080 - does not crash trying to resolve a reference to a destroyed+recrea
   }
 
   const branchStoreSnapshot = {}
-  const rootStore = RootStore.create({ user: userSnapshot, branchStore: branchStoreSnapshot })
+  const rootStore = RootStore.create({
+    user: userSnapshot,
+    branchStore: branchStoreSnapshot
+  })
 
   rootStore.branchStore!.setActiveBranch(1)
   expect(rootStore.branchStore!.activeBranch).toEqual({
@@ -999,7 +1020,7 @@ test("tryReference / isValidReference", () => {
       ref2: types.maybeNull(types.reference(Todo)),
       ref3: types.maybe(types.reference(Todo))
     })
-    .actions((self) => ({
+    .actions(self => ({
       clearRef3() {
         self.ref3 = undefined
       },
@@ -1008,7 +1029,7 @@ test("tryReference / isValidReference", () => {
           self,
           reaction(
             () => isValidReference(() => self.ref3),
-            (valid) => {
+            valid => {
               if (!valid) {
                 this.clearRef3()
               }
@@ -1060,7 +1081,11 @@ test("tryReference / isValidReference", () => {
 })
 
 test("#1162 - reference to union", () => {
-  const M1 = types.model({ id: types.identifier, type: types.string, sum: types.string })
+  const M1 = types.model({
+    id: types.identifier,
+    type: types.string,
+    sum: types.string
+  })
   const M2 = types.model({
     id: types.identifier,
     type: types.string,

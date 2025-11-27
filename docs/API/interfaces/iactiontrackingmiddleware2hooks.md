@@ -12,57 +12,57 @@ sidebar_label: "IActionTrackingMiddleware2Hooks"
 
 ## Hierarchy
 
-* **IActionTrackingMiddleware2Hooks**
+- **IActionTrackingMiddleware2Hooks**
 
 ## Index
 
 ### Properties
 
-* [filter](iactiontrackingmiddleware2hooks.md#optional-filter)
-* [onFinish](iactiontrackingmiddleware2hooks.md#onfinish)
-* [onStart](iactiontrackingmiddleware2hooks.md#onstart)
+- [filter](iactiontrackingmiddleware2hooks.md#optional-filter)
+- [onFinish](iactiontrackingmiddleware2hooks.md#onfinish)
+- [onStart](iactiontrackingmiddleware2hooks.md#onstart)
 
 ## Properties
 
 ### `Optional` filter
 
-• **filter**? : *undefined | function*
+• **filter**? : _undefined | function_
 
-*Defined in [src/middlewares/createActionTrackingMiddleware2.ts:11](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L11)*
+_Defined in [src/middlewares/createActionTrackingMiddleware2.ts:11](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L11)_
 
-___
+---
 
-###  onFinish
+### onFinish
 
-• **onFinish**: *function*
+• **onFinish**: _function_
 
-*Defined in [src/middlewares/createActionTrackingMiddleware2.ts:13](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L13)*
-
-#### Type declaration:
-
-▸ (`call`: [IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv›, `error?`: any): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`call` | [IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv› |
-`error?` | any |
-
-___
-
-###  onStart
-
-• **onStart**: *function*
-
-*Defined in [src/middlewares/createActionTrackingMiddleware2.ts:12](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L12)*
+_Defined in [src/middlewares/createActionTrackingMiddleware2.ts:13](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L13)_
 
 #### Type declaration:
 
-▸ (`call`: [IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv›): *void*
+▸ (`call`: [IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv›, `error?`: any): _void_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`call` | [IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv› |
+| Name     | Type                                                                      |
+| -------- | ------------------------------------------------------------------------- |
+| `call`   | [IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv› |
+| `error?` | any                                                                       |
+
+---
+
+### onStart
+
+• **onStart**: _function_
+
+_Defined in [src/middlewares/createActionTrackingMiddleware2.ts:12](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L12)_
+
+#### Type declaration:
+
+▸ (`call`: [IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv›): _void_
+
+**Parameters:**
+
+| Name   | Type                                                                      |
+| ------ | ------------------------------------------------------------------------- |
+| `call` | [IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv› |

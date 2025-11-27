@@ -57,7 +57,9 @@ export function castFlowReturn<T>(val: T): T {
  * }))
  * ```
  */
-export function toGeneratorFunction<R, Args extends any[]>(p: (...args: Args) => Promise<R>) {
+export function toGeneratorFunction<R, Args extends any[]>(
+  p: (...args: Args) => Promise<R>
+) {
   return function* (...args: Args) {
     return (yield p(...args)) as R
   }

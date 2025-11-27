@@ -20,7 +20,7 @@ function createTestStore(listener: (s: string) => void) {
     .model("Todo", {
       title: ""
     })
-    .actions((self) => {
+    .actions(self => {
       function afterCreate() {
         listener("new todo: " + self.title)
         addDisposer(self, () => {
@@ -50,7 +50,7 @@ function createTestStore(listener: (s: string) => void) {
     .model("Store", {
       todos: types.array(Todo)
     })
-    .actions((self) => {
+    .actions(self => {
       function afterCreate() {
         unprotect(self)
         listener("new store: " + self.todos.length)
@@ -68,7 +68,11 @@ function createTestStore(listener: (s: string) => void) {
     })
   return {
     store: Store.create({
-      todos: [{ title: "Get coffee" }, { title: "Get biscuit" }, { title: "Give talk" }]
+      todos: [
+        { title: "Get coffee" },
+        { title: "Get biscuit" },
+        { title: "Give talk" }
+      ]
     }),
     Store,
     Todo
@@ -80,7 +84,7 @@ function createTestStore(listener: (s: string) => void) {
 test("it should trigger lifecycle hooks", () => {
   const events: string[] = []
   // new store: 3
-  const { store, Todo } = createTestStore((e) => events.push(e))
+  const { store, Todo } = createTestStore(e => events.push(e))
 
   events.push("-")
   // access (new, attach), then detach "Give Talk"
@@ -149,7 +153,7 @@ test("lifecycle hooks can access their children", () => {
     .model("Todo", {
       title: ""
     })
-    .actions((self) => ({
+    .actions(self => ({
       afterCreate() {
         listener("new child: " + self.title)
       },
@@ -162,7 +166,7 @@ test("lifecycle hooks can access their children", () => {
     .model("Parent", {
       child: Child
     })
-    .actions((self) => ({
+    .actions(self => ({
       afterCreate() {
         // **This the key line**: it is trying to access the child
         listener("new parent, child.title: " + self.child?.title)
@@ -216,10 +220,10 @@ const Car = types
   .model("Car", {
     id: types.number
   })
-  .preProcessSnapshot<CarSnapshot>((snapshot) =>
+  .preProcessSnapshot<CarSnapshot>(snapshot =>
     Object.assign({}, snapshot, { id: Number(snapshot.id) * 2 })
   )
-  .postProcessSnapshot<CarSnapshot>((snapshot) =>
+  .postProcessSnapshot<CarSnapshot>(snapshot =>
     Object.assign({}, snapshot, { id: "" + snapshot.id / 2 })
   )
 
@@ -231,10 +235,10 @@ const Motorcycle = types
   .model("Motorcycle", {
     id: types.string
   })
-  .preProcessSnapshot<CarSnapshot>((snapshot) =>
+  .preProcessSnapshot<CarSnapshot>(snapshot =>
     Object.assign({}, snapshot, { id: snapshot.id.toLowerCase() })
   )
-  .postProcessSnapshot<CarSnapshot>((snapshot) =>
+  .postProcessSnapshot<CarSnapshot>(snapshot =>
     Object.assign({}, snapshot, { id: snapshot.id.toUpperCase() })
   )
 const MotorcycleFactory = types.model("MotorcycleFactory", {
@@ -259,7 +263,7 @@ test("it should postprocess snapshots when generating snapshot - 1", () => {
 test("it should not apply postprocessor to snapshot on getSnapshot", () => {
   const car = Car.create({ id: "1" })
   let error = false
-  onSnapshot(car, (snapshot) => {
+  onSnapshot(car, snapshot => {
     error = true
   })
   expect(getSnapshot(car)).toEqual({ id: "1" })
@@ -283,7 +287,9 @@ test("it should postprocess snapshots when generating snapshot - 2", () => {
 })
 
 test("it should postprocess non-initialized children", () => {
-  const f = MotorcycleFactory.create({ motorcycles: [{ id: "a" }, { id: "b" }] })
+  const f = MotorcycleFactory.create({
+    motorcycles: [{ id: "a" }, { id: "b" }]
+  })
   expect(getSnapshot(f)).toEqual({ motorcycles: [{ id: "A" }, { id: "B" }] })
 })
 
@@ -294,7 +300,7 @@ test("base hooks can be composed", () => {
   }
   const Todo = types
     .model("Todo", { title: "" })
-    .actions((self) => {
+    .actions(self => {
       function afterCreate() {
         listener("aftercreate1")
       }
@@ -309,7 +315,7 @@ test("base hooks can be composed", () => {
       }
       return { afterCreate, beforeDestroy, afterAttach, beforeDetach }
     })
-    .actions((self) => {
+    .actions(self => {
       function afterCreate() {
         listener("aftercreate2")
       }
@@ -347,16 +353,16 @@ test("snapshot processors can be composed", () => {
     .model({
       x: 1
     })
-    .preProcessSnapshot((s) => ({
+    .preProcessSnapshot(s => ({
       x: s.x! - 3
     }))
-    .preProcessSnapshot((s) => ({
+    .preProcessSnapshot(s => ({
       x: s.x! / 5
     }))
-    .postProcessSnapshot((s) => {
+    .postProcessSnapshot(s => {
       return { x: s.x + 3 }
     })
-    .postProcessSnapshot((s) => {
+    .postProcessSnapshot(s => {
       return { x: s.x * 5 }
     })
 
@@ -367,7 +373,7 @@ test("snapshot processors can be composed", () => {
 
 test("addDisposer must return the passed disposer", () => {
   const listener = vi.fn()
-  const M = types.model({}).actions((self) => {
+  const M = types.model({}).actions(self => {
     expect(addDisposer(self, listener)).toBe(listener)
     return {}
   })
@@ -380,7 +386,7 @@ test("array calls all hooks", () => {
     events.push(message)
   }
   const Item = types.model("Item", { id: types.string })
-  const Collection = types.array(Item).hooks((self) => ({
+  const Collection = types.array(Item).hooks(self => ({
     afterCreate() {
       listener("afterCreate")
     },
@@ -404,7 +410,12 @@ test("array calls all hooks", () => {
   detach(holder.items!)
   expect(events).toStrictEqual(["afterCreate", "afterAttach", "beforeDetach"])
   holder.items = collection
-  expect(events).toStrictEqual(["afterCreate", "afterAttach", "beforeDetach", "afterAttach"])
+  expect(events).toStrictEqual([
+    "afterCreate",
+    "afterAttach",
+    "beforeDetach",
+    "afterAttach"
+  ])
   holder.items = undefined
   expect(events).toStrictEqual([
     "afterCreate",
@@ -421,7 +432,7 @@ test("map calls all hooks", () => {
     events.push(message)
   }
   const Item = types.model("Item", { id: types.string })
-  const Collection = types.map(Item).hooks((self) => ({
+  const Collection = types.map(Item).hooks(self => ({
     afterCreate() {
       listener("afterCreate")
     },
@@ -437,7 +448,11 @@ test("map calls all hooks", () => {
   }))
   const Holder = types.model("Holder", { items: types.maybe(Collection) })
 
-  const collection = Collection.create({ "1": { id: "1" }, "2": { id: "2" }, "3": { id: "3" } })
+  const collection = Collection.create({
+    "1": { id: "1" },
+    "2": { id: "2" },
+    "3": { id: "3" }
+  })
   expect(events).toStrictEqual(["afterCreate"])
   const holder = Holder.create({ items: cast(collection) })
   unprotect(holder)
@@ -445,7 +460,12 @@ test("map calls all hooks", () => {
   detach(holder.items!)
   expect(events).toStrictEqual(["afterCreate", "afterAttach", "beforeDetach"])
   holder.items = collection
-  expect(events).toStrictEqual(["afterCreate", "afterAttach", "beforeDetach", "afterAttach"])
+  expect(events).toStrictEqual([
+    "afterCreate",
+    "afterAttach",
+    "beforeDetach",
+    "afterAttach"
+  ])
   holder.items = undefined
   expect(events).toStrictEqual([
     "afterCreate",

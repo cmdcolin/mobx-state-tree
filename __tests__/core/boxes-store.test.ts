@@ -17,7 +17,7 @@ export const Box = types
     x: 0,
     y: 0
   })
-  .views((self) => ({
+  .views(self => ({
     get width() {
       return self.name.length * 15
     },
@@ -26,7 +26,7 @@ export const Box = types
       return getParent<typeof Store>(getParent(self)).selection === self
     }
   }))
-  .actions((self) => {
+  .actions(self => {
     function move(dx: number, dy: number) {
       self.x += dx
       self.y += dy
@@ -50,7 +50,7 @@ export const Store = types
     arrows: types.array(Arrow),
     selection: types.reference(Box)
   })
-  .actions((self) => {
+  .actions(self => {
     function afterCreate() {
       unprotect(self)
     }
@@ -102,7 +102,7 @@ test("store is deserialized correctly", () => {
   expect(s.selection === s.boxes.get("aa")).toBe(true)
   expect(s.arrows[0].from.name).toBe("Rotterdam")
   expect(s.arrows[0].to.name).toBe("Bratislava")
-  expect(values(s.boxes).map((b) => b.isSelected)).toEqual([false, true])
+  expect(values(s.boxes).map(b => b.isSelected)).toEqual([false, true])
 })
 test("store emits correct patch paths", () => {
   const s = createStore()
@@ -110,8 +110,12 @@ test("store emits correct patch paths", () => {
   const recorder2 = recordPatches(s.boxes)
   const recorder3 = recordPatches(s.boxes.get("cc")!)
   s.arrows[0].from.x += 117
-  expect(recorder1.patches).toEqual([{ op: "replace", path: "/boxes/cc/x", value: 217 }])
-  expect(recorder2.patches).toEqual([{ op: "replace", path: "/cc/x", value: 217 }])
+  expect(recorder1.patches).toEqual([
+    { op: "replace", path: "/boxes/cc/x", value: 217 }
+  ])
+  expect(recorder2.patches).toEqual([
+    { op: "replace", path: "/cc/x", value: 217 }
+  ])
   expect(recorder3.patches).toEqual([{ op: "replace", path: "/x", value: 217 }])
 })
 test("box operations works correctly", () => {

@@ -10,31 +10,31 @@ Validation context entry, this is, where the validation should run against which
 
 ## Hierarchy
 
-* **IValidationContextEntry**
+- **IValidationContextEntry**
 
 ## Index
 
 ### Properties
 
-* [path](ivalidationcontextentry.md#path)
-* [type](ivalidationcontextentry.md#type)
+- [path](ivalidationcontextentry.md#path)
+- [type](ivalidationcontextentry.md#type)
 
 ## Properties
 
-###  path
+### path
 
-• **path**: *string*
+• **path**: _string_
 
-*Defined in [src/core/type/type-checker.ts:17](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L17)*
+_Defined in [src/core/type/type-checker.ts:17](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L17)_
 
 Subpath where the validation should be run, or an empty string to validate it all
 
-___
+---
 
-###  type
+### type
 
-• **type**: *[IAnyType](ianytype.md)*
+• **type**: _[IAnyType](ianytype.md)_
 
-*Defined in [src/core/type/type-checker.ts:19](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L19)*
+_Defined in [src/core/type/type-checker.ts:19](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L19)_
 
 Type to validate the subpath against

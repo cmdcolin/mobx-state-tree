@@ -25,26 +25,30 @@ Example:
 import { autorun } from "mobx"
 
 const UserStore = types
-    .model({
-        users: types.array(User)
-    })
-    .views(self => ({
-        get numberOfChildren() {
-            return self.users.filter(user => user.age < 18).length
-        },
-        numberOfPeopleOlderThan(age) {
-            return self.users.filter(user => user.age > age).length
-        }
-    }))
+  .model({
+    users: types.array(User)
+  })
+  .views(self => ({
+    get numberOfChildren() {
+      return self.users.filter(user => user.age < 18).length
+    },
+    numberOfPeopleOlderThan(age) {
+      return self.users.filter(user => user.age > age).length
+    }
+  }))
 
 const userStore = UserStore.create(/* */)
 
 // Every time the userStore is updated in a relevant way, log messages will be printed
 autorun(() => {
-    console.log("There are now ", userStore.numberOfChildren, " children")
+  console.log("There are now ", userStore.numberOfChildren, " children")
 })
 autorun(() => {
-    console.log("There are now ", userStore.numberOfPeopleOlderThan(75), " pretty old people")
+  console.log(
+    "There are now ",
+    userStore.numberOfPeopleOlderThan(75),
+    " pretty old people"
+  )
 })
 ```
 

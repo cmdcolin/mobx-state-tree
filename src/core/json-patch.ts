@@ -18,8 +18,11 @@ export interface IReversibleJsonPatch extends IJsonPatch {
  * @internal
  * @hidden
  */
-export function splitPatch(patch: IReversibleJsonPatch): [IJsonPatch, IJsonPatch] {
-  if (!("oldValue" in patch)) throw fail(`Patches without \`oldValue\` field cannot be inversed`)
+export function splitPatch(
+  patch: IReversibleJsonPatch
+): [IJsonPatch, IJsonPatch] {
+  if (!("oldValue" in patch))
+    throw fail(`Patches without \`oldValue\` field cannot be inversed`)
   return [stripPatch(patch), invertPatch(patch)]
 }
 
@@ -127,7 +130,9 @@ export function splitJsonPath(path: string): string[] {
     stringStartsWith(path, "./") ||
     stringStartsWith(path, "../")
   if (!valid) {
-    throw fail(`a json path must be either rooted, empty or relative, but got '${path}'`)
+    throw fail(
+      `a json path must be either rooted, empty or relative, but got '${path}'`
+    )
   }
 
   // '/a/b/c' -> ["a", "b", "c"]

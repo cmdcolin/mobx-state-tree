@@ -39,7 +39,10 @@ function testPatches<C, S, T>(
 const Node = types.model("Node", {
   id: types.identifierNumber,
   text: "Hi",
-  children: types.optional(types.array(types.late((): IAnyModelType => Node)), [])
+  children: types.optional(
+    types.array(types.late((): IAnyModelType => Node)),
+    []
+  )
 })
 
 test("it should apply simple patch", () => {
@@ -224,7 +227,10 @@ test("it should apply deep patches to maps", () => {
   const NodeMap = types.model("NodeMap", {
     id: types.identifierNumber,
     text: "Hi",
-    children: types.optional(types.map(types.late((): IAnyModelType => NodeMap)), {})
+    children: types.optional(
+      types.map(types.late((): IAnyModelType => NodeMap)),
+      {}
+    )
   })
   testPatches(
     NodeMap,
@@ -233,7 +239,10 @@ test("it should apply deep patches to maps", () => {
       const children = n.children as IMSTMap<typeof NodeMap>
       children.get("2")!.text = "test" // update
       children.put({ id: 2, text: "world" }) // this reconciles; just an update
-      children.set("4", NodeMap.create({ id: 4, text: "coffee", children: { 23: { id: 23 } } })) // new object
+      children.set(
+        "4",
+        NodeMap.create({ id: 4, text: "coffee", children: { 23: { id: 23 } } })
+      ) // new object
       children.put({ id: 3, text: "world", children: { 7: { id: 7 } } }) // addition
       children.delete("2") // removal
     },

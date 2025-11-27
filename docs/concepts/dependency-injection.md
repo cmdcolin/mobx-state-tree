@@ -15,35 +15,35 @@ See also the [bookshop example](https://github.com/mobxjs/mobx-state-tree/blob/a
 import { types, getEnv } from "mobx-state-tree"
 
 const Todo = types
-    .model({
-        title: ""
-    })
-    .actions(self => ({
-        setTitle(newTitle) {
-            // grab injected logger and log
-            getEnv(self).logger.log("Changed title to: " + newTitle)
-            self.title = newTitle
-        }
-    }))
+  .model({
+    title: ""
+  })
+  .actions(self => ({
+    setTitle(newTitle) {
+      // grab injected logger and log
+      getEnv(self).logger.log("Changed title to: " + newTitle)
+      self.title = newTitle
+    }
+  }))
 
 const Store = types.model({
-    todos: types.array(Todo)
+  todos: types.array(Todo)
 })
 
 // setup logger and inject it when the store is created
 const logger = {
-    log(msg) {
-        console.log(msg)
-    }
+  log(msg) {
+    console.log(msg)
+  }
 }
 
 const store = Store.create(
-    {
-        todos: [{ title: "Grab tea" }]
-    },
-    {
-        logger: logger // inject logger to the tree
-    }
+  {
+    todos: [{ title: "Grab tea" }]
+  },
+  {
+    logger: logger // inject logger to the tree
+  }
 )
 
 store.todos[0].setTitle("Grab coffee")

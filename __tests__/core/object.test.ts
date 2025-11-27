@@ -28,7 +28,7 @@ const createTestFactories = () => {
     .model({
       to: "world"
     })
-    .actions((self) => {
+    .actions(self => {
       function setTo(to: string) {
         self.to = to
       }
@@ -41,7 +41,7 @@ const createTestFactories = () => {
       width: 100,
       height: 200
     })
-    .views((self) => ({
+    .views(self => ({
       get area() {
         return self.width * self.height
       }
@@ -50,12 +50,12 @@ const createTestFactories = () => {
     .model({
       props: types.map(types.number)
     })
-    .views((self) => ({
+    .views(self => ({
       get area() {
         return self.props.get("width")! * self.props.get("height")!
       }
     }))
-    .actions((self) => {
+    .actions(self => {
       function setWidth(value: number) {
         self.props.set("width", value)
       }
@@ -74,7 +74,13 @@ const createTestFactories = () => {
   const ColorFactory = types.model({
     color: "#FFFFFF"
   })
-  return { Factory, ComputedFactory, ComputedFactory2, BoxFactory, ColorFactory }
+  return {
+    Factory,
+    ComputedFactory,
+    ComputedFactory2,
+    BoxFactory,
+    ColorFactory
+  }
 }
 
 const createFactoryWithChildren = () => {
@@ -82,7 +88,7 @@ const createFactoryWithChildren = () => {
     .model("File", {
       name: types.string
     })
-    .actions((self) => ({
+    .actions(self => ({
       rename(value: string) {
         self.name = value
       }
@@ -93,7 +99,7 @@ const createFactoryWithChildren = () => {
       name: types.string,
       files: types.array(File)
     })
-    .actions((self) => ({
+    .actions(self => ({
       rename(value: string) {
         self.name = value
       }
@@ -111,7 +117,9 @@ test("it should create a factory", () => {
 })
 test("it should restore the state from the snapshot", () => {
   const { Factory } = createTestFactories()
-  expect(getSnapshot(Factory.create({ to: "universe" }))).toEqual({ to: "universe" })
+  expect(getSnapshot(Factory.create({ to: "universe" }))).toEqual({
+    to: "universe"
+  })
 })
 // === SNAPSHOT TESTS ===
 test("it should emit snapshots", () => {
@@ -119,7 +127,7 @@ test("it should emit snapshots", () => {
   const doc = Factory.create()
   unprotect(doc)
   let snapshots: SnapshotOut<typeof doc>[] = []
-  onSnapshot(doc, (snapshot) => snapshots.push(snapshot))
+  onSnapshot(doc, snapshot => snapshots.push(snapshot))
   doc.to = "universe"
   expect(snapshots).toEqual([{ to: "universe" }])
 })
@@ -138,15 +146,15 @@ test("it should emit snapshots for children", () => {
     ]
   })
   let snapshotsP: SnapshotOut<typeof folder>[] = []
-  let snapshotsC: SnapshotOut<typeof folder.files[0]>[] = []
-  onSnapshot(folder, (snapshot) => snapshotsP.push(snapshot))
+  let snapshotsC: SnapshotOut<(typeof folder.files)[0]>[] = []
+  onSnapshot(folder, snapshot => snapshotsP.push(snapshot))
   folder.rename("Vacation photos")
   expect(snapshotsP[0]).toEqual({
     name: "Vacation photos",
     files: [{ name: "Photo1" }, { name: "Photo2" }]
   })
 
-  onSnapshot(folder.files[0], (snapshot) => snapshotsC.push(snapshot))
+  onSnapshot(folder.files[0], snapshot => snapshotsC.push(snapshot))
   folder.files[0].rename("01-arrival")
   expect(snapshotsP[1]).toEqual({
     name: "Vacation photos",
@@ -204,7 +212,7 @@ test("it should emit patches", () => {
   const doc = Factory.create()
   unprotect(doc)
   let patches: IJsonPatch[] = []
-  onPatch(doc, (patch) => patches.push(patch))
+  onPatch(doc, patch => patches.push(patch))
   doc.to = "universe"
   expect(patches).toEqual([{ op: "replace", path: "/to", value: "universe" }])
 })
@@ -228,7 +236,7 @@ test("it should stop listening to patches patches", () => {
   const doc = Factory.create()
   unprotect(doc)
   let patches: IJsonPatch[] = []
-  let disposer = onPatch(doc, (patch) => patches.push(patch))
+  let disposer = onPatch(doc, patch => patches.push(patch))
   doc.to = "universe"
   disposer()
   doc.to = "mweststrate"
@@ -245,7 +253,7 @@ test("it should emit action calls", () => {
   const { Factory } = createTestFactories()
   const doc = Factory.create()
   let actions: ISerializedActionCall[] = []
-  onAction(doc, (action) => actions.push(action))
+  onAction(doc, action => actions.push(action))
   doc.setTo("universe")
   expect(actions).toEqual([{ name: "setTo", path: "", args: ["universe"] }])
 })
@@ -285,13 +293,13 @@ test("it should throw if a replaced object is read or written to", () => {
           .model("Sub", {
             title: "test2"
           })
-          .actions((self) => ({
+          .actions(self => ({
             fn2() {}
           })),
         {}
       )
     })
-    .actions((self) => ({
+    .actions(self => ({
       fn() {
         self.sub.fn2()
       }
@@ -406,7 +414,7 @@ test("it should warn if a replaced object is read or written to", () => {
     .model("Todo", {
       title: "test"
     })
-    .actions((self) => {
+    .actions(self => {
       function fn() {}
       return {
         fn
@@ -439,13 +447,20 @@ test("it should warn if a replaced object is read or written to", () => {
 test("it should compose factories", () => {
   const { BoxFactory, ColorFactory } = createTestFactories()
   const ComposedFactory = types.compose(BoxFactory, ColorFactory)
-  expect(getSnapshot(ComposedFactory.create())).toEqual({ width: 0, height: 0, color: "#FFFFFF" })
+  expect(getSnapshot(ComposedFactory.create())).toEqual({
+    width: 0,
+    height: 0,
+    color: "#FFFFFF"
+  })
 })
 test("it should compose factories with computed properties", () => {
   const { ComputedFactory2, ColorFactory } = createTestFactories()
   const ComposedFactory = types.compose(ColorFactory, ComputedFactory2)
   const store = ComposedFactory.create({ props: { width: 100, height: 200 } })
-  expect(getSnapshot(store)).toEqual({ props: { width: 100, height: 200 }, color: "#FFFFFF" })
+  expect(getSnapshot(store)).toEqual({
+    props: { width: 100, height: 200 },
+    color: "#FFFFFF"
+  })
   expect(store.area).toBe(20000)
   expect(typeof store.setWidth).toBe("function")
   expect(typeof store.setHeight).toBe("function")
@@ -454,7 +469,10 @@ test("it should compose multiple types with computed properties", () => {
   const { ComputedFactory2, ColorFactory } = createTestFactories()
   const ComposedFactory = types.compose(ColorFactory, ComputedFactory2)
   const store = ComposedFactory.create({ props: { width: 100, height: 200 } })
-  expect(getSnapshot(store)).toEqual({ props: { width: 100, height: 200 }, color: "#FFFFFF" })
+  expect(getSnapshot(store)).toEqual({
+    props: { width: 100, height: 200 },
+    color: "#FFFFFF"
+  })
   expect(store.area).toBe(20000)
   expect(typeof store.setWidth).toBe("function")
   expect(typeof store.setHeight).toBe("function")
@@ -464,7 +482,7 @@ test("methods get overridden by compose", () => {
     .model({
       count: types.optional(types.number, 0)
     })
-    .actions((self) => {
+    .actions(self => {
       function increment() {
         self.count += 1
       }
@@ -472,7 +490,7 @@ test("methods get overridden by compose", () => {
         increment
       }
     })
-  const B = A.actions((self) => ({
+  const B = A.actions(self => ({
     increment() {
       self.count += 10
     }
@@ -499,7 +517,7 @@ test("models should expose their actions to be used in a composable way", () => 
     .model({
       count: types.optional(types.number, 0)
     })
-    .actions((self) => {
+    .actions(self => {
       function increment() {
         self.count += 1
       }
@@ -509,7 +527,7 @@ test("models should expose their actions to be used in a composable way", () => 
     })
   const B = A.props({
     called: types.optional(types.number, 0)
-  }).actions((self) => {
+  }).actions(self => {
     const baseIncrement = self.increment
     return {
       increment() {
@@ -531,14 +549,14 @@ test("compose should be overwrite", () => {
       name: "",
       alias: ""
     })
-    .views((self) => ({
+    .views(self => ({
       get displayName() {
         return self.alias || self.name
       }
     }))
   const B = A.props({
     type: ""
-  }).views((self) => ({
+  }).views(self => ({
     get displayName() {
       return self.alias || self.name + self.type
     }
@@ -618,7 +636,7 @@ test("view functions should be tracked", () => {
     .model({
       x: 3
     })
-    .views((self) => ({
+    .views(self => ({
       doubler() {
         return self.x * 2
       }
@@ -637,12 +655,12 @@ test("view functions should not be allowed to change state", () => {
     .model({
       x: 3
     })
-    .views((self) => ({
+    .views(self => ({
       doubler() {
         self.x *= 2
       }
     }))
-    .actions((self) => {
+    .actions(self => {
       function anotherDoubler() {
         self.x *= 2
       }
@@ -722,7 +740,7 @@ if (process.env.NODE_ENV !== "production") {
   })
 }
 test("it should be possible to share states between views and actions using enhance", () => {
-  const A = types.model({}).extend((self) => {
+  const A = types.model({}).extend(self => {
     const localState = observable.box(3)
     return {
       views: {
@@ -741,7 +759,7 @@ test("it should be possible to share states between views and actions using enha
   let a = A.create()
   const d = reaction(
     () => a.x,
-    (v) => {
+    v => {
       x = v
     }
   )
@@ -751,7 +769,7 @@ test("it should be possible to share states between views and actions using enha
   d()
 })
 test("It should throw if any other key is returned from extend", () => {
-  const A = types.model({}).extend(() => ({ stuff() {} } as any))
+  const A = types.model({}).extend(() => ({ stuff() {} }) as any)
   expect(() => A.create()).toThrowError(/stuff/)
 })
 
@@ -797,14 +815,14 @@ test("#967 - changing values in afterCreate/afterAttach when node is instantiate
       title: types.string,
       selected: false
     })
-    .actions((self) => ({
+    .actions(self => ({
       toggle() {
         self.selected = !self.selected
       }
     }))
   const Question = types
     .model("Question", { title: types.string, answers: types.array(Answer) })
-    .views((self) => ({
+    .views(self => ({
       get brokenView() {
         // this should not be allowed
         // MWE: disabled, MobX 6 no longer forbids this
@@ -814,7 +832,7 @@ test("#967 - changing values in afterCreate/afterAttach when node is instantiate
         return 0
       }
     }))
-    .actions((self) => ({
+    .actions(self => ({
       afterCreate() {
         // we should allow changes even when inside a computed property when done inside afterCreate/afterAttach
         self.answers[0].toggle()
@@ -832,11 +850,11 @@ test("#967 - changing values in afterCreate/afterAttach when node is instantiate
     .model("Product", {
       questions: types.array(Question)
     })
-    .views((self) => ({
+    .views(self => ({
       get selectedAnswers() {
         const result = []
         for (const question of self.questions) {
-          result.push(question.answers.find((a) => a.selected))
+          result.push(question.answers.find(a => a.selected))
         }
         return result
       }
@@ -859,13 +877,13 @@ test("#993-1 - after attach should have a parent when accesing a reference direc
       id: types.identifier,
       finished: false
     })
-    .actions((self) => ({
+    .actions(self => ({
       afterAttach() {
         expect(getParent(self)).toBeTruthy()
       }
     }))
 
-  const L3 = types.model({ l4: L4 }).actions((self) => ({
+  const L3 = types.model({ l4: L4 }).actions(self => ({
     afterAttach() {
       expect(getParent(self)).toBeTruthy()
     }
@@ -875,7 +893,7 @@ test("#993-1 - after attach should have a parent when accesing a reference direc
     .model({
       l3: L3
     })
-    .actions((self) => ({
+    .actions(self => ({
       afterAttach() {
         expect(getParent(self)).toBeTruthy()
       }
@@ -886,7 +904,7 @@ test("#993-1 - after attach should have a parent when accesing a reference direc
       l2: L2,
       selected: types.reference(L4)
     })
-    .actions((self) => ({
+    .actions(self => ({
       afterAttach() {
         throw fail("should never be called")
       }
@@ -929,7 +947,7 @@ test("#993-2 - references should have a parent even when the parent has not been
       id: types.identifier,
       finished: false
     })
-    .actions((self) => ({
+    .actions(self => ({
       toggle() {
         self.finished = !self.finished
       },
@@ -941,7 +959,7 @@ test("#993-2 - references should have a parent even when the parent has not been
       }
     }))
 
-  const L3 = types.model({ l4: L4 }).actions((self) => ({
+  const L3 = types.model({ l4: L4 }).actions(self => ({
     afterCreate() {
       events.push("l3-ac")
     },
@@ -954,7 +972,7 @@ test("#993-2 - references should have a parent even when the parent has not been
     .model({
       l3: L3
     })
-    .actions((self) => ({
+    .actions(self => ({
       afterCreate() {
         events.push("l2-ac")
       },
@@ -968,7 +986,7 @@ test("#993-2 - references should have a parent even when the parent has not been
       l2: L2,
       selected: types.reference(L4)
     })
-    .actions((self) => ({
+    .actions(self => ({
       afterCreate() {
         events.push("l1-ac")
       },
@@ -1065,7 +1083,7 @@ test("it should emit patches when applySnapshot is used", () => {
   const { Factory } = createTestFactories()
   const doc = Factory.create()
   let patches: IJsonPatch[] = []
-  onPatch(doc, (patch) => patches.push(patch))
+  onPatch(doc, patch => patches.push(patch))
   applySnapshot(doc, { ...getSnapshot(doc), to: "universe" })
   expect(patches).toEqual([{ op: "replace", path: "/to", value: "universe" }])
 })
@@ -1090,21 +1108,21 @@ test("isAlive must be reactive", () => {
   let calls = 0
   const r1 = reaction(
     () => isAlive(t1),
-    (v) => {
+    v => {
       expect(v).toBe(false)
       calls++
     }
   )
   const r2 = reaction(
     () => isAlive(t2),
-    (v) => {
+    v => {
       expect(v).toBe(false)
       calls++
     }
   )
   const r3 = reaction(
     () => isAlive(t3),
-    (v) => {
+    v => {
       expect(v).toBe(false)
       calls++
     }
@@ -1150,7 +1168,7 @@ test("#1112 - identifier cache should be cleared for unaccessed wrapped objects"
       list: types.optional(types.array(Wrapper), []),
       selectedId: 2
     })
-    .views((self) => ({
+    .views(self => ({
       get selectedEntity() {
         return resolveIdentifier(Entity, self, self.selectedId)
       }
@@ -1185,7 +1203,7 @@ test("#1702 - should not throw with useProxies: 'ifavailable'", () => {
     useProxies: "ifavailable"
   })
 
-  const M = types.model({ x: 5 }).views((self) => ({
+  const M = types.model({ x: 5 }).views(self => ({
     get y() {
       return self.x
     }

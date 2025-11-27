@@ -8,45 +8,45 @@ sidebar_label: "IHooks"
 
 ## Hierarchy
 
-* **IHooks**
+- **IHooks**
 
 ## Index
 
 ### Properties
 
-* [[Hook.afterAttach]](ihooks.md#optional-[hook.afterattach])
-* [[Hook.afterCreate]](ihooks.md#optional-[hook.aftercreate])
-* [[Hook.beforeDestroy]](ihooks.md#optional-[hook.beforedestroy])
-* [[Hook.beforeDetach]](ihooks.md#optional-[hook.beforedetach])
+- [[Hook.afterAttach]](ihooks.md#optional-[hook.afterattach])
+- [[Hook.afterCreate]](ihooks.md#optional-[hook.aftercreate])
+- [[Hook.beforeDestroy]](ihooks.md#optional-[hook.beforedestroy])
+- [[Hook.beforeDetach]](ihooks.md#optional-[hook.beforedetach])
 
 ## Properties
 
 ### `Optional` [Hook.afterAttach]
 
-• **[Hook.afterAttach]**? : *undefined | function*
+• **[Hook.afterAttach]**? : _undefined | function_
 
-*Defined in [src/core/node/Hook.ts:14](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/node/Hook.ts#L14)*
+_Defined in [src/core/node/Hook.ts:14](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/node/Hook.ts#L14)_
 
-___
+---
 
 ### `Optional` [Hook.afterCreate]
 
-• **[Hook.afterCreate]**? : *undefined | function*
+• **[Hook.afterCreate]**? : _undefined | function_
 
-*Defined in [src/core/node/Hook.ts:13](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/node/Hook.ts#L13)*
+_Defined in [src/core/node/Hook.ts:13](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/node/Hook.ts#L13)_
 
-___
+---
 
 ### `Optional` [Hook.beforeDestroy]
 
-• **[Hook.beforeDestroy]**? : *undefined | function*
+• **[Hook.beforeDestroy]**? : _undefined | function_
 
-*Defined in [src/core/node/Hook.ts:16](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/node/Hook.ts#L16)*
+_Defined in [src/core/node/Hook.ts:16](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/node/Hook.ts#L16)_
 
-___
+---
 
 ### `Optional` [Hook.beforeDetach]
 
-• **[Hook.beforeDetach]**? : *undefined | function*
+• **[Hook.beforeDetach]**? : _undefined | function_
 
-*Defined in [src/core/node/Hook.ts:15](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/node/Hook.ts#L15)*
+_Defined in [src/core/node/Hook.ts:15](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/node/Hook.ts#L15)_

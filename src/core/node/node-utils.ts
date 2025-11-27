@@ -47,9 +47,8 @@ export interface IStateTreeNode<IT extends IAnyType = IAnyType> {
 }
 
 /** @hidden */
-export type TypeOfValue<T extends IAnyStateTreeNode> = T extends IStateTreeNode<infer IT>
-  ? IT
-  : never
+export type TypeOfValue<T extends IAnyStateTreeNode> =
+  T extends IStateTreeNode<infer IT> ? IT : never
 
 /**
  * Represents any state tree node instance.
@@ -98,7 +97,9 @@ export function getStateTreeNode(value: IAnyStateTreeNode): AnyObjectNode {
  * @internal
  * @hidden
  */
-export function getStateTreeNodeSafe(value: IAnyStateTreeNode): AnyObjectNode | null {
+export function getStateTreeNodeSafe(
+  value: IAnyStateTreeNode
+): AnyObjectNode | null {
   return (value && value.$treenode) || null
 }
 
@@ -116,7 +117,10 @@ const doubleDot = (_: any) => ".."
  * @internal
  * @hidden
  */
-export function getRelativePathBetweenNodes(base: AnyObjectNode, target: AnyObjectNode): string {
+export function getRelativePathBetweenNodes(
+  base: AnyObjectNode,
+  target: AnyObjectNode
+): string {
   // PRE condition target is (a child of) base!
   if (base.root !== target.root) {
     throw fail(
@@ -131,7 +135,10 @@ export function getRelativePathBetweenNodes(base: AnyObjectNode, target: AnyObje
     if (baseParts[common] !== targetParts[common]) break
   }
   // TODO: assert that no targetParts paths are "..", "." or ""!
-  return baseParts.slice(common).map(doubleDot).join("/") + joinJsonPath(targetParts.slice(common))
+  return (
+    baseParts.slice(common).map(doubleDot).join("/") +
+    joinJsonPath(targetParts.slice(common))
+  )
 }
 
 /**
@@ -201,7 +208,9 @@ export function resolveNodeByPathParts(
  * @internal
  * @hidden
  */
-export function convertChildNodesToArray(childNodes: IChildNodesMap | null): AnyNode[] {
+export function convertChildNodesToArray(
+  childNodes: IChildNodesMap | null
+): AnyNode[] {
   if (!childNodes) return EMPTY_ARRAY as AnyNode[]
 
   const keys = Object.keys(childNodes)

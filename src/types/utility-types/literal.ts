@@ -42,11 +42,18 @@ export class Literal<T> extends SimpleType<T, T, T> {
     return JSON.stringify(this.value)
   }
 
-  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
+  isValidSnapshot(
+    value: this["C"],
+    context: IValidationContext
+  ): IValidationResult {
     if (isPrimitive(value) && value === this.value) {
       return typeCheckSuccess()
     }
-    return typeCheckFailure(context, value, `Value is not a literal ${JSON.stringify(this.value)}`)
+    return typeCheckFailure(
+      context,
+      value,
+      `Value is not a literal ${JSON.stringify(this.value)}`
+    )
   }
 }
 
@@ -79,6 +86,8 @@ export function literal<S extends Primitives>(value: S): ISimpleType<S> {
  * @param type
  * @returns
  */
-export function isLiteralType<IT extends ISimpleType<any>>(type: IT): type is IT {
+export function isLiteralType<IT extends ISimpleType<any>>(
+  type: IT
+): type is IT {
   return isType(type) && (type.flags & TypeFlags.Literal) > 0
 }

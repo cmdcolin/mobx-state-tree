@@ -22,48 +22,47 @@ be invoked from the actions, but not from the outside.
 
 ```javascript
 const Todo = types
-    .model({
-        title: types.string
-    })
-    .actions(self => {
-        function setTitle(newTitle) {
-            self.title = newTitle
-        }
+  .model({
+    title: types.string
+  })
+  .actions(self => {
+    function setTitle(newTitle) {
+      self.title = newTitle
+    }
 
-        return {
-            setTitle
-        }
-    })
+    return {
+      setTitle
+    }
+  })
 ```
 
 Shorter form if no local state or private functions are involved:
 
 ```javascript
 const Todo = types
-    .model({
-        title: types.string
-    })
-    .actions(self => ({
-        // note the `({`, we are returning an object literal
-        setTitle(newTitle) {
-            self.title = newTitle
-        }
-    }))
+  .model({
+    title: types.string
+  })
+  .actions(self => ({
+    // note the `({`, we are returning an object literal
+    setTitle(newTitle) {
+      self.title = newTitle
+    }
+  }))
 ```
 
 Actions are replayable and are therefore constrained in several ways:
 
--   Trying to modify a node without using an action will throw an exception.
--   It's recommended to make sure action arguments are serializable. Some arguments can be serialized automatically such as relative paths to other nodes
--   Actions can only modify models that belong to the (sub)tree on which they are invoked
--   You cannot use `this` inside actions. Instead, use `self`. This makes it safe to pass actions around without binding them or wrapping them in arrow functions.
+- Trying to modify a node without using an action will throw an exception.
+- It's recommended to make sure action arguments are serializable. Some arguments can be serialized automatically such as relative paths to other nodes
+- Actions can only modify models that belong to the (sub)tree on which they are invoked
+- You cannot use `this` inside actions. Instead, use `self`. This makes it safe to pass actions around without binding them or wrapping them in arrow functions.
 
 Useful methods:
 
--   [`onAction`](/API/#onaction) listens to any action that is invoked on the model or any of its descendants.
--   [`addMiddleware`](/API/#addmiddleware) adds an interceptor function to any action invoked on the subtree.
--   [`applyAction`](/API/#applyaction) invokes an action on the model according to the given action description
-
+- [`onAction`](/API/#onaction) listens to any action that is invoked on the model or any of its descendants.
+- [`addMiddleware`](/API/#addmiddleware) adds an interceptor function to any action invoked on the subtree.
+- [`applyAction`](/API/#applyaction) invokes an action on the model according to the given action description
 
 #### Action listeners versus middleware
 

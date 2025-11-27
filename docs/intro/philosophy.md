@@ -18,32 +18,32 @@ From this living tree, immutable, structurally shared, snapshots are automatical
 import { types, onSnapshot } from "mobx-state-tree"
 
 const Todo = types
-    .model("Todo", {
-        title: types.string,
-        done: false
-    })
-    .actions((self) => ({
-        toggle() {
-            self.done = !self.done
-        }
-    }))
+  .model("Todo", {
+    title: types.string,
+    done: false
+  })
+  .actions(self => ({
+    toggle() {
+      self.done = !self.done
+    }
+  }))
 
 const Store = types.model("Store", {
-    todos: types.array(Todo)
+  todos: types.array(Todo)
 })
 
 // create an instance from a snapshot
 const store = Store.create({
-    todos: [
-        {
-            title: "Get coffee"
-        }
-    ]
+  todos: [
+    {
+      title: "Get coffee"
+    }
+  ]
 })
 
 // listen to new snapshots
-onSnapshot(store, (snapshot) => {
-    console.dir(snapshot)
+onSnapshot(store, snapshot => {
+  console.dir(snapshot)
 })
 
 // invoke action that modifies the tree
@@ -97,7 +97,7 @@ const oldTodo = store.todos[0]
 store.removeTodo(0)
 
 function logTodo(todo) {
-    setTimeout(() => console.log(todo.title), 1000)
+  setTimeout(() => console.log(todo.title), 1000)
 }
 
 logTodo(store.todos[0])

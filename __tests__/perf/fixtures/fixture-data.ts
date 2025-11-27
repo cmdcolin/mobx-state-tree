@@ -21,9 +21,33 @@ export function createTreasure(count: number) {
 // why yes i DID graduate high school, why do you ask?
 export const rando = () => (Math.random() > 0.5 ? 1 : 0)
 
-const titles = ["Sir", "Lady", "Baron von", "Baroness", "Captain", "Dread", "Fancy"].sort(rando)
-const givenNames = ["Abe", "Beth", "Chuck", "Dora", "Ernie", "Fran", "Gary", "Haily"].sort(rando)
-const epicNames = ["Amazing", "Brauny", "Chafed", "Dapper", "Egomaniac", "Foul"].sort(rando)
+const titles = [
+  "Sir",
+  "Lady",
+  "Baron von",
+  "Baroness",
+  "Captain",
+  "Dread",
+  "Fancy"
+].sort(rando)
+const givenNames = [
+  "Abe",
+  "Beth",
+  "Chuck",
+  "Dora",
+  "Ernie",
+  "Fran",
+  "Gary",
+  "Haily"
+].sort(rando)
+const epicNames = [
+  "Amazing",
+  "Brauny",
+  "Chafed",
+  "Dapper",
+  "Egomaniac",
+  "Foul"
+].sort(rando)
 const wtf = `Daenerys Stormborn of the House Targaryen, First of Her Name, the Unburnt,
     Queen of the Andals and the First Men, Khaleesi of the Great Grass Sea, Breaker of Chains,
     and Mother of Dragons. `
@@ -63,7 +87,11 @@ export function createHeros(count: number) {
  * @param treasureCount The number of small children to create.
  * @param heroCount The number of medium children to create.
  */
-export function createMonsters(count: number, treasureCount: number, heroCount: number) {
+export function createMonsters(
+  count: number,
+  treasureCount: number,
+  heroCount: number
+) {
   const data = []
   let i = 0
   let even = true

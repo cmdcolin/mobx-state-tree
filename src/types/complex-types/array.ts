@@ -51,7 +51,9 @@ import {
 } from "../../internal"
 
 /** @hidden */
-export interface IMSTArray<IT extends IAnyType> extends IObservableArray<IT["Type"]> {
+export interface IMSTArray<IT extends IAnyType> extends IObservableArray<
+  IT["Type"]
+> {
   // needs to be split or else it will complain about not being compatible with the array interface
   push(...items: IT["Type"][]): number
   push(...items: ExtractCSTWithSTN<IT>[]): number
@@ -60,19 +62,32 @@ export interface IMSTArray<IT extends IAnyType> extends IObservableArray<IT["Typ
   concat(...items: ConcatArray<ExtractCSTWithSTN<IT>>[]): IT["Type"][]
 
   concat(...items: (IT["Type"] | ConcatArray<IT["Type"]>)[]): IT["Type"][]
-  concat(...items: (ExtractCSTWithSTN<IT> | ConcatArray<ExtractCSTWithSTN<IT>>)[]): IT["Type"][]
+  concat(
+    ...items: (ExtractCSTWithSTN<IT> | ConcatArray<ExtractCSTWithSTN<IT>>)[]
+  ): IT["Type"][]
 
   splice(start: number, deleteCount?: number): IT["Type"][]
-  splice(start: number, deleteCount: number, ...items: IT["Type"][]): IT["Type"][]
-  splice(start: number, deleteCount: number, ...items: ExtractCSTWithSTN<IT>[]): IT["Type"][]
+  splice(
+    start: number,
+    deleteCount: number,
+    ...items: IT["Type"][]
+  ): IT["Type"][]
+  splice(
+    start: number,
+    deleteCount: number,
+    ...items: ExtractCSTWithSTN<IT>[]
+  ): IT["Type"][]
 
   unshift(...items: IT["Type"][]): number
   unshift(...items: ExtractCSTWithSTN<IT>[]): number
 }
 
 /** @hidden */
-export interface IArrayType<IT extends IAnyType>
-  extends IType<readonly IT["CreationType"][] | undefined, IT["SnapshotType"][], IMSTArray<IT>> {
+export interface IArrayType<IT extends IAnyType> extends IType<
+  readonly IT["CreationType"][] | undefined,
+  IT["SnapshotType"][],
+  IMSTArray<IT>
+> {
   hooks(hooks: IHooksGetter<IMSTArray<IAnyType>>): IArrayType<IT>
 }
 
@@ -98,7 +113,9 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
 
   hooks(hooks: IHooksGetter<IMSTArray<IT>>) {
     const hookInitializers =
-      this.hookInitializers.length > 0 ? this.hookInitializers.concat(hooks) : [hooks]
+      this.hookInitializers.length > 0
+        ? this.hookInitializers.concat(hooks)
+        : [hooks]
     return new ArrayType(this.name, this._subType, hookInitializers)
   }
 
@@ -111,7 +128,10 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
     return createObjectNode(this, parent, subpath, environment, initialValue)
   }
 
-  initializeChildNodes(objNode: this["N"], snapshot: this["C"] = []): IChildNodesMap {
+  initializeChildNodes(
+    objNode: this["N"],
+    snapshot: this["C"] = []
+  ): IChildNodesMap {
     const subType = (objNode.type as this)._subType
     const result: IChildNodesMap = {}
     snapshot.forEach((item, index) => {
@@ -123,19 +143,30 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
 
   createNewInstance(childNodes: IChildNodesMap): this["T"] {
     const options = { ...mobxShallow, name: this.name }
-    return observable.array(convertChildNodesToArray(childNodes), options) as this["T"]
+    return observable.array(
+      convertChildNodesToArray(childNodes),
+      options
+    ) as this["T"]
   }
 
   finalizeNewInstance(node: this["N"], instance: this["T"]): void {
     _getAdministration(instance).dehancer = node.unbox
 
     const type = node.type as this
-    type.hookInitializers.forEach((initializer) => {
+    type.hookInitializers.forEach(initializer => {
       const hooks = initializer(instance)
-      Object.keys(hooks).forEach((name) => {
+      Object.keys(hooks).forEach(name => {
         const hook = hooks[name as keyof typeof hooks]!
-        const actionInvoker = createActionInvoker(instance as IAnyStateTreeNode, name, hook)
-        ;(!devMode() ? addHiddenFinalProp : addHiddenWritableProp)(instance, name, actionInvoker)
+        const actionInvoker = createActionInvoker(
+          instance as IAnyStateTreeNode,
+          name,
+          hook
+        )
+        ;(!devMode() ? addHiddenFinalProp : addHiddenWritableProp)(
+          instance,
+          name,
+          actionInvoker
+        )
       })
     })
 
@@ -201,7 +232,10 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
 
           // update paths of remaining items
           for (let i = index + removedCount; i < childNodes.length; i++) {
-            childNodes[i].setParent(node, "" + (i + added.length - removedCount))
+            childNodes[i].setParent(
+              node,
+              "" + (i + added.length - removedCount)
+            )
           }
         }
         break
@@ -210,12 +244,12 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
   }
 
   getSnapshot(node: this["N"]): this["S"] {
-    return node.getChildren().map((childNode) => childNode.snapshot)
+    return node.getChildren().map(childNode => childNode.snapshot)
   }
 
   processInitialSnapshot(childNodes: IChildNodesMap): this["S"] {
     const processed: this["S"] = []
-    Object.keys(childNodes).forEach((key) => {
+    Object.keys(childNodes).forEach(key => {
       processed.push(childNodes[key].getSnapshot())
     })
     return processed
@@ -284,14 +318,20 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
     return this._subType
   }
 
-  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
+  isValidSnapshot(
+    value: this["C"],
+    context: IValidationContext
+  ): IValidationResult {
     if (!isArray(value)) {
       return typeCheckFailure(context, value, "Value is not an array")
     }
 
     return flattenTypeErrors(
       value.map((item, index) =>
-        this._subType.validate(item, getContextForPath(context, "" + index, this._subType))
+        this._subType.validate(
+          item,
+          getContextForPath(context, "" + index, this._subType)
+        )
       )
     )
   }
@@ -371,7 +411,10 @@ function reconcileArrayChildren<TT>(
     } else if (!oldNode) {
       // there is no old node, create it
       // check if already belongs to the same parent. if so, avoid pushing item in. only swapping can occur.
-      if (isStateTreeNode(newValue) && getStateTreeNode(newValue).parent === parent) {
+      if (
+        isStateTreeNode(newValue) &&
+        getStateTreeNode(newValue).parent === parent
+      ) {
         // this node is owned by this parent, but not in the reconcilable set, so it must be double
         throw fail(
           `Cannot add an object to a state tree if it is already part of the same or another state tree. Tried to assign an object to '${
@@ -398,7 +441,13 @@ function reconcileArrayChildren<TT>(
       }
 
       nothingChanged = false
-      const newNode = valueAsNode(childType, parent, newPath, newValue, oldMatch)
+      const newNode = valueAsNode(
+        childType,
+        parent,
+        newPath,
+        newValue,
+        oldMatch
+      )
       oldNodes.splice(i, 0, newNode)
     }
   }

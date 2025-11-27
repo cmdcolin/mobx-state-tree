@@ -31,27 +31,37 @@ export function lazy<T extends IType<any, any, any>, U>(
  * @internal
  * @hidden
  */
-export class Lazy<T extends IType<any, any, any>, U> extends SimpleType<T, T, T> {
+export class Lazy<T extends IType<any, any, any>, U> extends SimpleType<
+  T,
+  T,
+  T
+> {
   flags = TypeFlags.Lazy
 
   private loadedType: T | null = null
   private pendingNodeList: IObservableArray<AnyNode> = observable.array()
 
-  constructor(name: string, private readonly options: LazyOptions<T, U>) {
+  constructor(
+    name: string,
+    private readonly options: LazyOptions<T, U>
+  ) {
     super(name)
 
     when(
       () =>
         this.pendingNodeList.length > 0 &&
         this.pendingNodeList.some(
-          (node) =>
-            node.isAlive && this.options.shouldLoadPredicate(node.parent ? node.parent.value : null)
+          node =>
+            node.isAlive &&
+            this.options.shouldLoadPredicate(
+              node.parent ? node.parent.value : null
+            )
         ),
       () => {
         this.options.loadType().then(
           action((type: T) => {
             this.loadedType = type
-            this.pendingNodeList.forEach((node) => {
+            this.pendingNodeList.forEach(node => {
               if (!node.parent) return
               if (!this.loadedType) return
 
@@ -80,10 +90,21 @@ export class Lazy<T extends IType<any, any, any>, U> extends SimpleType<T, T, T>
     value: this["C"]
   ): this["N"] {
     if (this.loadedType) {
-      return this.loadedType.instantiate(parent, subpath, environment, value) as this["N"]
+      return this.loadedType.instantiate(
+        parent,
+        subpath,
+        environment,
+        value
+      ) as this["N"]
     }
 
-    const node = createScalarNode(this, parent, subpath, environment, deepFreeze(value))
+    const node = createScalarNode(
+      this,
+      parent,
+      subpath,
+      environment,
+      deepFreeze(value)
+    )
     this.pendingNodeList.push(node)
 
     when(
@@ -94,20 +115,37 @@ export class Lazy<T extends IType<any, any, any>, U> extends SimpleType<T, T, T>
     return node
   }
 
-  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
+  isValidSnapshot(
+    value: this["C"],
+    context: IValidationContext
+  ): IValidationResult {
     if (this.loadedType) {
       return this.loadedType.validate(value, context)
     }
     if (!isSerializable(value)) {
-      return typeCheckFailure(context, value, "Value is not serializable and cannot be lazy")
+      return typeCheckFailure(
+        context,
+        value,
+        "Value is not serializable and cannot be lazy"
+      )
     }
     return typeCheckSuccess()
   }
 
-  reconcile(current: this["N"], value: T, parent: AnyObjectNode, subpath: string): this["N"] {
+  reconcile(
+    current: this["N"],
+    value: T,
+    parent: AnyObjectNode,
+    subpath: string
+  ): this["N"] {
     if (this.loadedType) {
       current.die()
-      return this.loadedType.instantiate(parent, subpath, parent.environment, value) as this["N"]
+      return this.loadedType.instantiate(
+        parent,
+        subpath,
+        parent.environment,
+        value
+      ) as this["N"]
     }
     return super.reconcile(current, value, parent, subpath)
   }

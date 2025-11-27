@@ -194,7 +194,7 @@ const Todo = types
     name: types.optional(types.string, ""),
     done: types.optional(types.boolean, false)
   })
-  .actions((self) => ({
+  .actions(self => ({
     setName(newName) {
       self.name = newName
     },
@@ -213,7 +213,7 @@ const RootStore = types
     users: types.map(User),
     todos: types.map(Todo)
   })
-  .actions((self) => ({
+  .actions(self => ({
     addTodo(id, name) {
       self.todos.set(id, Todo.create({ name }))
     }
@@ -304,7 +304,7 @@ import { applySnapshot, onSnapshot } from "mobx-state-tree"
 var states = []
 var currentFrame = -1
 
-onSnapshot(store, (snapshot) => {
+onSnapshot(store, snapshot => {
   if (currentFrame === states.length - 1) {
     currentFrame++
     states.push(snapshot)
@@ -331,13 +331,23 @@ MST loves MobX, and is fully compatible with it's `autorun`, `reaction`, `observ
 ```javascript
 import { observer } from "mobx-react-lite"
 
-const App = observer((props) => (
+const App = observer(props => (
   <div>
-    <button onClick={(e) => props.store.addTodo(randomId(), "New Task")}>Add Task</button>
-    {Array.from(props.store.todos.values()).map((todo) => (
+    <button onClick={e => props.store.addTodo(randomId(), "New Task")}>
+      Add Task
+    </button>
+    {Array.from(props.store.todos.values()).map(todo => (
       <div>
-        <input type="checkbox" checked={todo.done} onChange={(e) => todo.toggle()} />
-        <input type="text" value={todo.name} onChange={(e) => todo.setName(e.target.value)} />
+        <input
+          type="checkbox"
+          checked={todo.done}
+          onChange={e => todo.toggle()}
+        />
+        <input
+          type="text"
+          value={todo.name}
+          onChange={e => todo.setName(e.target.value)}
+        />
       </div>
     ))}
   </div>
@@ -353,21 +363,27 @@ If you have the React DevTools installed, enable the "Highlight Updates" check a
 Thanks to the ability of MobX to emit granular updates, fixing that becomes pretty easy! You just need to split the rendering of a `Todo` into another component to only re-render that component whenever the `Todo` data changes.
 
 ```javascript
-const TodoView = observer((props) => (
+const TodoView = observer(props => (
   <div>
-    <input type="checkbox" checked={props.todo.done} onChange={(e) => props.todo.toggle()} />
+    <input
+      type="checkbox"
+      checked={props.todo.done}
+      onChange={e => props.todo.toggle()}
+    />
     <input
       type="text"
       value={props.todo.name}
-      onChange={(e) => props.todo.setName(e.target.value)}
+      onChange={e => props.todo.setName(e.target.value)}
     />
   </div>
 ))
 
-const AppView = observer((props) => (
+const AppView = observer(props => (
   <div>
-    <button onClick={(e) => props.store.addTodo(randomId(), "New Task")}>Add Task</button>
-    {Array.from(props.store.todos.values()).map((todo) => (
+    <button onClick={e => props.store.addTodo(randomId(), "New Task")}>
+      Add Task
+    </button>
+    {Array.from(props.store.todos.values()).map(todo => (
       <TodoView todo={todo} />
     ))}
   </div>
@@ -390,15 +406,15 @@ const RootStore = types
     users: types.map(User),
     todos: types.map(Todo)
   })
-  .views((self) => ({
+  .views(self => ({
     get pendingCount() {
-      return Array.from(self.todos.values()).filter((todo) => !todo.done).length
+      return Array.from(self.todos.values()).filter(todo => !todo.done).length
     },
     get completedCount() {
-      return Array.from(self.todos.values()).filter((todo) => todo.done).length
+      return Array.from(self.todos.values()).filter(todo => todo.done).length
     }
   }))
-  .actions((self) => ({
+  .actions(self => ({
     addTodo(id, name) {
       self.todos.set(id, Todo.create({ name }))
     }
@@ -412,16 +428,18 @@ These properties are called "computed" because they keep track of the changes to
 We can easily see that by creating an additional component in our application that observes the store and renders those counters. Using the React DevTools and tracing updates, you'll see that changing the `name` of a TODO won't re-render the counters, while checking completed or uncompleted will re-render the `TodoView` and `TodoCounterView`.
 
 ```javascript
-const TodoCounterView = observer((props) => (
+const TodoCounterView = observer(props => (
   <div>
     {props.store.pendingCount} pending, {props.store.completedCount} completed
   </div>
 ))
 
-const AppView = observer((props) => (
+const AppView = observer(props => (
   <div>
-    <button onClick={(e) => props.store.addTodo(randomId(), "New Task")}>Add Task</button>
-    {Array.from(props.store.todos.values()).map((todo) => (
+    <button onClick={e => props.store.addTodo(randomId(), "New Task")}>
+      Add Task
+    </button>
+    {Array.from(props.store.todos.values()).map(todo => (
       <TodoView todo={todo} />
     ))}
     <TodoCounterView store={props.store} />
@@ -445,18 +463,18 @@ const RootStore = types
     users: types.map(User),
     todos: types.map(Todo)
   })
-  .views((self) => ({
+  .views(self => ({
     get pendingCount() {
-      return Array.from(self.todos.values()).filter((todo) => !todo.done).length
+      return Array.from(self.todos.values()).filter(todo => !todo.done).length
     },
     get completedCount() {
-      return Array.from(self.todos.values()).filter((todo) => todo.done).length
+      return Array.from(self.todos.values()).filter(todo => todo.done).length
     },
     getTodosWhereDoneIs(done) {
-      return Array.from(self.todos.values()).filter((todo) => todo.done === done)
+      return Array.from(self.todos.values()).filter(todo => todo.done === done)
     }
   }))
-  .actions((self) => ({
+  .actions(self => ({
     addTodo(id, name) {
       self.todos.set(id, Todo.create({ name }))
     }
@@ -567,7 +585,7 @@ const Todo = types
     done: types.optional(types.boolean, false),
     user: types.maybe(types.reference(types.late(() => User)))
   })
-  .actions((self) => ({
+  .actions(self => ({
     setName(newName) {
       self.name = newName
     },
@@ -590,7 +608,7 @@ const Todo = types
     done: types.optional(types.boolean, false),
     user: types.maybe(types.reference(types.late(() => User)))
   })
-  .actions((self) => ({
+  .actions(self => ({
     setName(newName) {
       self.name = newName
     },
@@ -611,41 +629,50 @@ const Todo = types
 Now we need to edit our views to display a select along with each `TodoView`, where the user can choose the assignee for that task. To do so, we will create a separate component `UserPickerView` and use it inside the `TodoView` component to trigger the `setUser` call. That's it!
 
 ```javascript
-const UserPickerView = observer((props) => (
-  <select value={props.user ? props.user.id : ""} onChange={(e) => props.onChange(e.target.value)}>
+const UserPickerView = observer(props => (
+  <select
+    value={props.user ? props.user.id : ""}
+    onChange={e => props.onChange(e.target.value)}
+  >
     <option value="">-none-</option>
-    {Array.from(props.store.users.values()).map((user) => (
+    {Array.from(props.store.users.values()).map(user => (
       <option value={user.id}>{user.name}</option>
     ))}
   </select>
 ))
 
-const TodoView = observer((props) => (
+const TodoView = observer(props => (
   <div>
-    <input type="checkbox" checked={props.todo.done} onChange={(e) => props.todo.toggle()} />
+    <input
+      type="checkbox"
+      checked={props.todo.done}
+      onChange={e => props.todo.toggle()}
+    />
     <input
       type="text"
       value={props.todo.name}
-      onChange={(e) => props.todo.setName(e.target.value)}
+      onChange={e => props.todo.setName(e.target.value)}
     />
     <UserPickerView
       user={props.todo.user}
       store={props.store}
-      onChange={(userId) => props.todo.setUser(userId)}
+      onChange={userId => props.todo.setUser(userId)}
     />
   </div>
 ))
 
-const TodoCounterView = observer((props) => (
+const TodoCounterView = observer(props => (
   <div>
     {props.store.pendingCount} pending, {props.store.completedCount} completed
   </div>
 ))
 
-const AppView = observer((props) => (
+const AppView = observer(props => (
   <div>
-    <button onClick={(e) => props.store.addTodo(randomId(), "New Task")}>Add Task</button>
-    {Array.from(props.store.todos.values()).map((todo) => (
+    <button onClick={e => props.store.addTodo(randomId(), "New Task")}>
+      Add Task
+    </button>
+    {Array.from(props.store.todos.values()).map(todo => (
       <TodoView store={props.store} todo={todo} />
     ))}
     <TodoCounterView store={props.store} />

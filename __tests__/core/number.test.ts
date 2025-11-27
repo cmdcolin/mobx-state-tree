@@ -5,13 +5,16 @@ import { Hook, NodeLifeCycle } from "../../src/internal"
 describe("types.number", () => {
   describe("methods", () => {
     describe("create", () => {
-      describe.runIf(process.env.NODE_ENV !== "production")("with no arguments", () => {
-        it("should throw an error in development", () => {
-          expect(() => {
-            t.number.create()
-          }).toThrow()
-        })
-      })
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with no arguments",
+        () => {
+          it("should throw an error in development", () => {
+            expect(() => {
+              t.number.create()
+            }).toThrow()
+          })
+        }
+      )
       describe("with a number argument", () => {
         it("should return a number", () => {
           const n = t.number.create(1)
@@ -37,7 +40,7 @@ describe("types.number", () => {
             new Error()
           ]
 
-          testCases.forEach((testCase) => {
+          testCases.forEach(testCase => {
             it(`should throw an error when passed ${JSON.stringify(testCase)}`, () => {
               expect(() => {
                 t.number.create(testCase as any)
@@ -67,14 +70,17 @@ describe("types.number", () => {
       })
     })
     describe("instantiate", () => {
-      describe.runIf(process.env.NODE_ENV !== "production")("with invalid arguments", () => {
-        it("should not throw an error", () => {
-          expect(() => {
-            // @ts-ignore
-            t.number.instantiate()
-          }).not.toThrow()
-        })
-      })
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with invalid arguments",
+        () => {
+          it("should not throw an error", () => {
+            expect(() => {
+              // @ts-ignore
+              t.number.instantiate()
+            }).not.toThrow()
+          })
+        }
+      )
       describe("with a number argument", () => {
         it("should return an object", () => {
           const n = t.number.instantiate(null, "", {}, 1)
@@ -106,7 +112,7 @@ describe("types.number", () => {
           new Error()
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return false when passed ${JSON.stringify(testCase)}`, () => {
             const result = t.number.is(testCase as any)
             expect(result).toBe(false)
@@ -135,7 +141,7 @@ describe("types.number", () => {
           t.undefined
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return false when passed ${JSON.stringify(testCase)}`, () => {
             const result = t.number.isAssignableFrom(testCase as any)
             expect(result).toBe(false)
@@ -169,7 +175,7 @@ describe("types.number", () => {
           new Error()
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return with a validation error when passed ${JSON.stringify(
             testCase
           )}`, () => {

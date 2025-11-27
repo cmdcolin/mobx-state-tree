@@ -21,25 +21,25 @@ _Warning: don't import `flow` from `"mobx"`, but from `"mobx-state-tree"` instea
 ```javascript
 import { types, flow } from "mobx-state-tree"
 
-someModel.actions((self) => {
-    const fetchProjects = flow(function* () {
-        // <- note the star, this is a generator function!
-        self.state = "pending"
-        try {
-            // ... yield can be used in async/await style
-            self.githubProjects = yield fetchGithubProjectsSomehow()
-            self.state = "done"
-        } catch (error) {
-            // ... including try/catch error handling
-            console.error("Failed to fetch projects", error)
-            self.state = "error"
-        }
-        // The action will return a promise that resolves to the returned value
-        // (or rejects with anything thrown from the action)
-        return self.githubProjects.length
-    })
+someModel.actions(self => {
+  const fetchProjects = flow(function* () {
+    // <- note the star, this is a generator function!
+    self.state = "pending"
+    try {
+      // ... yield can be used in async/await style
+      self.githubProjects = yield fetchGithubProjectsSomehow()
+      self.state = "done"
+    } catch (error) {
+      // ... including try/catch error handling
+      console.error("Failed to fetch projects", error)
+      self.state = "error"
+    }
+    // The action will return a promise that resolves to the returned value
+    // (or rejects with anything thrown from the action)
+    return self.githubProjects.length
+  })
 
-    return { fetchProjects }
+  return { fetchProjects }
 })
 ```
 
@@ -61,30 +61,30 @@ For example:
 
 ```javascript
 const Store = types
-    .model({
-        githubProjects: types.array(types.frozen),
-        state: types.enumeration("State", ["pending", "done", "error"])
-    })
-    .actions((self) => ({
-        fetchProjects() {
-            self.githubProjects = []
-            self.state = "pending"
-            fetchGithubProjectsSomehow().then(
-                // when promise resolves, invoke the appropiate action
-                // (note that there is no need to bind here)
-                self.fetchProjectsSuccess,
-                self.fetchProjectsError
-            )
-        },
-        fetchProjectsSuccess(projects) {
-            self.state = "done"
-            self.githubProjects = projects
-        },
-        fetchProjectsError(error) {
-            console.error("Failed to fetch projects", error)
-            self.state = "error"
-        }
-    }))
+  .model({
+    githubProjects: types.array(types.frozen),
+    state: types.enumeration("State", ["pending", "done", "error"])
+  })
+  .actions(self => ({
+    fetchProjects() {
+      self.githubProjects = []
+      self.state = "pending"
+      fetchGithubProjectsSomehow().then(
+        // when promise resolves, invoke the appropiate action
+        // (note that there is no need to bind here)
+        self.fetchProjectsSuccess,
+        self.fetchProjectsError
+      )
+    },
+    fetchProjectsSuccess(projects) {
+      self.state = "done"
+      self.githubProjects = projects
+    },
+    fetchProjectsError(error) {
+      console.error("Failed to fetch projects", error)
+      self.state = "error"
+    }
+  }))
 ```
 
 This approach works fine and has great type inference, but comes with a few downsides:
@@ -101,31 +101,31 @@ Generators might sound scary, but they are very suitable for expressing asynchro
 import { flow } from "mobx-state-tree"
 
 const Store = types
-    .model({
-        githubProjects: types.array(types.frozen),
-        state: types.enumeration("State", ["pending", "done", "error"])
+  .model({
+    githubProjects: types.array(types.frozen),
+    state: types.enumeration("State", ["pending", "done", "error"])
+  })
+  .actions(self => ({
+    fetchProjects: flow(function* fetchProjects() {
+      // <- note the star, this a generator function!
+      self.githubProjects = []
+      self.state = "pending"
+      try {
+        // ... yield can be used in async/await style
+        self.githubProjects = yield fetchGithubProjectsSomehow()
+        self.state = "done"
+      } catch (error) {
+        // ... including try/catch error handling
+        console.error("Failed to fetch projects", error)
+        self.state = "error"
+      }
     })
-    .actions((self) => ({
-        fetchProjects: flow(function* fetchProjects() {
-            // <- note the star, this a generator function!
-            self.githubProjects = []
-            self.state = "pending"
-            try {
-                // ... yield can be used in async/await style
-                self.githubProjects = yield fetchGithubProjectsSomehow()
-                self.state = "done"
-            } catch (error) {
-                // ... including try/catch error handling
-                console.error("Failed to fetch projects", error)
-                self.state = "error"
-            }
-        })
-    }))
+  }))
 
 const store = Store.create({})
 // async actions will always return a promise resolving to the returned value
 store.fetchProjects().then(() => {
-    console.log("done")
+  console.log("done")
 })
 ```
 

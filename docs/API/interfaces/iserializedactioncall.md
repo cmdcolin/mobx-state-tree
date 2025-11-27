@@ -8,36 +8,36 @@ sidebar_label: "ISerializedActionCall"
 
 ## Hierarchy
 
-* **ISerializedActionCall**
+- **ISerializedActionCall**
 
 ## Index
 
 ### Properties
 
-* [args](iserializedactioncall.md#optional-args)
-* [name](iserializedactioncall.md#name)
-* [path](iserializedactioncall.md#optional-path)
+- [args](iserializedactioncall.md#optional-args)
+- [name](iserializedactioncall.md#name)
+- [path](iserializedactioncall.md#optional-path)
 
 ## Properties
 
 ### `Optional` args
 
-• **args**? : *any[]*
+• **args**? : _any[]_
 
-*Defined in [src/middlewares/on-action.ts:33](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L33)*
+_Defined in [src/middlewares/on-action.ts:33](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L33)_
 
-___
+---
 
-###  name
+### name
 
-• **name**: *string*
+• **name**: _string_
 
-*Defined in [src/middlewares/on-action.ts:31](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L31)*
+_Defined in [src/middlewares/on-action.ts:31](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L31)_
 
-___
+---
 
 ### `Optional` path
 
-• **path**? : *undefined | string*
+• **path**? : _undefined | string_
 
-*Defined in [src/middlewares/on-action.ts:32](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L32)*
+_Defined in [src/middlewares/on-action.ts:32](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L32)_

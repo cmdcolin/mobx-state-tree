@@ -15,9 +15,13 @@ if (process.env.NODE_ENV !== "production") {
   test("#275 - Identifiers should check refinement", () => {
     const Model = types
       .model("Model", {
-        id: types.refinement("id", types.string, (identifier) => identifier.indexOf("Model_") === 0)
+        id: types.refinement(
+          "id",
+          types.string,
+          identifier => identifier.indexOf("Model_") === 0
+        )
       })
-      .actions((self) => ({
+      .actions(self => ({
         setId(id: string) {
           self.id = id
         }
@@ -26,7 +30,7 @@ if (process.env.NODE_ENV !== "production") {
       .model("ParentModel", {
         models: types.array(Model)
       })
-      .actions((self) => ({
+      .actions(self => ({
         addModel(model: SnapshotOrInstance<typeof Model>) {
           self.models.push(model)
         }
@@ -53,7 +57,7 @@ test("#158 - #88 - Identifiers should accept any string character", () => {
     title: types.string
   })
   expect(() => {
-    ;["coffee", "cof$fee", "cof|fee", "cof/fee"].forEach((id) => {
+    ;["coffee", "cof$fee", "cof|fee", "cof/fee"].forEach(id => {
       Todo.create({
         id: id,
         title: "Get coffee"
@@ -163,7 +167,9 @@ test("it can resolve through references", () => {
   const Folder = types.model("Folder", {
     type: types.literal("folder"),
     name: types.identifier,
-    children: types.array(types.late((): IAnyComplexType => types.union(Folder, SymLink)))
+    children: types.array(
+      types.late((): IAnyComplexType => types.union(Folder, SymLink))
+    )
   })
   const SymLink = types.model({
     type: types.literal("link"),
@@ -205,7 +211,9 @@ test("it can resolve through references", () => {
 
   expect(resolvePath(root, "/children/2/target/children/0").name).toBe("c")
 
-  expect(resolvePath(root, "/children/2/target/children/../children/./0").name).toBe("c")
+  expect(
+    resolvePath(root, "/children/2/target/children/../children/./0").name
+  ).toBe("c")
 
   expect(() => resolvePath(root, "/children/3/target/children/0").name).toThrow(
     "[mobx-state-tree] Failed to resolve reference 'e' to type 'Folder' (from node: /children/3/target)"
@@ -225,8 +233,10 @@ test("#1019", () => {
   }
 
   const TOptionalId = types.optional(
-    types.refinement(types.identifier, (identifier) =>
-      /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(identifier)
+    types.refinement(types.identifier, identifier =>
+      /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/.test(
+        identifier
+      )
     ),
     randomUuid
   )
@@ -239,7 +249,7 @@ test("#1019", () => {
     .model("CommentStore", {
       items: types.array(CommentModel)
     })
-    .actions((self) => ({
+    .actions(self => ({
       test1() {
         expect(calls).toBe(0)
         const comment = CommentModel.create({})
@@ -247,7 +257,7 @@ test("#1019", () => {
 
         self.items.push(comment)
         const item = resolveIdentifier(CommentModel, self.items, comment.uid)
-        const item2 = self.items.find((i) => i.uid === comment.uid)
+        const item2 = self.items.find(i => i.uid === comment.uid)
         expect(item).toBe(item2)
       }
     }))
@@ -277,11 +287,13 @@ test("identifierAttribute of the type", () => {
 
 test("items detached from arrays don't corrupt identifierCache", () => {
   const Item = types.model("Item", { id: types.identifier })
-  const ItemArray = types.model("ItemArray", { items: types.array(Item) }).actions((self) => ({
-    removeSecondItemWithDetach() {
-      detach(self.items[1])
-    }
-  }))
+  const ItemArray = types
+    .model("ItemArray", { items: types.array(Item) })
+    .actions(self => ({
+      removeSecondItemWithDetach() {
+        detach(self.items[1])
+      }
+    }))
 
   const smallArray = ItemArray.create({
     items: [{ id: "A" }, { id: "B" }, { id: "C" }, { id: "D" }, { id: "E" }]

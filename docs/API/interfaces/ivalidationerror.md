@@ -10,42 +10,42 @@ Type validation error
 
 ## Hierarchy
 
-* **IValidationError**
+- **IValidationError**
 
 ## Index
 
 ### Properties
 
-* [context](ivalidationerror.md#context)
-* [message](ivalidationerror.md#optional-message)
-* [value](ivalidationerror.md#value)
+- [context](ivalidationerror.md#context)
+- [message](ivalidationerror.md#optional-message)
+- [value](ivalidationerror.md#value)
 
 ## Properties
 
-###  context
+### context
 
-• **context**: *[IValidationContext](../index.md#ivalidationcontext)*
+• **context**: _[IValidationContext](../index.md#ivalidationcontext)_
 
-*Defined in [src/core/type/type-checker.ts:28](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L28)*
+_Defined in [src/core/type/type-checker.ts:28](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L28)_
 
 Validation context
 
-___
+---
 
 ### `Optional` message
 
-• **message**? : *undefined | string*
+• **message**? : _undefined | string_
 
-*Defined in [src/core/type/type-checker.ts:32](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L32)*
+_Defined in [src/core/type/type-checker.ts:32](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L32)_
 
 Error message
 
-___
+---
 
-###  value
+### value
 
-• **value**: *any*
+• **value**: _any_
 
-*Defined in [src/core/type/type-checker.ts:30](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L30)*
+_Defined in [src/core/type/type-checker.ts:30](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/type/type-checker.ts#L30)_
 
 Value that was being validated, either a snapshot or an instance

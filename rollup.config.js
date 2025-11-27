@@ -31,7 +31,12 @@ const config = (outFile, format, mode) => ({
     name: format === "umd" ? "mobxStateTree" : undefined
   },
   external: ["mobx"],
-  plugins: mode === "production" ? prodPlugins() : format === "umd" ? devPluginsUmd() : devPlugins()
+  plugins:
+    mode === "production"
+      ? prodPlugins()
+      : format === "umd"
+        ? devPluginsUmd()
+        : devPlugins()
 })
 
 export default [

@@ -23,7 +23,11 @@ test("it should support custom references - basics", () => {
     types.reference(User, {
       // given an identifier, find the user
       get(identifier, parent): any {
-        return (parent as Instance<typeof Store>)!.users.find((u) => u.name === identifier) || null
+        return (
+          (parent as Instance<typeof Store>)!.users.find(
+            u => u.name === identifier
+          ) || null
+        )
       },
       // given a user, produce the identifier that should be stored
       set(value) {
@@ -67,7 +71,7 @@ test("it should support custom references - adv", () => {
     get(identifier, parent): any {
       if (identifier === null) return null
       const users = values(getRoot<Instance<typeof Store>>(parent!).users)
-      return users.filter((u) => u.name === identifier)[0] || null
+      return users.filter(u => u.name === identifier)[0] || null
     },
     set(value) {
       return value ? value.name : ""
@@ -94,7 +98,7 @@ test("it should support custom references - adv", () => {
   const ids: (string | null)[] = []
   reaction(
     () => s.selection,
-    (selection) => {
+    selection => {
       ids.push(selection ? selection.id : null)
     }
   )
@@ -117,7 +121,7 @@ test("it should support custom references - adv", () => {
 })
 
 test("it should support dynamic loading", () => {
-  return new Promise<void>((resolve) => {
+  return new Promise<void>(resolve => {
     const events: string[] = []
     const User = types.model({
       name: types.string,
@@ -138,21 +142,22 @@ test("it should support dynamic loading", () => {
         users: types.array(User),
         selection: UserByNameReference
       })
-      .actions((self) => ({
+      .actions(self => ({
         loadUser: flow(function* loadUser(name: string) {
           events.push("loading " + name)
           self.users.push({ name })
-          yield new Promise((r) => {
+          yield new Promise(r => {
             setTimeout(r, 200)
           })
           events.push("loaded " + name)
-          const user = (self.users.find((u) => u.name === name)!.age = name.length * 3) // wonderful!
+          const user = (self.users.find(u => u.name === name)!.age =
+            name.length * 3) // wonderful!
         })
       }))
-      .views((self) => ({
+      .views(self => ({
         // Important: a view so that the reference will automatically react to the reference being changed!
         getOrLoadUser(name: string) {
-          const user = self.users.find((u) => u.name === name) || null
+          const user = self.users.find(u => u.name === name) || null
           if (!user) {
             /*
                       TODO: this is ugly, but workaround the idea that views should be side effect free.
@@ -172,7 +177,10 @@ test("it should support dynamic loading", () => {
     expect(s.users.length).toBe(0)
     expect(s.selection).toBe(null)
     when(
-      () => s.users.length === 1 && s.users[0].age === 18 && s.users[0].name === "Mattia",
+      () =>
+        s.users.length === 1 &&
+        s.users[0].age === 18 &&
+        s.users[0].name === "Mattia",
       () => {
         expect(s.selection).toBe(s.users[0])
         expect(events).toEqual(["loading Mattia", "loaded Mattia"])

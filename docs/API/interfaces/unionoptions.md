@@ -8,27 +8,27 @@ sidebar_label: "UnionOptions"
 
 ## Hierarchy
 
-* **UnionOptions**
+- **UnionOptions**
 
 ## Index
 
 ### Properties
 
-* [dispatcher](unionoptions.md#optional-dispatcher)
-* [eager](unionoptions.md#optional-eager)
+- [dispatcher](unionoptions.md#optional-dispatcher)
+- [eager](unionoptions.md#optional-eager)
 
 ## Properties
 
 ### `Optional` dispatcher
 
-• **dispatcher**? : *[ITypeDispatcher](../index.md#itypedispatcher)*
+• **dispatcher**? : _[ITypeDispatcher](../index.md#itypedispatcher)_
 
-*Defined in [src/types/utility-types/union.ts:31](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/union.ts#L31)*
+_Defined in [src/types/utility-types/union.ts:31](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/union.ts#L31)_
 
-___
+---
 
 ### `Optional` eager
 
-• **eager**? : *undefined | false | true*
+• **eager**? : _undefined | false | true_
 
-*Defined in [src/types/utility-types/union.ts:30](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/union.ts#L30)*
+_Defined in [src/types/utility-types/union.ts:30](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/union.ts#L30)_

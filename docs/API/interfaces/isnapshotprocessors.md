@@ -10,7 +10,7 @@ Snapshot processors.
 
 ## Type parameters
 
-▪ **IT**: *[IAnyType](ianytype.md)*
+▪ **IT**: _[IAnyType](ianytype.md)_
 
 ▪ **CustomC**
 
@@ -18,48 +18,48 @@ Snapshot processors.
 
 ## Hierarchy
 
-* **ISnapshotProcessors**
+- **ISnapshotProcessors**
 
 ## Index
 
 ### Methods
 
-* [postProcessor](isnapshotprocessors.md#optional-postprocessor)
-* [preProcessor](isnapshotprocessors.md#optional-preprocessor)
+- [postProcessor](isnapshotprocessors.md#optional-postprocessor)
+- [preProcessor](isnapshotprocessors.md#optional-preprocessor)
 
 ## Methods
 
 ### `Optional` postProcessor
 
-▸ **postProcessor**(`snapshot`: IT["SnapshotType"], `node`: [Instance](../index.md#instance)‹IT›): *CustomS*
+▸ **postProcessor**(`snapshot`: IT["SnapshotType"], `node`: [Instance](../index.md#instance)‹IT›): _CustomS_
 
-*Defined in [src/types/utility-types/snapshotProcessor.ts:211](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/snapshotProcessor.ts#L211)*
+_Defined in [src/types/utility-types/snapshotProcessor.ts:211](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/snapshotProcessor.ts#L211)_
 
 Function that transforms an output snapshot.
 
 **Parameters:**
 
-Name | Type | Description |
------- | ------ | ------ |
-`snapshot` | IT["SnapshotType"] |   |
-`node` | [Instance](../index.md#instance)‹IT› | - |
+| Name       | Type                                 | Description |
+| ---------- | ------------------------------------ | ----------- |
+| `snapshot` | IT["SnapshotType"]                   |             |
+| `node`     | [Instance](../index.md#instance)‹IT› | -           |
 
-**Returns:** *CustomS*
+**Returns:** _CustomS_
 
-___
+---
 
 ### `Optional` preProcessor
 
-▸ **preProcessor**(`snapshot`: CustomC): *IT["CreationType"]*
+▸ **preProcessor**(`snapshot`: CustomC): _IT["CreationType"]_
 
-*Defined in [src/types/utility-types/snapshotProcessor.ts:206](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/snapshotProcessor.ts#L206)*
+_Defined in [src/types/utility-types/snapshotProcessor.ts:206](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/types/utility-types/snapshotProcessor.ts#L206)_
 
 Function that transforms an input snapshot.
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`snapshot` | CustomC |
+| Name       | Type    |
+| ---------- | ------- |
+| `snapshot` | CustomC |
 
-**Returns:** *IT["CreationType"]*
+**Returns:** _IT["CreationType"]_

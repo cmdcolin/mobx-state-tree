@@ -21,24 +21,24 @@ Example:
 
 ```javascript
 const Todo = types.model({
-    id: types.identifier,
-    title: types.string
+  id: types.identifier,
+  title: types.string
 })
 
 const TodoStore = types.model({
-    todos: types.array(Todo),
-    selectedTodo: types.reference(Todo)
+  todos: types.array(Todo),
+  selectedTodo: types.reference(Todo)
 })
 
 // create a store with a normalized snapshot
 const storeInstance = TodoStore.create({
-    todos: [
-        {
-            id: "47",
-            title: "Get coffee"
-        }
-    ],
-    selectedTodo: "47"
+  todos: [
+    {
+      id: "47",
+      title: "Get coffee"
+    }
+  ],
+  selectedTodo: "47"
 })
 
 // because `selectedTodo` is declared to be a reference, it returns the actual Todo node with the matching identifier
@@ -48,18 +48,21 @@ console.log(storeInstance.selectedTodo.title)
 
 #### Identifiers
 
--   Each model can define zero or one `identifier()` properties
--   The identifier property of an object cannot be modified after initialization
--   Each identifier / type combination should be unique within the entire tree
--   Identifiers are used to reconcile items inside arrays and maps - wherever possible - when applying snapshots
--   The `map.put()` method can be used to simplify adding an object that has an identifiers to a map without specifying the key
--   The primary goal of identifiers is not validation, but reconciliation and reference resolving. For this reason identifiers cannot be defined or updated after creation. If you want to check if some value just looks as an identifier, without providing the above semantics; use something like: `types.refinement(types.string, v => v.match(/someregex/))`
+- Each model can define zero or one `identifier()` properties
+- The identifier property of an object cannot be modified after initialization
+- Each identifier / type combination should be unique within the entire tree
+- Identifiers are used to reconcile items inside arrays and maps - wherever possible - when applying snapshots
+- The `map.put()` method can be used to simplify adding an object that has an identifiers to a map without specifying the key
+- The primary goal of identifiers is not validation, but reconciliation and reference resolving. For this reason identifiers cannot be defined or updated after creation. If you want to check if some value just looks as an identifier, without providing the above semantics; use something like: `types.refinement(types.string, v => v.match(/someregex/))`
 
-_Tip: If you know the format of the identifiers in your application, leverage `types.refinement` to actively check this, for example the following definition enforces that identifiers of `Car` always start with the string `"Car_"`:_
+_Tip: If you know the format of the identifiers in your application, leverage `types.refinement` to actively check this, for example the following definition enforces that identifiers of `Car` always start with the string `"Car_"`:\_
 
 ```javascript
 const Car = types.model("Car", {
-    id: types.refinement(types.identifier, identifier => identifier.indexOf("Car_") === 0)
+  id: types.refinement(
+    types.identifier,
+    identifier => identifier.indexOf("Car_") === 0
+  )
 })
 ```
 
@@ -127,22 +130,22 @@ The options parameter for references also accepts an optional `onInvalidated` ho
 
 ```ts
 const refWithOnInvalidated = types.reference(Todo, {
-    onInvalidated(event: {
-        // what is causing the target to become invalidated
-        cause: "detach" | "destroy" | "invalidSnapshotReference"
-        // the target that is about to become invalidated (undefined if "invalidSnapshotReference")
-        invalidTarget: STN | undefined
-        // the identifier that is about to become invalidated
-        invalidId: string | number
-        // parent node of the reference (not the reference target)
-        parent: IAnyStateTreeNode
-        // a function to remove the reference from its parent (or set to undefined in the case of models)
-        removeRef: () => void
-        // a function to set our reference to a new target
-        replaceRef: (newRef: STN | null | undefined) => void
-    }) {
-        // do something
-    }
+  onInvalidated(event: {
+    // what is causing the target to become invalidated
+    cause: "detach" | "destroy" | "invalidSnapshotReference"
+    // the target that is about to become invalidated (undefined if "invalidSnapshotReference")
+    invalidTarget: STN | undefined
+    // the identifier that is about to become invalidated
+    invalidId: string | number
+    // parent node of the reference (not the reference target)
+    parent: IAnyStateTreeNode
+    // a function to remove the reference from its parent (or set to undefined in the case of models)
+    removeRef: () => void
+    // a function to set our reference to a new target
+    replaceRef: (newRef: STN | null | undefined) => void
+  }) {
+    // do something
+  }
 })
 ```
 
@@ -150,9 +153,9 @@ Note that invalidation will only trigger while the reference is attached to a pa
 
 A default implementation of such `onInvalidated` hook is provided by the `types.safeReference` type. It is like a standard reference, except that once the target node becomes invalidated it will:
 
--   If its parent is a model: Set its own property to `undefined`
--   If its parent is an array: Remove itself from the array
--   If its parent is a map: Remove itself from the map
+- If its parent is a model: Set its own property to `undefined`
+- If its parent is an array: Remove itself from the array
+- If its parent is a map: Remove itself from the map
 
 In addition to the options possible for a plain reference type, the optional options parameter object also accepts a parameter named `acceptsUndefined`, which is set to true by default, so it is suitable for model properties.
 When used inside collections (arrays/maps) it is recommended to set this option to false so it can't take undefined as value, which is usually the desired in those cases.
@@ -161,12 +164,12 @@ Strictly speaking, `safeReference` with `acceptsUndefined` set to true (the defa
 
 ```js
 types.maybe(
-    types.reference(Type, {
-        ...customGetSetIfAvailable,
-        onInvalidated(ev) {
-            ev.removeRef()
-        }
-    })
+  types.reference(Type, {
+    ...customGetSetIfAvailable,
+    onInvalidated(ev) {
+      ev.removeRef()
+    }
+  })
 )
 ```
 
@@ -174,19 +177,21 @@ and with `acceptsUndefined` set to false as
 
 ```js
 types.reference(Type, {
-    ...customGetSetIfAvailable,
-    onInvalidated(ev) {
-        ev.removeRef()
-    }
+  ...customGetSetIfAvailable,
+  onInvalidated(ev) {
+    ev.removeRef()
+  }
 })
 ```
 
 ```js
 const Todo = types.model({ id: types.identifier })
 const Store = types.model({
-    todos: types.array(Todo),
-    selectedTodo: types.safeReference(Todo),
-    multipleSelectedTodos: types.array(types.safeReference(Todo, { acceptsUndefined: false }))
+  todos: types.array(Todo),
+  selectedTodo: types.safeReference(Todo),
+  multipleSelectedTodos: types.array(
+    types.safeReference(Todo, { acceptsUndefined: false })
+  )
 })
 
 // given selectedTodo points to a valid Todo and that Todo is later removed from the todos

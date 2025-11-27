@@ -204,15 +204,15 @@ export const FormSchema = {
         }
       ],
       default: [{ name: "John", age: 20 }],
-      onAdd: (i) => {
+      onAdd: i => {
         // hooks run when add dynamic fields
         console.log("add", i)
       },
-      onRemove: (i) => {
+      onRemove: i => {
         // hooks run when remove dynamic fields
         console.log("remove", i)
       },
-      onEdit: (i) => {
+      onEdit: i => {
         // hooks run when edit dynamic fields, only be called when edit field by form action
         console.log("edit", i)
       }
@@ -226,7 +226,7 @@ export const Example = types
   .props({
     form: createForm(FormSchema) // form as a model type
   })
-  .views((self) => ({
+  .views(self => ({
     get disableA() {
       return self.form.member.size > 1
     },
@@ -234,7 +234,7 @@ export const Example = types
       return self.form.member.size > 3
     }
   }))
-  .actions((self) => ({
+  .actions(self => ({
     onAddFields() {
       // field logic
       if (self.form.member.size > 1 && self.form.plan.value === "A") {
@@ -377,7 +377,12 @@ The library defines three model types under the hood:
 The default exported method will generate a new custom types.model with all the fields in the schema as props, based on a base model type. The newly created form type will automatically initialize with the schema upon creation. Optionally, a name can be passed for tracking purposes; otherwise, it will default to the base model name.
 
 ```typescript
-type TValidator = "required" | ((...args: any[]) => boolean) | RegExp | undefined | null
+type TValidator =
+  | "required"
+  | ((...args: any[]) => boolean)
+  | RegExp
+  | undefined
+  | null
 
 type TValue = string | boolean | number | Record<string, string> | Array<any>
 
@@ -395,7 +400,12 @@ interface FieldSchema {
 ##### schema
 
 ```typescript
-type TValidator = "required" | ((...args: any[]) => boolean) | RegExp | undefined | null
+type TValidator =
+  | "required"
+  | ((...args: any[]) => boolean)
+  | RegExp
+  | undefined
+  | null
 
 type TValue = string | boolean | number | Record<string, string> | Array<any>
 

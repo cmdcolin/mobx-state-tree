@@ -5,13 +5,16 @@ import { Hook, NodeLifeCycle } from "../../src/internal"
 describe("types.string", () => {
   describe("methods", () => {
     describe("create", () => {
-      describe.runIf(process.env.NODE_ENV !== "production")("with no arguments", () => {
-        it("should throw an error in development", () => {
-          expect(() => {
-            types.string.create()
-          }).toThrow()
-        })
-      })
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with no arguments",
+        () => {
+          it("should throw an error in development", () => {
+            expect(() => {
+              types.string.create()
+            }).toThrow()
+          })
+        }
+      )
       describe("with a string argument", () => {
         it("should return a string", () => {
           const s = types.string.create("foo")
@@ -38,7 +41,7 @@ describe("types.string", () => {
             Infinity
           ]
 
-          testCases.forEach((testCase) => {
+          testCases.forEach(testCase => {
             it(`should throw an error when passed ${JSON.stringify(testCase)}`, () => {
               expect(() => {
                 types.string.create(testCase as any)
@@ -68,14 +71,17 @@ describe("types.string", () => {
       })
     })
     describe("instantiate", () => {
-      describe.runIf(process.env.NODE_ENV !== "production")("with invalid arguments", () => {
-        it("should not throw an error", () => {
-          expect(() => {
-            // @ts-ignore
-            types.string.instantiate()
-          }).not.toThrow()
-        })
-      })
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with invalid arguments",
+        () => {
+          it("should not throw an error", () => {
+            expect(() => {
+              // @ts-ignore
+              types.string.instantiate()
+            }).not.toThrow()
+          })
+        }
+      )
       describe("with a string argument", () => {
         it("should return an object", () => {
           const s = types.string.instantiate(null, "", {}, "foo")
@@ -108,7 +114,7 @@ describe("types.string", () => {
           Infinity
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return false when passed ${JSON.stringify(testCase)}`, () => {
             const result = types.string.is(testCase as any)
             expect(result).toBe(false)
@@ -137,7 +143,7 @@ describe("types.string", () => {
           types.undefined
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return false when passed ${JSON.stringify(testCase)}`, () => {
             const result = types.string.isAssignableFrom(testCase as any)
             expect(result).toBe(false)
@@ -172,7 +178,7 @@ describe("types.string", () => {
           Infinity
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return with a validation error when passed ${JSON.stringify(
             testCase
           )}`, () => {

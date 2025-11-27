@@ -1,4 +1,10 @@
-import { ISimpleType, union, literal, assertIsString, devMode } from "../../internal"
+import {
+  ISimpleType,
+  union,
+  literal,
+  assertIsString,
+  devMode
+} from "../../internal"
 
 /** @hidden */
 export type UnionStringArray<T extends readonly string[]> = T[number]
@@ -31,7 +37,10 @@ export function enumeration<T extends string>(
  * @param options possible values this enumeration can have
  * @returns
  */
-export function enumeration(name: string | string[], options?: any): ISimpleType<string> {
+export function enumeration(
+  name: string | string[],
+  options?: any
+): ISimpleType<string> {
   const realOptions: string[] = typeof name === "string" ? options! : name
   // check all options
   if (devMode()) {
@@ -39,7 +48,7 @@ export function enumeration(name: string | string[], options?: any): ISimpleType
       assertIsString(option, i + 1)
     })
   }
-  const type = union(...realOptions.map((option) => literal("" + option)))
+  const type = union(...realOptions.map(option => literal("" + option)))
   if (typeof name === "string") type.name = name
   return type
 }

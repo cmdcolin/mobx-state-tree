@@ -37,7 +37,7 @@ async function testCoffeeTodo(
     .model({
       title: "get coffee"
     })
-    .actions((self) => ({
+    .actions(self => ({
       startFetch: flow(generator(self))
     }))
   const events: IMiddlewareEvent[] = []
@@ -49,7 +49,7 @@ async function testCoffeeTodo(
   })
   reaction(
     () => t1.title,
-    (coffee) => coffees.push(coffee)
+    coffee => coffees.push(coffee)
   )
   function handleResult(res: string | undefined | void) {
     expect(res).toBe(resultValue)
@@ -72,7 +72,7 @@ test("flow happens in single ticks", async () => {
     .model({
       y: 1
     })
-    .actions((self) => ({
+    .actions(self => ({
       p: flow(function* () {
         self.y++
         self.y++
@@ -85,7 +85,7 @@ test("flow happens in single ticks", async () => {
   const values: number[] = []
   reaction(
     () => x.y,
-    (v) => values.push(v)
+    v => values.push(v)
   )
   await x.p()
   expect(x.y).toBe(5)
@@ -93,7 +93,7 @@ test("flow happens in single ticks", async () => {
 })
 test("can handle async actions", async () => {
   await testCoffeeTodo(
-    (self) =>
+    self =>
       function* fetchData(kind: string) {
         self.title = "getting coffee " + kind
         self.title = yield delay(100, "drinking coffee")
@@ -106,7 +106,7 @@ test("can handle async actions", async () => {
 })
 test("can handle erroring actions", async () => {
   await testCoffeeTodo(
-    (self) =>
+    self =>
       function* fetchData(kind: string) {
         throw kind
       },
@@ -117,7 +117,7 @@ test("can handle erroring actions", async () => {
 })
 test("can handle try catch", async () => {
   await testCoffeeTodo(
-    (self) =>
+    self =>
       function* fetchData(kind: string) {
         try {
           yield delay(10, "tea", true)
@@ -133,7 +133,12 @@ test("can handle try catch", async () => {
   )
 })
 test("empty sequence works", async () => {
-  await testCoffeeTodo(() => function* fetchData(kind: string) {}, false, undefined, [])
+  await testCoffeeTodo(
+    () => function* fetchData(kind: string) {},
+    false,
+    undefined,
+    []
+  )
 })
 test("can handle throw from yielded promise works", async () => {
   await testCoffeeTodo(
@@ -147,7 +152,7 @@ test("can handle throw from yielded promise works", async () => {
   )
 })
 test("typings", async () => {
-  const M = types.model({ title: types.string }).actions((self) => {
+  const M = types.model({ title: types.string }).actions(self => {
     function* a(x: string) {
       yield delay(10, "x", false)
       self.title = "7"
@@ -169,7 +174,7 @@ test("typings", async () => {
   expect(x2).toBe(24)
 })
 test("typings 2", async () => {
-  const M = types.model({ title: types.string }).actions((self) => {
+  const M = types.model({ title: types.string }).actions(self => {
     function* a(x: string) {
       yield delay(10, "x", false)
       self.title = "7"
@@ -196,7 +201,7 @@ test("recordActions should only emit invocation", async () => {
     .model({
       title: types.string
     })
-    .actions((self) => {
+    .actions(self => {
       function* a(x: string) {
         yield delay(10, "x", false)
         calls++
@@ -229,7 +234,7 @@ test("can handle nested async actions", async () => {
     return res
   })
   await testCoffeeTodo(
-    (self) =>
+    self =>
       function* fetchData(kind: string) {
         self.title = yield uppercase("drinking " + kind)
         return self.title
@@ -250,7 +255,7 @@ test("can handle nested async actions when using decorate", async () => {
     const res = yield delay(20, value.toUpperCase())
     return res
   })
-  const Todo = types.model({}).actions((self) => {
+  const Todo = types.model({}).actions(self => {
     // tslint:disable-next-line:no-shadowed-variable
     const act = flow(function* act(value: string) {
       return yield uppercase(value)
@@ -307,7 +312,7 @@ function filterRelevantStuff(stuff: IMiddlewareEvent[]) {
 test("flow typings", async () => {
   const promise = Promise.resolve()
 
-  const M = types.model({ x: 5 }).actions((self) => ({
+  const M = types.model({ x: 5 }).actions(self => ({
     // should be () => Promise<void>
     voidToVoid: flow(function* () {
       yield promise
@@ -331,7 +336,7 @@ test("flow typings", async () => {
   expect(b).toBe(4)
   const c: number = await m.voidToNumber()
   expect(c).toBe(2)
-  await m.voidToNumber().then((d) => {
+  await m.voidToNumber().then(d => {
     const _d: number = d
     expect(_d).toBe(2)
   })
@@ -346,18 +351,21 @@ type IfAny<T, Y, N> = 0 extends 1 & T ? Y : N
 /**
  * Ensure that the type of the passed value is of the expected type, and is NOT the TypeScript `any` type
  */
-function ensureNotAnyType<TExpected, TActual>(value: IfAny<TActual, never, TExpected>) {}
+function ensureNotAnyType<TExpected, TActual>(
+  value: IfAny<TActual, never, TExpected>
+) {}
 
 test("yield* typings for toGeneratorFunction", async () => {
   const voidPromise = () => Promise.resolve()
   const numberPromise = () => Promise.resolve(7)
-  const stringWithArgsPromise = (input1: string, input2: boolean) => Promise.resolve("test-result")
+  const stringWithArgsPromise = (input1: string, input2: boolean) =>
+    Promise.resolve("test-result")
 
   const voidGen = toGeneratorFunction(voidPromise)
   const numberGen = toGeneratorFunction(numberPromise)
   const stringWithArgsGen = toGeneratorFunction(stringWithArgsPromise)
 
-  const M = types.model({ x: 5 }).actions((self) => {
+  const M = types.model({ x: 5 }).actions(self => {
     function* testAction() {
       const voidResult = yield* voidGen()
       ensureNotAnyType<void, typeof voidResult>(voidResult)
@@ -386,9 +394,10 @@ test("yield* typings for toGeneratorFunction", async () => {
 test("yield* typings for toGenerator", async () => {
   const voidPromise = () => Promise.resolve()
   const numberPromise = () => Promise.resolve(7)
-  const stringWithArgsPromise = (input1: string, input2: boolean) => Promise.resolve("test-result")
+  const stringWithArgsPromise = (input1: string, input2: boolean) =>
+    Promise.resolve("test-result")
 
-  const M = types.model({ x: 5 }).actions((self) => {
+  const M = types.model({ x: 5 }).actions(self => {
     function* testAction() {
       const voidResult = yield* toGenerator(voidPromise())
       ensureNotAnyType<void, typeof voidResult>(voidResult)
@@ -396,7 +405,9 @@ test("yield* typings for toGenerator", async () => {
       const numberResult = yield* toGenerator(numberPromise())
       ensureNotAnyType<number, typeof numberResult>(numberResult)
 
-      const stringResult = yield* toGenerator(stringWithArgsPromise("input", true))
+      const stringResult = yield* toGenerator(
+        stringWithArgsPromise("input", true)
+      )
       ensureNotAnyType<string, typeof stringResult>(stringResult)
 
       return stringResult

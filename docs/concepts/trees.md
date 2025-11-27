@@ -51,19 +51,19 @@ const TodoStore = types
     todos: types.array(Todo), // 4
     selectedTodo: types.reference(Todo) // 5
   })
-  .views((self) => {
+  .views(self => {
     return {
       // 6
       get completedTodos() {
-        return self.todos.filter((t) => t.done)
+        return self.todos.filter(t => t.done)
       },
       // 7
       findTodosByUser(user) {
-        return self.todos.filter((t) => t.assignee === user)
+        return self.todos.filter(t => t.assignee === user)
       }
     }
   })
-  .actions((self) => {
+  .actions(self => {
     return {
       addTodo(title) {
         self.todos.push({
@@ -111,11 +111,13 @@ const TodoStore = types
   .model("TodoStore", {
     /* props */
   })
-  .actions((self) => {
+  .actions(self => {
     const instantiationTime = Date.now()
 
     function addTodo(title) {
-      console.log(`Adding Todo ${title} after ${(Date.now() - instantiationTime) / 1000}s.`)
+      console.log(
+        `Adding Todo ${title} after ${(Date.now() - instantiationTime) / 1000}s.`
+      )
       self.todos.push({
         id: Math.random(),
         title

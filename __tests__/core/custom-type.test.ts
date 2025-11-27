@@ -77,7 +77,7 @@ class Decimal {
 
     const p = recordPatches(w1)
     const snapshots: SnapshotOut<typeof Wallet>[] = []
-    onSnapshot(w1, (s) => {
+    onSnapshot(w1, s => {
       snapshots.push(s)
     })
 
@@ -163,7 +163,7 @@ class Decimal {
 
     const p = recordPatches(w1)
     const snapshots: SnapshotOut<typeof Wallet>[] = []
-    onSnapshot(w1, (s) => {
+    onSnapshot(w1, s => {
       snapshots.push(s)
     })
 

@@ -8,7 +8,7 @@ sidebar_label: "IReversibleJsonPatch"
 
 ## Hierarchy
 
-* [IJsonPatch](ijsonpatch.md)
+- [IJsonPatch](ijsonpatch.md)
 
   ↳ **IReversibleJsonPatch**
 
@@ -16,45 +16,45 @@ sidebar_label: "IReversibleJsonPatch"
 
 ### Properties
 
-* [oldValue](ireversiblejsonpatch.md#oldvalue)
-* [op](ireversiblejsonpatch.md#op)
-* [path](ireversiblejsonpatch.md#path)
-* [value](ireversiblejsonpatch.md#optional-value)
+- [oldValue](ireversiblejsonpatch.md#oldvalue)
+- [op](ireversiblejsonpatch.md#op)
+- [path](ireversiblejsonpatch.md#path)
+- [value](ireversiblejsonpatch.md#optional-value)
 
 ## Properties
 
-###  oldValue
+### oldValue
 
-• **oldValue**: *any*
+• **oldValue**: _any_
 
-*Defined in [src/core/json-patch.ts:14](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L14)*
+_Defined in [src/core/json-patch.ts:14](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L14)_
 
-___
+---
 
-###  op
+### op
 
-• **op**: *"replace" | "add" | "remove"*
+• **op**: _"replace" | "add" | "remove"_
 
-*Inherited from [IJsonPatch](ijsonpatch.md).[op](ijsonpatch.md#op)*
+_Inherited from [IJsonPatch](ijsonpatch.md).[op](ijsonpatch.md#op)_
 
-*Defined in [src/core/json-patch.ts:8](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L8)*
+_Defined in [src/core/json-patch.ts:8](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L8)_
 
-___
+---
 
-###  path
+### path
 
-• **path**: *string*
+• **path**: _string_
 
-*Inherited from [IJsonPatch](ijsonpatch.md).[path](ijsonpatch.md#path)*
+_Inherited from [IJsonPatch](ijsonpatch.md).[path](ijsonpatch.md#path)_
 
-*Defined in [src/core/json-patch.ts:9](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L9)*
+_Defined in [src/core/json-patch.ts:9](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L9)_
 
-___
+---
 
 ### `Optional` value
 
-• **value**? : *any*
+• **value**? : _any_
 
-*Inherited from [IJsonPatch](ijsonpatch.md).[value](ijsonpatch.md#optional-value)*
+_Inherited from [IJsonPatch](ijsonpatch.md).[value](ijsonpatch.md#optional-value)_
 
-*Defined in [src/core/json-patch.ts:10](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L10)*
+_Defined in [src/core/json-patch.ts:10](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/json-patch.ts#L10)_

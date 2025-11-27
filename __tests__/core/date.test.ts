@@ -5,13 +5,16 @@ import { Hook, NodeLifeCycle } from "../../src/internal"
 describe("types.date", () => {
   describe("methods", () => {
     describe("create", () => {
-      describe.runIf(process.env.NODE_ENV !== "production")("with no arguments", () => {
-        it("should throw an error in development", () => {
-          expect(() => {
-            t.Date.create()
-          }).toThrow()
-        })
-      })
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with no arguments",
+        () => {
+          it("should throw an error in development", () => {
+            expect(() => {
+              t.Date.create()
+            }).toThrow()
+          })
+        }
+      )
       describe("with a number argument", () => {
         it("should return a Date object", () => {
           const d = t.Date.create(1701369873059)
@@ -43,7 +46,7 @@ describe("types.date", () => {
           new Error()
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should throw an error when passed ${JSON.stringify(testCase)}`, () => {
             expect(() => {
               t.Date.create(testCase as any)
@@ -79,14 +82,17 @@ describe("types.date", () => {
     })
   })
   describe("instantiate", () => {
-    describe.runIf(process.env.NODE_ENV !== "production")("with invalid arguments", () => {
-      it("should not throw an error", () => {
-        expect(() => {
-          // @ts-ignore
-          t.Date.instantiate()
-        }).not.toThrow()
-      })
-    })
+    describe.runIf(process.env.NODE_ENV !== "production")(
+      "with invalid arguments",
+      () => {
+        it("should not throw an error", () => {
+          expect(() => {
+            // @ts-ignore
+            t.Date.instantiate()
+          }).not.toThrow()
+        })
+      }
+    )
     describe("with a Date argument", () => {
       it("should return an object", () => {
         const s = t.Date.instantiate(null, "", {}, new Date())
@@ -128,7 +134,7 @@ describe("types.date", () => {
         new Error()
       ]
 
-      testCases.forEach((testCase) => {
+      testCases.forEach(testCase => {
         it(`should return false when passed ${JSON.stringify(testCase)}`, () => {
           const result = t.Date.is(testCase as any)
           expect(result).toBe(false)
@@ -157,7 +163,7 @@ describe("types.date", () => {
         t.undefined
       ]
 
-      testCases.forEach((testCase) => {
+      testCases.forEach(testCase => {
         it(`should return false when passed ${JSON.stringify(testCase)}`, () => {
           const result = t.Date.isAssignableFrom(testCase as any)
           expect(result).toBe(false)
@@ -195,7 +201,7 @@ describe("types.date", () => {
           new Error()
         ]
 
-        testCases.forEach((testCase) => {
+        testCases.forEach(testCase => {
           it(`should return with a validation error when passed ${JSON.stringify(
             testCase
           )}`, () => {

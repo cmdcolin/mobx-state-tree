@@ -8,7 +8,7 @@ sidebar_label: "IModelReflectionData"
 
 ## Hierarchy
 
-* [IModelReflectionPropertiesData](imodelreflectionpropertiesdata.md)
+- [IModelReflectionPropertiesData](imodelreflectionpropertiesdata.md)
 
   ↳ **IModelReflectionData**
 
@@ -16,65 +16,65 @@ sidebar_label: "IModelReflectionData"
 
 ### Properties
 
-* [actions](imodelreflectiondata.md#actions)
-* [flowActions](imodelreflectiondata.md#flowactions)
-* [name](imodelreflectiondata.md#name)
-* [properties](imodelreflectiondata.md#properties)
-* [views](imodelreflectiondata.md#views)
-* [volatile](imodelreflectiondata.md#volatile)
+- [actions](imodelreflectiondata.md#actions)
+- [flowActions](imodelreflectiondata.md#flowactions)
+- [name](imodelreflectiondata.md#name)
+- [properties](imodelreflectiondata.md#properties)
+- [views](imodelreflectiondata.md#views)
+- [volatile](imodelreflectiondata.md#volatile)
 
 ## Properties
 
-###  actions
+### actions
 
-• **actions**: *string[]*
+• **actions**: _string[]_
 
-*Defined in [src/core/mst-operations.ts:834](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L834)*
+_Defined in [src/core/mst-operations.ts:834](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L834)_
 
-___
+---
 
-###  flowActions
+### flowActions
 
-• **flowActions**: *string[]*
+• **flowActions**: _string[]_
 
-*Defined in [src/core/mst-operations.ts:837](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L837)*
+_Defined in [src/core/mst-operations.ts:837](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L837)_
 
-___
+---
 
-###  name
+### name
 
-• **name**: *string*
+• **name**: _string_
 
-*Inherited from [IModelReflectionPropertiesData](imodelreflectionpropertiesdata.md).[name](imodelreflectionpropertiesdata.md#name)*
+_Inherited from [IModelReflectionPropertiesData](imodelreflectionpropertiesdata.md).[name](imodelreflectionpropertiesdata.md#name)_
 
-*Defined in [src/core/mst-operations.ts:804](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L804)*
+_Defined in [src/core/mst-operations.ts:804](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L804)_
 
-___
+---
 
-###  properties
+### properties
 
-• **properties**: *object*
+• **properties**: _object_
 
-*Inherited from [IModelReflectionPropertiesData](imodelreflectionpropertiesdata.md).[properties](imodelreflectionpropertiesdata.md#properties)*
+_Inherited from [IModelReflectionPropertiesData](imodelreflectionpropertiesdata.md).[properties](imodelreflectionpropertiesdata.md#properties)_
 
-*Defined in [src/core/mst-operations.ts:805](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L805)*
+_Defined in [src/core/mst-operations.ts:805](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L805)_
 
 #### Type declaration:
 
-* \[ **K**: *string*\]: [IAnyType](ianytype.md)
+- \[ **K**: _string_\]: [IAnyType](ianytype.md)
 
-___
+---
 
-###  views
+### views
 
-• **views**: *string[]*
+• **views**: _string[]_
 
-*Defined in [src/core/mst-operations.ts:835](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L835)*
+_Defined in [src/core/mst-operations.ts:835](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L835)_
 
-___
+---
 
-###  volatile
+### volatile
 
-• **volatile**: *string[]*
+• **volatile**: _string[]_
 
-*Defined in [src/core/mst-operations.ts:836](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L836)*
+_Defined in [src/core/mst-operations.ts:836](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/core/mst-operations.ts#L836)_

@@ -55,29 +55,29 @@ console.log(instance.volume()) // calls Box.volume()
 Similarly, compose can be used to simply mix in types:
 
 ```javascript
-const CreationLogger = types.model().actions((self) => ({
-    afterCreate() {
-        console.log("Instantiated " + getType(self).name)
-    }
+const CreationLogger = types.model().actions(self => ({
+  afterCreate() {
+    console.log("Instantiated " + getType(self).name)
+  }
 }))
 
 const BaseSquare = types
-    .model({
-        width: types.number
-    })
-    .views((self) => ({
-        surface() {
-            return self.width * self.width
-        }
-    }))
+  .model({
+    width: types.number
+  })
+  .views(self => ({
+    surface() {
+      return self.width * self.width
+    }
+  }))
 
 export const LoggingSquare = types
-    .compose(
-        // combine a simple square model...
-        BaseSquare,
-        // ... with the logger type
-        CreationLogger
-    )
-    // ..and give it a nice name
-    .named("LoggingSquare")
+  .compose(
+    // combine a simple square model...
+    BaseSquare,
+    // ... with the logger type
+    CreationLogger
+  )
+  // ..and give it a nice name
+  .named("LoggingSquare")
 ```

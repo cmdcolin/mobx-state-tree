@@ -20,7 +20,7 @@ const Task = types
   .model({
     done: false
   })
-  .actions((self) => {
+  .actions(self => {
     function toggle() {
       self.done = !self.done
       return self.done
@@ -109,7 +109,7 @@ const Order = types
   .model("Order", {
     customer: types.maybeNull(types.reference(Customer))
   })
-  .actions((self) => {
+  .actions(self => {
     function setCustomer(customer: Instance<typeof Customer>) {
       self.customer = customer
     }
@@ -204,9 +204,12 @@ test("it should not be possible to pass an unserializable object", () => {
 
   // fix for newer node versions, which include extra data on dev mode
   if (
-    recorder.actions[0].args![0].type.startsWith("TypeError: Converting circular structure to JSON")
+    recorder.actions[0].args![0].type.startsWith(
+      "TypeError: Converting circular structure to JSON"
+    )
   ) {
-    recorder.actions[0].args![0].type = "TypeError: Converting circular structure to JSON"
+    recorder.actions[0].args![0].type =
+      "TypeError: Converting circular structure to JSON"
   }
 
   expect(recorder.actions).toEqual([
@@ -254,7 +257,7 @@ test("snapshot should be available and updated during an action", () => {
     .model({
       x: types.number
     })
-    .actions((self) => {
+    .actions(self => {
       function inc() {
         self.x += 1
         const res = getSnapshot(self).x
@@ -276,7 +279,7 @@ test("indirectly called private functions should be able to modify state", () =>
     .model({
       x: 3
     })
-    .actions((self) => {
+    .actions(self => {
       function incrementBy(delta: number) {
         self.x += delta
       }
@@ -296,7 +299,7 @@ test("indirectly called private functions should be able to modify state", () =>
   expect((cnt as any).incrementBy).toBe(undefined)
 })
 test("volatile state survives reonciliation", () => {
-  const Model = types.model({ x: 3 }).actions((self) => {
+  const Model = types.model({ x: 3 }).actions(self => {
     let incrementor = 1
     return {
       setIncrementor(value: number) {
@@ -326,7 +329,7 @@ test("middleware events are correct", () => {
     useProxies: "never"
   })
 
-  const A = types.model({}).actions((self) => ({
+  const A = types.model({}).actions(self => ({
     a(x: number) {
       return this.b(x * 2)
     },
@@ -377,12 +380,12 @@ test("actions are mockable", () => {
 
   const M = types
     .model()
-    .actions((self) => ({
+    .actions(self => ({
       method(): number {
         return 3
       }
     }))
-    .views((self) => ({
+    .views(self => ({
       view(): number {
         return 3
       }
@@ -416,7 +419,7 @@ test("after attach action should work correctly", () => {
     .model({
       title: "test"
     })
-    .actions((self) => ({
+    .actions(self => ({
       remove() {
         getRoot<typeof S>(self).remove(cast(self))
       }
@@ -425,7 +428,7 @@ test("after attach action should work correctly", () => {
     .model({
       todos: types.array(Todo)
     })
-    .actions((self) => ({
+    .actions(self => ({
       remove(todo: Instance<typeof Todo>) {
         self.todos.remove(todo)
       }
@@ -437,7 +440,7 @@ test("after attach action should work correctly", () => {
   const events: ISerializedActionCall[] = []
   onAction(
     s,
-    (call) => {
+    call => {
       events.push(call)
     },
     true

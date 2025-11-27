@@ -7,20 +7,23 @@ const ChildModel = types
     parentEnvIsNullAfterCreate: false,
     parentPropertyIsNullAfterAttach: false
   })
-  .views((self) => {
+  .views(self => {
     return {
       get parent(): IParentModelInstance {
         return getParent<typeof ParentModel>(self)
       }
     }
   })
-  .actions((self) => ({
+  .actions(self => ({
     afterCreate() {
-      self.parentPropertyIsNullAfterCreate = typeof self.parent.fetch === "undefined"
-      self.parentEnvIsNullAfterCreate = typeof getEnv(self.parent).fetch === "undefined"
+      self.parentPropertyIsNullAfterCreate =
+        typeof self.parent.fetch === "undefined"
+      self.parentEnvIsNullAfterCreate =
+        typeof getEnv(self.parent).fetch === "undefined"
     },
     afterAttach() {
-      self.parentPropertyIsNullAfterAttach = typeof self.parent.fetch === "undefined"
+      self.parentPropertyIsNullAfterAttach =
+        typeof self.parent.fetch === "undefined"
     }
   }))
 
@@ -28,7 +31,7 @@ const ParentModel = types
   .model("Parent", {
     child: types.optional(ChildModel, {})
   })
-  .views((self) => ({
+  .views(self => ({
     get fetch() {
       return getEnv(self).fetch
     }
@@ -59,12 +62,12 @@ test("#917", () => {
       title: types.string,
       finished: false
     })
-    .views((self) => ({
+    .views(self => ({
       get path() {
         return getPath(self)
       }
     }))
-    .actions((self) => ({
+    .actions(self => ({
       toggle() {
         self.finished = !self.finished
       }
@@ -77,12 +80,12 @@ test("#917", () => {
       finished: false,
       subTodos: types.array(SubTodo)
     })
-    .views((self) => ({
+    .views(self => ({
       get path() {
         return getPath(self)
       }
     }))
-    .actions((self) => ({
+    .actions(self => ({
       toggle() {
         self.finished = !self.finished
       }
@@ -92,12 +95,12 @@ test("#917", () => {
     .model("TodoStore", {
       todos: types.array(Todo)
     })
-    .views((self) => ({
+    .views(self => ({
       get unfinishedTodoCount() {
-        return self.todos.filter((todo) => !todo.finished).length
+        return self.todos.filter(todo => !todo.finished).length
       }
     }))
-    .actions((self) => ({
+    .actions(self => ({
       addTodo(title: string) {
         self.todos.push({
           title,

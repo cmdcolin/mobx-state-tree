@@ -25,28 +25,28 @@ The following is an example of an object with volatile state. Note that volatile
 
 ```javascript
 const Store = types
-    .model({
-        todos: types.array(Todo),
-        state: types.enumeration("State", ["loading", "loaded", "error"])
-    })
-    .actions(self => {
-        let pendingRequest = null // a Promise
+  .model({
+    todos: types.array(Todo),
+    state: types.enumeration("State", ["loading", "loaded", "error"])
+  })
+  .actions(self => {
+    let pendingRequest = null // a Promise
 
-        function afterCreate() {
-            self.state = "loading"
-            pendingRequest = someXhrLib.createRequest("someEndpoint")
-        }
+    function afterCreate() {
+      self.state = "loading"
+      pendingRequest = someXhrLib.createRequest("someEndpoint")
+    }
 
-        function beforeDestroy() {
-            // abort the request, no longer interested
-            pendingRequest.abort()
-        }
+    function beforeDestroy() {
+      // abort the request, no longer interested
+      pendingRequest.abort()
+    }
 
-        return {
-            afterCreate,
-            beforeDestroy
-        }
-    })
+    return {
+      afterCreate,
+      beforeDestroy
+    }
+  })
 ```
 
 Some tips:
@@ -65,21 +65,21 @@ Here's an example of how to do your own volatile state using an observable:
 // it is important to make sure that state used such getters are observable,
 // or else the value returned by the view would become stale upon observation
 const Todo = types.model({}).extend(self => {
-    const localState = observable.box(3)
+  const localState = observable.box(3)
 
-    return {
-        views: {
-            // note this one IS a getter (computed value)
-            get x() {
-                return localState.get()
-            }
-        },
-        actions: {
-            setX(value) {
-                localState.set(value)
-            }
-        }
+  return {
+    views: {
+      // note this one IS a getter (computed value)
+      get x() {
+        return localState.get()
+      }
+    },
+    actions: {
+      setX(value) {
+        localState.set(value)
+      }
     }
+  }
 })
 ```
 
@@ -89,25 +89,24 @@ And here's an example of how to do your own volatile state _not_ using an observ
 // if not using an observable then make sure your local state is NOT part of a view getter or computed value of any kind!
 // also changes to it WON'T be reactive
 const Todo = types.model({}).extend(self => {
-    let localState = 3
+  let localState = 3
 
-    return {
-        views: {
-            // note this one is NOT a getter (NOT a computed value)
-            // if this were a getter this value would get stale upon observation
-            getX() {
-                return localState
-            }
-        },
-        actions: {
-            setX(value) {
-                localState = value
-            }
-        }
+  return {
+    views: {
+      // note this one is NOT a getter (NOT a computed value)
+      // if this were a getter this value would get stale upon observation
+      getX() {
+        return localState
+      }
+    },
+    actions: {
+      setX(value) {
+        localState = value
+      }
     }
+  }
 })
 ```
-
 
 ### model.volatile
 
@@ -115,15 +114,15 @@ Since the pattern above (having a volatile state that is _observable_ (in terms 
 
 ```javascript
 const Todo = types
-    .model({})
-    .volatile(self => ({
-        localState: 3
-    }))
-    .actions(self => ({
-        setX(value) {
-            self.localState = value
-        }
-    }))
+  .model({})
+  .volatile(self => ({
+    localState: 3
+  }))
+  .actions(self => ({
+    setX(value) {
+      self.localState = value
+    }
+  }))
 ```
 
 The object that is returned from the `volatile` initializer function can contain any piece of data and will result in an instance property with the same name. Volatile properties have the following characteristics:

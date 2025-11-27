@@ -13,11 +13,11 @@ is of the related instance type.
 
 ```typescript
 const Task = types.model({
-    done: false
+  done: false
 })
 const Store = types.model({
-    tasks: types.array(Task),
-    selection: types.maybe(Task)
+  tasks: types.array(Task),
+  selection: types.maybe(Task)
 })
 
 const s = Store.create({ tasks: [] })
@@ -33,20 +33,20 @@ Using both at the same time we can express property assignation of complex prope
 
 ```typescript
 const Task = types.model({
-    done: false
+  done: false
 })
 const Store = types
-    .model({
-        tasks: types.array(Task)
-    })
-    .actions(self => ({
-        addTask(task: SnapshotOrInstance<typeof Task>) {
-            self.tasks.push(cast(task))
-        },
-        replaceTasks(tasks: SnapshotOrInstance<typeof self.tasks>) {
-            self.tasks = cast(tasks)
-        }
-    }))
+  .model({
+    tasks: types.array(Task)
+  })
+  .actions(self => ({
+    addTask(task: SnapshotOrInstance<typeof Task>) {
+      self.tasks.push(cast(task))
+    },
+    replaceTasks(tasks: SnapshotOrInstance<typeof self.tasks>) {
+      self.tasks = cast(tasks)
+    }
+  }))
 
 const s = Store.create({ tasks: [] })
 
@@ -66,7 +66,7 @@ thinking that this instance is actually a snapshot.
 ```typescript
 const task = Task.create({ done: true })
 const Store = types.model({
-    tasks: types.array(Task)
+  tasks: types.array(Task)
 })
 
 // we cast the task instance to a snapshot so it can be used as part of another snapshot without typing errors
@@ -80,10 +80,9 @@ thinking that this instance is actually a snapshot of a reference.
 ```typescript
 const task = Task.create({ id: types.identifier, done: true })
 const Store = types.model({
-    tasks: types.array(types.reference(Task))
+  tasks: types.array(types.reference(Task))
 })
 
 // we cast the task instance to a reference snapshot so it can be used as part of another snapshot without typing errors
 const s = Store.create({ tasks: [castToReferenceSnapshot(task)] })
 ```
-

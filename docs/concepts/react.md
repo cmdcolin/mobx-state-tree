@@ -16,7 +16,7 @@ title: React and MST
 
 ### Can I use React and MST together?
 
-Yep, that works perfectly fine, everything that applies to MobX and React applies to MST and React as well.  `observer`, `autorun`, etc. will work as expected.
+Yep, that works perfectly fine, everything that applies to MobX and React applies to MST and React as well. `observer`, `autorun`, etc. will work as expected.
 To share MST trees between components we recommend to use `React.createContext`.
 
 In the examples folder several examples of React and MST can be found, or check this [example](https://github.com/impulse/react-hooks-mobx-state-tree) which uses hooks (recommended).

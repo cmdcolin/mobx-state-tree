@@ -41,33 +41,33 @@ import { types, onSnapshot } from "mobx-state-tree"
 
 // A tweet has a body (which is text) and whether it's read or not
 const Tweet = types
-    .model("Tweet", {
-        body: types.string,
-        read: false // automatically inferred as type "boolean" with default "false"
-    })
-    .actions((tweet) => ({
-        toggle() {
-            tweet.read = !tweet.read
-        }
-    }))
+  .model("Tweet", {
+    body: types.string,
+    read: false // automatically inferred as type "boolean" with default "false"
+  })
+  .actions(tweet => ({
+    toggle() {
+      tweet.read = !tweet.read
+    }
+  }))
 
 // Define the Twitter "store" as having an array of tweets
 const TwitterStore = types.model("TwitterStore", {
-    tweets: types.array(Tweet)
+  tweets: types.array(Tweet)
 })
 
 // create your new Twitter store instance with some initial data
 const twitterStore = TwitterStore.create({
-    tweets: [
-        {
-            body: "Anyone tried MST?"
-        }
-    ]
+  tweets: [
+    {
+      body: "Anyone tried MST?"
+    }
+  ]
 })
 
 // Listen to new snapshots, which are created anytime something changes
-onSnapshot(twitterStore, (snapshot) => {
-    console.log(snapshot)
+onSnapshot(twitterStore, snapshot => {
+  console.log(snapshot)
 })
 
 // Let's mark the first tweet as "read" by invoking the "toggle" action
@@ -78,7 +78,7 @@ twitterStore.tweets[0].toggle()
 
 ## Next Steps
 
--   Learn how to [install MobX-State-Tree](./installation.md) or jump straight to our [Getting Started](./getting-started.md) guide!
--   View [examples](./examples.md) here.
--   If you're interested in the philosophy behind MobX-State-Tree and a lot more explanation of features and benefits, check out the [Philosophy](./philosophy.md) page.
--   Or check out a talk or two on our [Resources](./../tips/resources.md) page
+- Learn how to [install MobX-State-Tree](./installation.md) or jump straight to our [Getting Started](./getting-started.md) guide!
+- View [examples](./examples.md) here.
+- If you're interested in the philosophy behind MobX-State-Tree and a lot more explanation of features and benefits, check out the [Philosophy](./philosophy.md) page.
+- Or check out a talk or two on our [Resources](./../tips/resources.md) page

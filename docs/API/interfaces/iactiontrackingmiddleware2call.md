@@ -12,7 +12,7 @@ sidebar_label: "IActionTrackingMiddleware2Call"
 
 ## Hierarchy
 
-* object
+- object
 
   ↳ **IActionTrackingMiddleware2Call**
 
@@ -20,21 +20,21 @@ sidebar_label: "IActionTrackingMiddleware2Call"
 
 ### Properties
 
-* [env](iactiontrackingmiddleware2call.md#env)
-* [parentCall](iactiontrackingmiddleware2call.md#optional-parentcall)
+- [env](iactiontrackingmiddleware2call.md#env)
+- [parentCall](iactiontrackingmiddleware2call.md#optional-parentcall)
 
 ## Properties
 
-###  env
+### env
 
-• **env**: *TEnv | undefined*
+• **env**: _TEnv | undefined_
 
-*Defined in [src/middlewares/createActionTrackingMiddleware2.ts:6](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L6)*
+_Defined in [src/middlewares/createActionTrackingMiddleware2.ts:6](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L6)_
 
-___
+---
 
 ### `Optional` parentCall
 
-• **parentCall**? : *[IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv›*
+• **parentCall**? : _[IActionTrackingMiddleware2Call](iactiontrackingmiddleware2call.md)‹TEnv›_
 
-*Defined in [src/middlewares/createActionTrackingMiddleware2.ts:7](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L7)*
+_Defined in [src/middlewares/createActionTrackingMiddleware2.ts:7](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/createActionTrackingMiddleware2.ts#L7)_

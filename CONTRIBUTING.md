@@ -13,8 +13,8 @@ Welcome to MobX-State-Tree! We're stoked that you want to contribute to our open
 
 Before you start contributing, please make sure you have:
 
--   [Node.js](https://nodejs.org/en) and [yarn](https://yarnpkg.com/) installed on your local machine.
--   A [GitHub](https://github.com/) account, as you'll need it to create issues and submit pull requests.
+- [Node.js](https://nodejs.org/en) and [yarn](https://yarnpkg.com/) installed on your local machine.
+- A [GitHub](https://github.com/) account, as you'll need it to create issues and submit pull requests.
 
 Most of the documentation and community assumes some amount of familiarity with:
 

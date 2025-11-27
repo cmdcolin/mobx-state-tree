@@ -17,12 +17,17 @@ test("it should accept a type and infer it correctly", () => {
   const After = types.model({
     name: types.maybe(types.string)
   })
-  expect(() => Before.create({ after: { name: "Hello, it's me." } })).not.toThrow()
+  expect(() =>
+    Before.create({ after: { name: "Hello, it's me." } })
+  ).not.toThrow()
 })
 test("late should allow circular references", () => {
   // TypeScript is'nt smart enough to infer self referencing types.
   const Node = types.model({
-    childs: types.optional(types.array(types.late((): IAnyModelType => Node)), [])
+    childs: types.optional(
+      types.array(types.late((): IAnyModelType => Node)),
+      []
+    )
   })
   expect(() => Node.create()).not.toThrow()
   expect(() => Node.create({ childs: [{}, { childs: [] }] })).not.toThrow()

@@ -8,69 +8,69 @@ sidebar_label: "IActionRecorder"
 
 ## Hierarchy
 
-* **IActionRecorder**
+- **IActionRecorder**
 
 ## Index
 
 ### Properties
 
-* [actions](iactionrecorder.md#actions)
-* [recording](iactionrecorder.md#recording)
+- [actions](iactionrecorder.md#actions)
+- [recording](iactionrecorder.md#recording)
 
 ### Methods
 
-* [replay](iactionrecorder.md#replay)
-* [resume](iactionrecorder.md#resume)
-* [stop](iactionrecorder.md#stop)
+- [replay](iactionrecorder.md#replay)
+- [resume](iactionrecorder.md#resume)
+- [stop](iactionrecorder.md#stop)
 
 ## Properties
 
-###  actions
+### actions
 
-• **actions**: *ReadonlyArray‹[ISerializedActionCall](iserializedactioncall.md)›*
+• **actions**: _ReadonlyArray‹[ISerializedActionCall](iserializedactioncall.md)›_
 
-*Defined in [src/middlewares/on-action.ts:37](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L37)*
+_Defined in [src/middlewares/on-action.ts:37](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L37)_
 
-___
+---
 
-###  recording
+### recording
 
-• **recording**: *boolean*
+• **recording**: _boolean_
 
-*Defined in [src/middlewares/on-action.ts:38](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L38)*
+_Defined in [src/middlewares/on-action.ts:38](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L38)_
 
 ## Methods
 
-###  replay
+### replay
 
-▸ **replay**(`target`: IAnyStateTreeNode): *void*
+▸ **replay**(`target`: IAnyStateTreeNode): _void_
 
-*Defined in [src/middlewares/on-action.ts:41](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L41)*
+_Defined in [src/middlewares/on-action.ts:41](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L41)_
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`target` | IAnyStateTreeNode |
+| Name     | Type              |
+| -------- | ----------------- |
+| `target` | IAnyStateTreeNode |
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  resume
+### resume
 
-▸ **resume**(): *void*
+▸ **resume**(): _void_
 
-*Defined in [src/middlewares/on-action.ts:40](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L40)*
+_Defined in [src/middlewares/on-action.ts:40](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L40)_
 
-**Returns:** *void*
+**Returns:** _void_
 
-___
+---
 
-###  stop
+### stop
 
-▸ **stop**(): *void*
+▸ **stop**(): _void_
 
-*Defined in [src/middlewares/on-action.ts:39](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L39)*
+_Defined in [src/middlewares/on-action.ts:39](https://github.com/mobxjs/mobx-state-tree/blob/922ac098/src/middlewares/on-action.ts#L39)_
 
-**Returns:** *void*
+**Returns:** _void_

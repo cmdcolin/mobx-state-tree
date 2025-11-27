@@ -12,7 +12,7 @@ test("it should load the correct type", async () => {
       width: types.number,
       height: types.number
     })
-    .views((self) => ({
+    .views(self => ({
       get area() {
         return self.height * self.width
       }
@@ -23,10 +23,10 @@ test("it should load the correct type", async () => {
       shouldLoad: types.optional(types.boolean, false),
       lazyModel: types.lazy<typeof LazyModel, IRootModel>("lazy", {
         loadType: () => Promise.resolve(LazyModel),
-        shouldLoadPredicate: (parent) => parent.shouldLoad == true
+        shouldLoadPredicate: parent => parent.shouldLoad == true
       })
     })
-    .actions((self) => ({
+    .actions(self => ({
       load: () => {
         self.shouldLoad = true
       }
@@ -61,7 +61,7 @@ test("maintains the tree structure when loaded", async () => {
       width: types.number,
       height: types.number
     })
-    .views((self) => ({
+    .views(self => ({
       get area() {
         const root = getRoot<{ rootValue: number }>(self)
         return self.height * self.width * root.rootValue
@@ -73,7 +73,7 @@ test("maintains the tree structure when loaded", async () => {
       shouldLoad: types.optional(types.boolean, false),
       lazyModel: types.lazy<typeof LazyModel, IRootModel>("lazy", {
         loadType: () => Promise.resolve(LazyModel),
-        shouldLoadPredicate: (parent) => parent.shouldLoad == true
+        shouldLoadPredicate: parent => parent.shouldLoad == true
       })
     })
     .views(() => ({
@@ -81,7 +81,7 @@ test("maintains the tree structure when loaded", async () => {
         return 5
       }
     }))
-    .actions((self) => ({
+    .actions(self => ({
       load: () => {
         self.shouldLoad = true
       }

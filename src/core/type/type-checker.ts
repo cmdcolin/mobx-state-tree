@@ -52,8 +52,8 @@ export function prettyPrintValue(value: any) {
   return typeof value === "function"
     ? `<function${value.name ? " " + value.name : ""}>`
     : isStateTreeNode(value)
-    ? `<${value}>`
-    : `\`${safeStringify(value)}\``
+      ? `<${value}>`
+      : `\`${safeStringify(value)}\``
 }
 
 function shortenPrintValue(valueInString: string) {
@@ -67,7 +67,7 @@ function toErrorString(error: IValidationError): string {
   const type = error.context[error.context.length - 1].type!
   const fullPath = error.context
     .map(({ path }) => path)
-    .filter((path) => path.length > 0)
+    .filter(path => path.length > 0)
     .join("/")
 
   const pathPrefix = fullPath.length > 0 ? `at path "/${fullPath}" ` : ``
@@ -75,8 +75,8 @@ function toErrorString(error: IValidationError): string {
   const currentTypename = isStateTreeNode(value)
     ? `value of type ${getStateTreeNode(value).type.name}:`
     : isPrimitive(value)
-    ? "value"
-    : "snapshot"
+      ? "value"
+      : "snapshot"
   const isSnapshotCompatible =
     type && isStateTreeNode(value) && type.is(getStateTreeNode(value).snapshot)
 
@@ -134,7 +134,9 @@ export function typeCheckFailure(
  * @internal
  * @hidden
  */
-export function flattenTypeErrors(errors: IValidationResult[]): IValidationResult {
+export function flattenTypeErrors(
+  errors: IValidationResult[]
+): IValidationResult {
   return errors.reduce((a, i) => a.concat(i), [])
 }
 
@@ -161,7 +163,10 @@ export function typecheckInternal<IT extends IAnyType>(
  * @param type Type to check against.
  * @param value Value to be checked, either a snapshot or an instance.
  */
-export function typecheck<IT extends IAnyType>(type: IT, value: ExtractCSTWithSTN<IT>): void {
+export function typecheck<IT extends IAnyType>(
+  type: IT,
+  value: ExtractCSTWithSTN<IT>
+): void {
   const errors = type.validate(value, [{ path: "", type }])
 
   if (errors.length > 0) {
