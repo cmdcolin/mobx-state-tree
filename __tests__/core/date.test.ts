@@ -314,35 +314,33 @@ describe("types.date", () => {
           expect(called).toBe(true)
         })
       })
-      describe("setParent", () => {
-        if (process.env.NODE_ENV !== "production") {
-          describe("with null", () => {
-            it("should throw an error", () => {
-              const d = t.Date.instantiate(null, "", {}, new Date())
-              expect(() => {
-                d.setParent(null, "foo")
-              }).toThrow()
-            })
+      describe.runIf(process.env.NODE_ENV !== "production")("setParent", () => {
+        describe("with null", () => {
+          it("should throw an error", () => {
+            const d = t.Date.instantiate(null, "", {}, new Date())
+            expect(() => {
+              d.setParent(null, "foo")
+            }).toThrow()
           })
-          describe("with a parent object", () => {
-            it("should throw an error", () => {
-              const Parent = t.model({
-                child: t.Date
-              })
-
-              const parent = Parent.create({ child: new Date() })
-
-              const d = t.Date.instantiate(null, "", {}, new Date())
-
-              expect(() => {
-                // @ts-ignore
-                d.setParent(parent, "bar")
-              }).toThrow(
-                "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
-              )
+        })
+        describe("with a parent object", () => {
+          it("should throw an error", () => {
+            const Parent = t.model({
+              child: t.Date
             })
+
+            const parent = Parent.create({ child: new Date() })
+
+            const d = t.Date.instantiate(null, "", {}, new Date())
+
+            expect(() => {
+              // @ts-ignore
+              d.setParent(parent, "bar")
+            }).toThrow(
+              "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
+            )
           })
-        }
+        })
       })
     })
   })

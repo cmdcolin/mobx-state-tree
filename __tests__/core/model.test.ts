@@ -408,8 +408,9 @@ describe("Model properties objects", () => {
       })
     })
   })
-  describe("when a user defines a property using a function", () => {
-    if (process.env.NODE_ENV !== "production") {
+  describe.runIf(process.env.NODE_ENV !== "production")(
+    "when a user defines a property using a function",
+    () => {
       test("it throws an error when not in production", () => {
         expect(() => {
           // @ts-ignore
@@ -421,9 +422,10 @@ describe("Model properties objects", () => {
         )
       })
     }
-  })
-  describe("when a user defines a property using a plain JavaScript object", () => {
-    if (process.env.NODE_ENV !== "production") {
+  )
+  describe.runIf(process.env.NODE_ENV !== "production")(
+    "when a user defines a property using a plain JavaScript object",
+    () => {
       test("it throws an error when not in production", () => {
         expect(() => {
           // @ts-ignore
@@ -435,7 +437,7 @@ describe("Model properties objects", () => {
         )
       })
     }
-  })
+  )
   describe("when a user uses `.props` to create a child model", () => {
     it("does not modify the parent properties", () => {
       const Parent = types.model({
