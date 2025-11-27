@@ -1,28 +1,28 @@
 import { action } from "mobx"
 
 import {
-  fail,
-  isMutable,
-  isStateTreeNode,
-  getStateTreeNode,
+  AnyNode,
+  AnyObjectNode,
+  BaseNode,
+  IChildNodesMap,
+  IJsonPatch,
+  IStateTreeNode,
   IValidationContext,
   IValidationResult,
-  typecheckInternal,
+  ModelPrimitive,
+  ObjectNode,
+  ScalarNode,
+  assertArg,
+  fail,
+  getStateTreeNode,
+  getStateTreeNodeSafe,
+  getType,
+  isMutable,
+  isStateTreeNode,
+  normalizeIdentifier,
   typeCheckFailure,
   typeCheckSuccess,
-  IStateTreeNode,
-  IJsonPatch,
-  getType,
-  ObjectNode,
-  IChildNodesMap,
-  ModelPrimitive,
-  normalizeIdentifier,
-  AnyObjectNode,
-  AnyNode,
-  BaseNode,
-  ScalarNode,
-  getStateTreeNodeSafe,
-  assertArg
+  typecheckInternal
 } from "../../internal"
 
 /**

@@ -1,18 +1,18 @@
 import {
-  fail,
-  isPrimitive,
-  createScalarNode,
+  AnyObjectNode,
   ISimpleType,
-  TypeFlags,
   IValidationContext,
   IValidationResult,
-  typeCheckSuccess,
-  typeCheckFailure,
-  isType,
   Primitives,
-  AnyObjectNode,
   SimpleType,
-  devMode
+  TypeFlags,
+  createScalarNode,
+  devMode,
+  fail,
+  isPrimitive,
+  isType,
+  typeCheckFailure,
+  typeCheckSuccess
 } from "../../internal"
 import { assertArg } from "../../utils"
 

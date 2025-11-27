@@ -1,19 +1,19 @@
 import {
-  fail,
-  ObjectNode,
-  splitJsonPath,
-  joinJsonPath,
-  ScalarNode,
-  IChildNodesMap,
-  EMPTY_ARRAY,
-  AnyObjectNode,
   AnyNode,
+  AnyObjectNode,
+  EMPTY_ARRAY,
+  IAnyComplexType,
   IAnyType,
+  IChildNodesMap,
   IType,
-  assertArg,
-  STNValue,
   Instance,
-  IAnyComplexType
+  ObjectNode,
+  STNValue,
+  ScalarNode,
+  assertArg,
+  fail,
+  joinJsonPath,
+  splitJsonPath
 } from "../../internal"
 
 /**

@@ -1,23 +1,23 @@
 import {
-  IType,
-  IAnyType,
+  AnyObjectNode,
   BaseType,
-  isStateTreeNode,
+  ComplexType,
+  ExtractNodeType,
+  IAnyType,
+  IType,
   IValidationContext,
   IValidationResult,
-  AnyObjectNode,
-  TypeFlags,
-  ExtractNodeType,
-  assertIsType,
-  isType,
-  getSnapshot,
-  devMode,
-  ComplexType,
-  typeCheckFailure,
-  isUnionType,
   Instance,
   ObjectNode,
-  fail
+  TypeFlags,
+  assertIsType,
+  devMode,
+  fail,
+  getSnapshot,
+  isStateTreeNode,
+  isType,
+  isUnionType,
+  typeCheckFailure
 } from "../../internal"
 
 /** @hidden */

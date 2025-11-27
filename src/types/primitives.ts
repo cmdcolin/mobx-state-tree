@@ -1,22 +1,22 @@
 import {
-  SimpleType,
-  isPrimitive,
-  fail,
-  identity,
-  createScalarNode,
+  AnyNode,
+  AnyObjectNode,
   ISimpleType,
   IType,
-  TypeFlags,
   IValidationContext,
   IValidationResult,
-  typeCheckSuccess,
-  typeCheckFailure,
-  isType,
-  isInteger,
-  AnyObjectNode,
-  AnyNode,
+  SimpleType,
+  TypeFlags,
+  createScalarNode,
+  fail,
+  identity,
+  isFinite,
   isFloat,
-  isFinite
+  isInteger,
+  isPrimitive,
+  isType,
+  typeCheckFailure,
+  typeCheckSuccess
 } from "../internal"
 
 // TODO: implement CoreType using types.custom ?

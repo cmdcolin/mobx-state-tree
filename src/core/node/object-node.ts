@@ -1,48 +1,49 @@
 // noinspection ES6UnusedImports
 import {
+  IComputedValue,
+  _allowStateChangesInsideComputed,
   action,
   computed,
-  IComputedValue,
-  reaction,
-  _allowStateChangesInsideComputed
+  reaction
 } from "mobx"
+
 import {
-  addHiddenFinalProp,
+  AnyNode,
+  ArgumentTypes,
+  BaseNode,
   ComplexType,
-  convertChildNodesToArray,
-  createActionInvoker,
   EMPTY_OBJECT,
-  extend,
-  fail,
-  freeze,
+  EventHandlers,
+  Hook,
   IAnyType,
-  IdentifierCache,
   IDisposer,
   IJsonPatch,
   IMiddleware,
+  IMiddlewareEvent,
   IMiddlewareHandler,
   IReversibleJsonPatch,
+  IStateTreeNode,
+  IType,
+  IdentifierCache,
   NodeLifeCycle,
+  ReferenceIdentifier,
+  addHiddenFinalProp,
+  convertChildNodesToArray,
+  createActionInvoker,
+  devMode,
+  escapeJsonPath,
+  extend,
+  fail,
+  freeze,
+  getCurrentActionContext,
+  getLivelinessChecking,
+  getPath,
+  normalizeIdentifier,
   resolveNodeByPathParts,
   splitJsonPath,
   splitPatch,
   toJSON,
-  EventHandlers,
-  Hook,
-  BaseNode,
-  getLivelinessChecking,
-  normalizeIdentifier,
-  ReferenceIdentifier,
-  IMiddlewareEvent,
-  escapeJsonPath,
-  getPath,
-  warnError,
-  AnyNode,
-  IStateTreeNode,
-  ArgumentTypes,
-  IType,
-  devMode,
-  getCurrentActionContext
+  warnError
 } from "../../internal"
 
 let nextNodeId = 1
@@ -520,7 +521,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
 
   finalizeCreation(): void {
     this.baseFinalizeCreation(() => {
-      for (let child of this.getChildren()) {
+      for (const child of this.getChildren()) {
         child.finalizeCreation()
       }
 

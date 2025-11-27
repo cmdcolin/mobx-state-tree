@@ -1,18 +1,18 @@
 import {
-  fail,
-  createScalarNode,
-  SimpleType,
-  TypeFlags,
-  isType,
+  AnyObjectNode,
+  ISimpleType,
   IValidationContext,
   IValidationResult,
-  typeCheckFailure,
   ModelType,
-  typeCheckSuccess,
-  ISimpleType,
-  AnyObjectNode,
   ScalarNode,
-  assertArg
+  SimpleType,
+  TypeFlags,
+  assertArg,
+  createScalarNode,
+  fail,
+  isType,
+  typeCheckFailure,
+  typeCheckSuccess
 } from "../../internal"
 
 abstract class BaseIdentifierType<T> extends SimpleType<T, T, T> {

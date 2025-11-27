@@ -1,18 +1,18 @@
 import {
-  isSerializable,
-  deepFreeze,
-  createScalarNode,
+  AnyObjectNode,
+  IAnyType,
+  IType,
   IValidationContext,
   IValidationResult,
-  typeCheckSuccess,
-  typeCheckFailure,
+  SimpleType,
   TypeFlags,
+  createScalarNode,
+  deepFreeze,
+  isSerializable,
   isType,
   optional,
-  IType,
-  IAnyType,
-  AnyObjectNode,
-  SimpleType
+  typeCheckFailure,
+  typeCheckSuccess
 } from "../../internal"
 
 /**

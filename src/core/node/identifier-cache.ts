@@ -1,10 +1,11 @@
-import { IObservableArray, values, observable, entries } from "mobx"
+import { IObservableArray, entries, observable, values } from "mobx"
+
 import {
-  fail,
-  ObjectNode,
-  mobxShallow,
   AnyObjectNode,
-  IAnyComplexType
+  IAnyComplexType,
+  ObjectNode,
+  fail,
+  mobxShallow
 } from "../../internal"
 
 let identifierCacheId = 0

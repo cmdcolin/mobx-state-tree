@@ -1,27 +1,47 @@
 import {
+  IObjectDidChange,
+  IObjectWillChange,
   _getAdministration,
   _interceptReads,
   action,
   computed,
   defineProperty,
-  intercept,
   getAtom,
-  IObjectWillChange,
+  intercept,
+  makeObservable,
   observable,
   observe,
-  set,
-  IObjectDidChange,
-  makeObservable
+  set
 } from "mobx"
+
 import {
-  addHiddenFinalProp,
-  addHiddenWritableProp,
+  AnyNode,
+  AnyObjectNode,
   ArrayType,
   ComplexType,
-  createActionInvoker,
-  createObjectNode,
   EMPTY_ARRAY,
   EMPTY_OBJECT,
+  FunctionWithFlag,
+  Hook,
+  IAnyType,
+  IChildNodesMap,
+  IJsonPatch,
+  IStateTreeNode,
+  IType,
+  IValidationContext,
+  IValidationResult,
+  Instance,
+  MapType,
+  TypeFlags,
+  _CustomOrOther,
+  _NotCustomized,
+  addHiddenFinalProp,
+  addHiddenWritableProp,
+  assertArg,
+  assertIsString,
+  createActionInvoker,
+  createObjectNode,
+  devMode,
   escapeJsonPath,
   fail,
   flattenTypeErrors,
@@ -29,33 +49,14 @@ import {
   getContextForPath,
   getPrimitiveFactoryFromValue,
   getStateTreeNode,
-  IAnyType,
-  IChildNodesMap,
-  IValidationContext,
-  IJsonPatch,
   isPlainObject,
   isPrimitive,
   isStateTreeNode,
   isType,
-  IType,
-  IValidationResult,
   mobxShallow,
   optional,
-  MapType,
-  typecheckInternal,
   typeCheckFailure,
-  TypeFlags,
-  Hook,
-  AnyObjectNode,
-  AnyNode,
-  _CustomOrOther,
-  _NotCustomized,
-  Instance,
-  devMode,
-  assertIsString,
-  assertArg,
-  FunctionWithFlag,
-  IStateTreeNode
+  typecheckInternal
 } from "../../internal"
 
 const PRE_PROCESS_SNAPSHOT = "preProcessSnapshot"
@@ -218,7 +219,7 @@ export interface IModelType<
     CustomS
   >
 
-  views<V extends Object>(
+  views<V extends object>(
     fn: (self: Instance<this>) => V
   ): IModelType<PROPS, OTHERS & V, CustomC, CustomS>
 
@@ -232,8 +233,8 @@ export interface IModelType<
 
   extend<
     A extends ModelActions = {},
-    V extends Object = {},
-    VS extends Object = {}
+    V extends object = {},
+    VS extends object = {}
   >(
     fn: (self: Instance<this>) => { actions?: A; views?: V; state?: VS }
   ): IModelType<PROPS, OTHERS & A & V & VS, CustomC, CustomS>
@@ -452,9 +453,9 @@ export class ModelType<
       let action2 = actions[name]
 
       // apply hook composition
-      let baseAction = (self as any)[name]
+      const baseAction = (self as any)[name]
       if (name in Hook && baseAction) {
-        let specializedAction = action2
+        const specializedAction = action2
         action2 = function () {
           baseAction.apply(null, arguments)
           specializedAction.apply(null, arguments)
@@ -464,7 +465,7 @@ export class ModelType<
       // the goal of this is to make sure actions using "this" can call themselves,
       // while still allowing the middlewares to register them
       const middlewares = (action2 as any).$mst_middleware // make sure middlewares are not lost
-      let boundAction = action2.bind(actions)
+      const boundAction = action2.bind(actions)
       boundAction._isFlowAction =
         (action2 as FunctionWithFlag)._isFlowAction || false
       boundAction.$mst_middleware = middlewares
@@ -517,12 +518,12 @@ export class ModelType<
 
   extend<
     A extends ModelActions = {},
-    V extends Object = {},
-    VS extends Object = {}
+    V extends object = {},
+    VS extends object = {}
   >(fn: (self: Instance<this>) => { actions?: A; views?: V; state?: VS }) {
     const initializer = (self: Instance<this>) => {
       const { actions, views, state, ...rest } = fn(self)
-      for (let key in rest)
+      for (const key in rest)
         throw fail(
           `The \`extend\` function should return an object with a subset of the fields 'actions', 'views' and 'state'. Found invalid key '${key}'`
         )
@@ -534,7 +535,7 @@ export class ModelType<
     return this.cloneAndEnhance({ initializers: [initializer] })
   }
 
-  views<V extends Object>(fn: (self: Instance<this>) => V) {
+  views<V extends object>(fn: (self: Instance<this>) => V) {
     const viewInitializer = (self: Instance<this>) => {
       this.instantiateViews(self, fn(self))
       return self
@@ -542,7 +543,7 @@ export class ModelType<
     return this.cloneAndEnhance({ initializers: [viewInitializer] })
   }
 
-  private instantiateViews(self: this["T"], views: Object): void {
+  private instantiateViews(self: this["T"], views: object): void {
     // check views return
     if (!isPlainObject(views))
       throw fail(
@@ -757,7 +758,7 @@ export class ModelType<
     value: this["C"],
     context: IValidationContext
   ): IValidationResult {
-    let snapshot = this.applySnapshotPreProcessor(value)
+    const snapshot = this.applySnapshotPreProcessor(value)
 
     if (!isPlainObject(snapshot)) {
       return typeCheckFailure(context, snapshot, "Value is not a plain object")

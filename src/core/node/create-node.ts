@@ -1,12 +1,12 @@
 import {
-  fail,
-  ObjectNode,
-  ScalarNode,
   AnyNode,
-  getStateTreeNodeSafe,
   AnyObjectNode,
   ComplexType,
-  SimpleType
+  ObjectNode,
+  ScalarNode,
+  SimpleType,
+  fail,
+  getStateTreeNodeSafe
 } from "../../internal"
 
 /**

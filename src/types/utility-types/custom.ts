@@ -1,13 +1,13 @@
 import {
-  createScalarNode,
-  SimpleType,
+  AnyObjectNode,
   IType,
-  TypeFlags,
   IValidationContext,
   IValidationResult,
-  typeCheckSuccess,
+  SimpleType,
+  TypeFlags,
+  createScalarNode,
   typeCheckFailure,
-  AnyObjectNode
+  typeCheckSuccess
 } from "../../internal"
 
 export interface CustomTypeOptions<S, T> {

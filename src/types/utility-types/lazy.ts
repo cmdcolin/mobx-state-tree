@@ -1,17 +1,18 @@
-import { action, IObservableArray, observable, when } from "mobx"
+import { IObservableArray, action, observable, when } from "mobx"
+
 import { AnyNode } from "../../core/node/BaseNode"
 import { IType } from "../../core/type/type"
 import {
+  AnyObjectNode,
   IValidationContext,
   IValidationResult,
-  TypeFlags,
-  typeCheckSuccess,
-  AnyObjectNode,
   SimpleType,
+  TypeFlags,
   createScalarNode,
   deepFreeze,
   isSerializable,
-  typeCheckFailure
+  typeCheckFailure,
+  typeCheckSuccess
 } from "../../internal"
 
 interface LazyOptions<T extends IType<any, any, any>, U> {

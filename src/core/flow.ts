@@ -1,10 +1,10 @@
 import { argsToArray, fail, setImmediateWithFallback } from "../utils"
 import {
   FunctionWithFlag,
+  IMiddlewareEventType,
   getCurrentActionContext,
   getNextActionId,
   getParentActionContext,
-  IMiddlewareEventType,
   runWithActionContext
 } from "./action"
 

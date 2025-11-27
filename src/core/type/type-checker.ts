@@ -1,14 +1,14 @@
 import {
-  fail,
   EMPTY_ARRAY,
-  isPrimitive,
-  getStateTreeNode,
-  isStateTreeNode,
-  isPrimitiveType,
-  IAnyType,
   ExtractCSTWithSTN,
-  isTypeCheckingEnabled,
-  devMode
+  IAnyType,
+  devMode,
+  fail,
+  getStateTreeNode,
+  isPrimitive,
+  isPrimitiveType,
+  isStateTreeNode,
+  isTypeCheckingEnabled
 } from "../../internal"
 
 /** Validation context entry, this is, where the validation should run against which type */

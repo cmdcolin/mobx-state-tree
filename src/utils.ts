@@ -1,9 +1,10 @@
 import {
-  isObservableArray,
-  isObservableObject,
   _getGlobalState,
-  defineProperty as mobxDefineProperty
+  defineProperty as mobxDefineProperty,
+  isObservableArray,
+  isObservableObject
 } from "mobx"
+
 import { Primitives } from "./core/type/type.ts"
 
 const plainObjectString = Object.toString()
@@ -131,7 +132,7 @@ export function extend(a: any, ...b: any[]): any
 export function extend(a: any, ...b: any[]) {
   for (let i = 0; i < b.length; i++) {
     const current = b[i]
-    for (let key in current) a[key] = current[key]
+    for (const key in current) a[key] = current[key]
   }
   return a
 }
@@ -382,7 +383,7 @@ const prototypeHasOwnProperty = Object.prototype.hasOwnProperty
  * @internal
  * @hidden
  */
-export function hasOwnProperty(object: Object, propName: string) {
+export function hasOwnProperty(object: object, propName: string) {
   return prototypeHasOwnProperty.call(object, propName)
 }
 

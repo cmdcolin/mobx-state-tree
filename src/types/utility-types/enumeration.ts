@@ -1,9 +1,9 @@
 import {
   ISimpleType,
-  union,
-  literal,
   assertIsString,
-  devMode
+  devMode,
+  literal,
+  union
 } from "../../internal"
 
 /** @hidden */

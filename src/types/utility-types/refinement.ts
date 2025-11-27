@@ -1,21 +1,21 @@
 import {
-  isStateTreeNode,
-  getStateTreeNode,
-  IValidationContext,
-  IValidationResult,
-  typeCheckSuccess,
-  typeCheckFailure,
-  isType,
-  fail,
-  TypeFlags,
-  IAnyType,
   AnyObjectNode,
   BaseType,
   ExtractNodeType,
+  IAnyType,
+  IValidationContext,
+  IValidationResult,
+  TypeFlags,
   assertIsType,
-  devMode
+  devMode,
+  fail,
+  getStateTreeNode,
+  isStateTreeNode,
+  isType,
+  typeCheckFailure,
+  typeCheckSuccess
 } from "../../internal"
-import { assertIsString, assertIsFunction } from "../../utils"
+import { assertIsFunction, assertIsString } from "../../utils"
 
 class Refinement<IT extends IAnyType> extends BaseType<
   IT["CreationType"],

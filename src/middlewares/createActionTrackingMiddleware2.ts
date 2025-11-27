@@ -1,7 +1,7 @@
 import {
+  IActionContext,
   IMiddlewareEvent,
-  IMiddlewareHandler,
-  IActionContext
+  IMiddlewareHandler
 } from "../internal"
 
 type Omit<T, K> = Pick<T, Exclude<keyof T, K>>

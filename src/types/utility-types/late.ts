@@ -1,16 +1,16 @@
 import {
-  fail,
+  AnyObjectNode,
   BaseType,
+  ExtractNodeType,
+  IAnyType,
   IValidationContext,
   IValidationResult,
   TypeFlags,
-  isType,
-  IAnyType,
-  typeCheckSuccess,
-  AnyObjectNode,
-  ExtractNodeType,
   cannotDetermineSubtype,
-  devMode
+  devMode,
+  fail,
+  isType,
+  typeCheckSuccess
 } from "../../internal"
 
 class Late<IT extends IAnyType> extends BaseType<

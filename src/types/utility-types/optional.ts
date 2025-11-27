@@ -1,19 +1,19 @@
 import {
-  isStateTreeNode,
-  IType,
-  TypeFlags,
-  isType,
-  IValidationContext,
-  IValidationResult,
-  typecheckInternal,
-  typeCheckSuccess,
-  fail,
-  IAnyType,
   AnyObjectNode,
   BaseType,
-  assertIsType,
   ExtractCSTWithSTN,
-  devMode
+  IAnyType,
+  IType,
+  IValidationContext,
+  IValidationResult,
+  TypeFlags,
+  assertIsType,
+  devMode,
+  fail,
+  isStateTreeNode,
+  isType,
+  typeCheckSuccess,
+  typecheckInternal
 } from "../../internal"
 
 type IFunctionReturn<T> = () => T

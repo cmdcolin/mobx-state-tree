@@ -1,57 +1,58 @@
 import {
-  _interceptReads,
-  action,
   IInterceptor,
   IKeyValueMap,
   IMapDidChange,
   IMapWillChange,
-  intercept,
+  IObservableMapInitialValues,
   Lambda,
-  observable,
   ObservableMap,
+  _interceptReads,
+  action,
+  intercept,
+  observable,
   observe,
-  values,
-  IObservableMapInitialValues
+  values
 } from "mobx"
+
 import {
+  AnyNode,
+  AnyObjectNode,
   ComplexType,
+  EMPTY_OBJECT,
+  ExtractCSTWithSTN,
+  IAnyModelType,
+  IAnyStateTreeNode,
+  IAnyType,
+  IChildNodesMap,
+  IHooksGetter,
+  IJsonPatch,
+  IType,
+  IValidationContext,
+  IValidationResult,
+  ModelType,
+  ObjectNode,
+  TypeFlags,
+  addHiddenFinalProp,
+  addHiddenWritableProp,
+  asArray,
+  cannotDetermineSubtype,
   createObjectNode,
   escapeJsonPath,
   fail,
   flattenTypeErrors,
   getContextForPath,
   getStateTreeNode,
-  IAnyStateTreeNode,
-  IAnyType,
-  IChildNodesMap,
-  IValidationContext,
-  IJsonPatch,
   isMutable,
   isPlainObject,
   isStateTreeNode,
   isType,
-  IType,
-  IValidationResult,
-  ModelType,
-  ObjectNode,
-  typecheckInternal,
-  typeCheckFailure,
-  TypeFlags,
-  EMPTY_OBJECT,
-  normalizeIdentifier,
-  AnyObjectNode,
-  AnyNode,
-  IAnyModelType,
-  asArray,
-  cannotDetermineSubtype,
-  getSnapshot,
   isValidIdentifier,
-  ExtractCSTWithSTN,
+  normalizeIdentifier,
+  typeCheckFailure,
+  typecheckInternal,
+  getSnapshot,
   devMode,
-  createActionInvoker,
-  addHiddenFinalProp,
-  addHiddenWritableProp,
-  IHooksGetter
+  createActionInvoker
 } from "../../internal"
 
 /** @hidden */
@@ -479,7 +480,7 @@ export class MapType<IT extends IAnyType> extends ComplexType<
     })
     if (snapshot) {
       // Don't use target.replace, as it will throw away all existing items first
-      for (let key in snapshot) {
+      for (const key in snapshot) {
         target.set(key, snapshot[key])
         currentKeys["" + key] = true
       }
