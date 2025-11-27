@@ -1,27 +1,47 @@
 import {
+  IObjectDidChange,
+  IObjectWillChange,
   _getAdministration,
   _interceptReads,
   action,
   computed,
   defineProperty,
-  intercept,
   getAtom,
-  IObjectWillChange,
+  intercept,
+  makeObservable,
   observable,
   observe,
-  set,
-  IObjectDidChange,
-  makeObservable
+  set
 } from "mobx"
+
 import {
-  addHiddenFinalProp,
-  addHiddenWritableProp,
+  type AnyNode,
+  type AnyObjectNode,
   ArrayType,
   ComplexType,
-  createActionInvoker,
-  createObjectNode,
   EMPTY_ARRAY,
   EMPTY_OBJECT,
+  type FunctionWithFlag,
+  Hook,
+  type IAnyType,
+  type IChildNodesMap,
+  type IJsonPatch,
+  type IStateTreeNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
+  type Instance,
+  MapType,
+  TypeFlags,
+  type _CustomOrOther,
+  type _NotCustomized,
+  addHiddenFinalProp,
+  addHiddenWritableProp,
+  assertArg,
+  assertIsString,
+  createActionInvoker,
+  createObjectNode,
+  devMode,
   escapeJsonPath,
   fail,
   flattenTypeErrors,
@@ -29,34 +49,15 @@ import {
   getContextForPath,
   getPrimitiveFactoryFromValue,
   getStateTreeNode,
-  IAnyType,
-  IChildNodesMap,
-  IValidationContext,
-  IJsonPatch,
   isPlainObject,
   isPrimitive,
   isStateTreeNode,
   isType,
-  IType,
-  IValidationResult,
   mobxShallow,
   optional,
-  MapType,
-  typecheckInternal,
   typeCheckFailure,
-  TypeFlags,
-  Hook,
-  AnyObjectNode,
-  AnyNode,
-  _CustomOrOther,
-  _NotCustomized,
-  Instance,
-  devMode,
-  assertIsString,
-  assertArg,
-  FunctionWithFlag,
-  IStateTreeNode
-} from "../../internal"
+  typecheckInternal
+} from "../../internal.ts"
 
 const PRE_PROCESS_SNAPSHOT = "preProcessSnapshot"
 const POST_PROCESS_SNAPSHOT = "postProcessSnapshot"
@@ -218,7 +219,7 @@ export interface IModelType<
     CustomS
   >
 
-  views<V extends Object>(
+  views<V extends object>(
     fn: (self: Instance<this>) => V
   ): IModelType<PROPS, OTHERS & V, CustomC, CustomS>
 
@@ -232,8 +233,8 @@ export interface IModelType<
 
   extend<
     A extends ModelActions = {},
-    V extends Object = {},
-    VS extends Object = {}
+    V extends object = {},
+    VS extends object = {}
   >(
     fn: (self: Instance<this>) => { actions?: A; views?: V; state?: VS }
   ): IModelType<PROPS, OTHERS & A & V & VS, CustomC, CustomS>
@@ -401,10 +402,11 @@ export class ModelType<
     let identifierAttribute: string | undefined = undefined
     this.forAllProps((propName, propType) => {
       if (propType.flags & TypeFlags.Identifier) {
-        if (identifierAttribute)
+        if (identifierAttribute) {
           throw fail(
             `Cannot define property '${propName}' as object identifier, property '${identifierAttribute}' is already defined as identifier property`
           )
+        }
         identifierAttribute = propName
       }
     })
@@ -431,30 +433,33 @@ export class ModelType<
 
   private instantiateActions(self: this["T"], actions: ModelActions): void {
     // check if return is correct
-    if (!isPlainObject(actions))
+    if (!isPlainObject(actions)) {
       throw fail(
         `actions initializer should return a plain object containing actions`
       )
+    }
 
     // bind actions to the object created
     Object.keys(actions).forEach(name => {
       // warn if preprocessor was given
-      if (name === PRE_PROCESS_SNAPSHOT)
+      if (name === PRE_PROCESS_SNAPSHOT) {
         throw fail(
           `Cannot define action '${PRE_PROCESS_SNAPSHOT}', it should be defined using 'type.preProcessSnapshot(fn)' instead`
         )
+      }
       // warn if postprocessor was given
-      if (name === POST_PROCESS_SNAPSHOT)
+      if (name === POST_PROCESS_SNAPSHOT) {
         throw fail(
           `Cannot define action '${POST_PROCESS_SNAPSHOT}', it should be defined using 'type.postProcessSnapshot(fn)' instead`
         )
+      }
 
       let action2 = actions[name]
 
       // apply hook composition
-      let baseAction = (self as any)[name]
+      const baseAction = (self as any)[name]
       if (name in Hook && baseAction) {
-        let specializedAction = action2
+        const specializedAction = action2
         action2 = function () {
           baseAction.apply(null, arguments)
           specializedAction.apply(null, arguments)
@@ -464,7 +469,7 @@ export class ModelType<
       // the goal of this is to make sure actions using "this" can call themselves,
       // while still allowing the middlewares to register them
       const middlewares = (action2 as any).$mst_middleware // make sure middlewares are not lost
-      let boundAction = action2.bind(actions)
+      const boundAction = action2.bind(actions)
       boundAction._isFlowAction =
         (action2 as FunctionWithFlag)._isFlowAction || false
       boundAction.$mst_middleware = middlewares
@@ -508,33 +513,41 @@ export class ModelType<
     }
   ): void {
     // check views return
-    if (!isPlainObject(state))
+    if (!isPlainObject(state)) {
       throw fail(
         `volatile state initializer should return a plain object containing state`
       )
+    }
     set(self, state)
   }
 
   extend<
     A extends ModelActions = {},
-    V extends Object = {},
-    VS extends Object = {}
+    V extends object = {},
+    VS extends object = {}
   >(fn: (self: Instance<this>) => { actions?: A; views?: V; state?: VS }) {
     const initializer = (self: Instance<this>) => {
       const { actions, views, state, ...rest } = fn(self)
-      for (let key in rest)
+      for (const key in rest) {
         throw fail(
           `The \`extend\` function should return an object with a subset of the fields 'actions', 'views' and 'state'. Found invalid key '${key}'`
         )
-      if (state) this.instantiateVolatileState(self, state)
-      if (views) this.instantiateViews(self, views)
-      if (actions) this.instantiateActions(self, actions)
+      }
+      if (state) {
+        this.instantiateVolatileState(self, state)
+      }
+      if (views) {
+        this.instantiateViews(self, views)
+      }
+      if (actions) {
+        this.instantiateActions(self, actions)
+      }
       return self
     }
     return this.cloneAndEnhance({ initializers: [initializer] })
   }
 
-  views<V extends Object>(fn: (self: Instance<this>) => V) {
+  views<V extends object>(fn: (self: Instance<this>) => V) {
     const viewInitializer = (self: Instance<this>) => {
       this.instantiateViews(self, fn(self))
       return self
@@ -542,12 +555,13 @@ export class ModelType<
     return this.cloneAndEnhance({ initializers: [viewInitializer] })
   }
 
-  private instantiateViews(self: this["T"], views: Object): void {
+  private instantiateViews(self: this["T"], views: object): void {
     // check views return
-    if (!isPlainObject(views))
+    if (!isPlainObject(views)) {
       throw fail(
         `views initializer should return a plain object containing views`
       )
+    }
     Object.getOwnPropertyNames(views).forEach(key => {
       // is this a computed property?
       const descriptor = Object.getOwnPropertyDescriptor(views, key)!
@@ -572,20 +586,24 @@ export class ModelType<
 
   preProcessSnapshot: MT["preProcessSnapshot"] = preProcessor => {
     const currentPreprocessor = this.preProcessor
-    if (!currentPreprocessor) return this.cloneAndEnhance({ preProcessor })
-    else
+    if (!currentPreprocessor) {
+      return this.cloneAndEnhance({ preProcessor })
+    } else {
       return this.cloneAndEnhance({
         preProcessor: snapshot => currentPreprocessor(preProcessor(snapshot))
       })
+    }
   }
 
   postProcessSnapshot: MT["postProcessSnapshot"] = postProcessor => {
     const currentPostprocessor = this.postProcessor
-    if (!currentPostprocessor) return this.cloneAndEnhance({ postProcessor })
-    else
+    if (!currentPostprocessor) {
+      return this.cloneAndEnhance({ postProcessor })
+    } else {
       return this.cloneAndEnhance({
         postProcessor: snapshot => postProcessor(currentPostprocessor(snapshot))
       })
+    }
   }
 
   instantiate(
@@ -688,10 +706,14 @@ export class ModelType<
   }
 
   getChildNode(node: this["N"], key: string): AnyNode {
-    if (!(key in this.properties)) throw fail("Not a value property: " + key)
+    if (!(key in this.properties)) {
+      throw fail("Not a value property: " + key)
+    }
     const adm = _getAdministration(node.storedValue, key)
     const childNode = adm.raw?.()
-    if (!childNode) throw fail("Node not available for property " + key)
+    if (!childNode) {
+      throw fail("Node not available for property " + key)
+    }
     return childNode
   }
 
@@ -743,7 +765,9 @@ export class ModelType<
 
   applySnapshotPostProcessor(snapshot: any) {
     const postProcessor = this.postProcessor
-    if (postProcessor) return postProcessor.call(null, snapshot)
+    if (postProcessor) {
+      return postProcessor.call(null, snapshot)
+    }
     return snapshot
   }
 
@@ -757,7 +781,7 @@ export class ModelType<
     value: this["C"],
     context: IValidationContext
   ): IValidationResult {
-    let snapshot = this.applySnapshotPreProcessor(value)
+    const snapshot = this.applySnapshotPreProcessor(value)
 
     if (!isPlainObject(snapshot)) {
       return typeCheckFailure(context, snapshot, "Value is not a plain object")

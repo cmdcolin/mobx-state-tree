@@ -1,4 +1,4 @@
-import { types } from "../../../dist/index.mjs"
+import { types } from "../../../dist/mobx-state-tree.module.js"
 
 // tiny
 export const Treasure = types.model("Treasure", {

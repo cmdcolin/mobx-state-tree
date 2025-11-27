@@ -1,18 +1,19 @@
-import { action, IObservableArray, observable, when } from "mobx"
-import { AnyNode } from "../../core/node/BaseNode"
-import { IType } from "../../core/type/type"
+import { IObservableArray, action, observable, when } from "mobx"
+
 import {
-  IValidationContext,
-  IValidationResult,
-  TypeFlags,
-  typeCheckSuccess,
-  AnyObjectNode,
+  type AnyNode,
+  type AnyObjectNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   SimpleType,
+  TypeFlags,
   createScalarNode,
   deepFreeze,
   isSerializable,
-  typeCheckFailure
-} from "../../internal"
+  typeCheckFailure,
+  typeCheckSuccess
+} from "../../internal.ts"
 
 interface LazyOptions<T extends IType<any, any, any>, U> {
   loadType: () => Promise<T>
@@ -62,8 +63,12 @@ export class Lazy<T extends IType<any, any, any>, U> extends SimpleType<
           action((type: T) => {
             this.loadedType = type
             this.pendingNodeList.forEach(node => {
-              if (!node.parent) return
-              if (!this.loadedType) return
+              if (!node.parent) {
+                return
+              }
+              if (!this.loadedType) {
+                return
+              }
 
               node.parent.applyPatches([
                 {

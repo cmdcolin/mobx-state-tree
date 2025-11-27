@@ -82,7 +82,8 @@ const METHODS_AND_INTERNAL_TYPES = stringToArray(`
     isActionContextChildOf,
     isActionContextThisOrChildOf,
     toGeneratorFunction,
-    toGenerator
+    toGenerator,
+    setDevMode
 `)
 
 const DEPRECATED_METHODS_AND_INTERNAL_TYPES = stringToArray(`
@@ -157,7 +158,7 @@ test("all methods mentioned in API docs", () => {
       identifier => apimd.indexOf("#" + identifier.toLowerCase()) === -1
     )
   )
-  expect(missing).toEqual(["types.lazy", "types"])
+  expect(missing).toEqual(["types.lazy", "types", "setDevMode"])
 })
 
 test("only accepted dependencies", () => {

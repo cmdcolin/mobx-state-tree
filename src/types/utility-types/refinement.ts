@@ -1,21 +1,19 @@
 import {
-  isStateTreeNode,
-  getStateTreeNode,
-  IValidationContext,
-  IValidationResult,
-  typeCheckSuccess,
-  typeCheckFailure,
-  isType,
-  fail,
-  TypeFlags,
-  IAnyType,
-  AnyObjectNode,
+  type AnyObjectNode,
   BaseType,
-  ExtractNodeType,
+  type ExtractNodeType,
+  type IAnyType,
+  type IValidationContext,
+  type IValidationResult,
+  TypeFlags,
   assertIsType,
-  devMode
-} from "../../internal"
-import { assertIsString, assertIsFunction } from "../../utils"
+  getStateTreeNode,
+  isStateTreeNode,
+  isType,
+  typeCheckFailure,
+  typeCheckSuccess
+} from "../../internal.ts"
+import { assertIsFunction, assertIsString } from "../../utils.ts"
 
 class Refinement<IT extends IAnyType> extends BaseType<
   IT["CreationType"],
@@ -64,7 +62,9 @@ class Refinement<IT extends IAnyType> extends BaseType<
     context: IValidationContext
   ): IValidationResult {
     const subtypeErrors = this._subtype.validate(value, context)
-    if (subtypeErrors.length > 0) return subtypeErrors
+    if (subtypeErrors.length > 0) {
+      return subtypeErrors
+    }
 
     const snapshot = isStateTreeNode(value)
       ? getStateTreeNode(value).snapshot

@@ -1,13 +1,13 @@
 import {
-  fail,
+  type AnyNode,
+  type AnyObjectNode,
+  ComplexType,
   ObjectNode,
   ScalarNode,
-  AnyNode,
-  getStateTreeNodeSafe,
-  AnyObjectNode,
-  ComplexType,
-  SimpleType
-} from "../../internal"
+  SimpleType,
+  fail,
+  getStateTreeNodeSafe
+} from "../../internal.ts"
 
 /**
  * @internal

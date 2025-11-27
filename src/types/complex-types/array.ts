@@ -1,54 +1,55 @@
 import {
-  _getAdministration,
-  action,
   IArrayDidChange,
   IArraySplice,
   IArrayWillChange,
   IArrayWillSplice,
-  intercept,
   IObservableArray,
+  _getAdministration,
+  action,
+  intercept,
   observable,
   observe
 } from "mobx"
+
 import {
+  type AnyNode,
+  type AnyObjectNode,
+  ComplexType,
+  EMPTY_ARRAY,
+  EMPTY_OBJECT,
+  type ExtractCSTWithSTN,
+  type IAnyStateTreeNode,
+  type IAnyType,
+  type IChildNodesMap,
+  type IHooksGetter,
+  type IJsonPatch,
+  type IStateTreeNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
+  ObjectNode,
+  TypeFlags,
   addHiddenFinalProp,
   addHiddenWritableProp,
-  AnyNode,
-  AnyObjectNode,
   assertIsType,
-  ComplexType,
   convertChildNodesToArray,
   createActionInvoker,
   createObjectNode,
   devMode,
-  EMPTY_ARRAY,
-  EMPTY_OBJECT,
-  ExtractCSTWithSTN,
   fail,
   flattenTypeErrors,
   getContextForPath,
   getStateTreeNode,
-  IAnyStateTreeNode,
-  IAnyType,
-  IChildNodesMap,
-  IHooksGetter,
-  IJsonPatch,
   isArray,
   isNode,
   isPlainObject,
   isStateTreeNode,
-  IStateTreeNode,
   isType,
-  IType,
-  IValidationContext,
-  IValidationResult,
   mobxShallow,
   normalizeIdentifier,
-  ObjectNode,
   typeCheckFailure,
-  typecheckInternal,
-  TypeFlags
-} from "../../internal"
+  typecheckInternal
+} from "../../internal.ts"
 
 /** @hidden */
 export interface IMSTArray<IT extends IAnyType> extends IObservableArray<
@@ -184,7 +185,9 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
 
   getChildNode(node: this["N"], key: string): AnyNode {
     const index = Number(key)
-    if (index < node.storedValue.length) return node.storedValue[index]
+    if (index < node.storedValue.length) {
+      return node.storedValue[index]
+    }
     throw fail("Not a child: " + key)
   }
 
@@ -199,7 +202,9 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
     switch (change.type) {
       case "update":
         {
-          if (change.newValue === change.object[change.index]) return null
+          if (change.newValue === change.object[change.index]) {
+            return null
+          }
 
           const updatedNodes = reconcileArrayChildren(
             node,
@@ -269,7 +274,7 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
           node
         )
       case "splice":
-        for (let i = change.removedCount - 1; i >= 0; i--)
+        for (let i = change.removedCount - 1; i >= 0; i--) {
           node.emitPatch(
             {
               op: "remove",
@@ -278,7 +283,8 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
             },
             node
           )
-        for (let i = 0; i < change.addedCount; i++)
+        }
+        for (let i = 0; i < change.addedCount; i++) {
           node.emitPatch(
             {
               op: "add",
@@ -288,6 +294,7 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
             },
             node
           )
+        }
         return
     }
   }
@@ -392,7 +399,9 @@ function reconcileArrayChildren<TT>(
 
     // for some reason, instead of newValue we got a node, fallback to the storedValue
     // TODO: https://github.com/mobxjs/mobx-state-tree/issues/340#issuecomment-325581681
-    if (isNode(newValue)) newValue = newValue.storedValue
+    if (isNode(newValue)) {
+      newValue = newValue.storedValue
+    }
 
     if (!oldNode && !hasNewNode) {
       // both are empty, end

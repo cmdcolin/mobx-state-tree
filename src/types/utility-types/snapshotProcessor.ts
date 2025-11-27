@@ -1,24 +1,24 @@
 import {
-  IType,
-  IAnyType,
+  type AnyObjectNode,
   BaseType,
-  isStateTreeNode,
-  IValidationContext,
-  IValidationResult,
-  AnyObjectNode,
-  TypeFlags,
-  ExtractNodeType,
-  assertIsType,
-  isType,
-  getSnapshot,
-  devMode,
   ComplexType,
-  typeCheckFailure,
-  isUnionType,
-  Instance,
+  type ExtractNodeType,
+  type IAnyType,
+  type Instance,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   ObjectNode,
-  fail
-} from "../../internal"
+  TypeFlags,
+  assertIsType,
+  devMode,
+  fail,
+  getSnapshot,
+  isStateTreeNode,
+  isType,
+  isUnionType,
+  typeCheckFailure
+} from "../../internal.ts"
 
 /** @hidden */
 declare const $mstNotCustomized: unique symbol

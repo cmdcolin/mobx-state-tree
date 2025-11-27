@@ -1,11 +1,12 @@
-import { IObservableArray, values, observable, entries } from "mobx"
+import { IObservableArray, entries, observable, values } from "mobx"
+
 import {
-  fail,
+  type AnyObjectNode,
+  type IAnyComplexType,
   ObjectNode,
-  mobxShallow,
-  AnyObjectNode,
-  IAnyComplexType
-} from "../../internal"
+  fail,
+  mobxShallow
+} from "../../internal.ts"
 
 let identifierCacheId = 0
 
@@ -49,7 +50,9 @@ export class IdentifierCache {
         )
       }
       const set = this.cache.get(identifier)!
-      if (set.indexOf(node) !== -1) throw fail(`Already registered`)
+      if (set.indexOf(node) !== -1) {
+        throw fail(`Already registered`)
+      }
       set.push(node)
       if (lastCacheUpdate) {
         this.updateLastCacheModificationPerId(identifier)
@@ -109,7 +112,9 @@ export class IdentifierCache {
 
   has(type: IAnyComplexType, identifier: string): boolean {
     const set = this.cache.get(identifier)
-    if (!set) return false
+    if (!set) {
+      return false
+    }
     return set.some(candidate => type.isAssignableFrom(candidate.type))
   }
 
@@ -122,7 +127,9 @@ export class IdentifierCache {
     IT["TypeWithoutSTN"]
   > | null {
     const set = this.cache.get(identifier)
-    if (!set) return null
+    if (!set) {
+      return null
+    }
     const matches = set.filter(candidate =>
       type.isAssignableFrom(candidate.type)
     )

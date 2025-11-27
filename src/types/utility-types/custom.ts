@@ -1,14 +1,14 @@
 import {
-  createScalarNode,
+  type AnyObjectNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   SimpleType,
-  IType,
   TypeFlags,
-  IValidationContext,
-  IValidationResult,
-  typeCheckSuccess,
+  createScalarNode,
   typeCheckFailure,
-  AnyObjectNode
-} from "../../internal"
+  typeCheckSuccess
+} from "../../internal.ts"
 
 export interface CustomTypeOptions<S, T> {
   /** Friendly name */
@@ -96,7 +96,9 @@ export class CustomType<S, T> extends SimpleType<S | T, S, T> {
     value: this["C"],
     context: IValidationContext
   ): IValidationResult {
-    if (this.options.isTargetType(value)) return typeCheckSuccess()
+    if (this.options.isTargetType(value)) {
+      return typeCheckSuccess()
+    }
 
     const typeError: string = this.options.getValidationMessage(value as S)
     if (typeError) {

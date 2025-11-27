@@ -1,35 +1,35 @@
 import {
-  getStateTreeNode,
-  isStateTreeNode,
-  createScalarNode,
-  IType,
-  TypeFlags,
-  IValidationContext,
-  IValidationResult,
-  typeCheckSuccess,
-  typeCheckFailure,
-  fail,
-  IAnyType,
-  IAnyStateTreeNode,
-  IAnyComplexType,
+  type AnyNode,
+  type AnyObjectNode,
   Hook,
-  IDisposer,
-  maybe,
-  isModelType,
-  IMaybe,
+  type IAnyComplexType,
+  type IAnyStateTreeNode,
+  type IAnyType,
+  type IDisposer,
+  type IMaybe,
+  type IStateTreeNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   NodeLifeCycle,
-  ReferenceIdentifier,
-  normalizeIdentifier,
-  getIdentifier,
-  applyPatch,
-  AnyNode,
-  AnyObjectNode,
+  type ReferenceIdentifier,
   SimpleType,
+  TypeFlags,
+  applyPatch,
   assertIsType,
+  createScalarNode,
+  devMode,
+  fail,
+  getIdentifier,
+  getStateTreeNode,
+  isModelType,
+  isStateTreeNode,
   isValidIdentifier,
-  IStateTreeNode,
-  devMode
-} from "../../internal"
+  maybe,
+  normalizeIdentifier,
+  typeCheckFailure,
+  typeCheckSuccess
+} from "../../internal.ts"
 
 export type OnReferenceInvalidatedEvent<STN extends IAnyStateTreeNode> = {
   parent: IAnyStateTreeNode
@@ -76,10 +76,11 @@ class StoredReference<IT extends IAnyType> {
       this.identifier = value
     } else if (isStateTreeNode(value)) {
       const targetNode = getStateTreeNode(value)
-      if (!targetNode.identifierAttribute)
+      if (!targetNode.identifierAttribute) {
         throw fail(
           `Can only store references with a defined identifier attribute.`
         )
+      }
       const id = targetNode.unnormalizedIdentifier
       if (id === null || id === undefined) {
         throw fail(
@@ -362,7 +363,9 @@ export class IdentifierReferenceType<
   }
 
   getValue(storedRefNode: this["N"]) {
-    if (!storedRefNode.isAlive) return undefined
+    if (!storedRefNode.isAlive) {
+      return undefined
+    }
     const storedRef: StoredReference<IT> = storedRefNode.storedValue
     return storedRef.resolvedValue as any
   }
@@ -437,7 +440,9 @@ export class CustomReferenceType<
   }
 
   getValue(storedRefNode: this["N"]) {
-    if (!storedRefNode.isAlive) return undefined as any
+    if (!storedRefNode.isAlive) {
+      return undefined as any
+    }
     const referencedNode = this.options.get(
       storedRefNode.storedValue,
       storedRefNode.parent ? storedRefNode.parent.storedValue : null

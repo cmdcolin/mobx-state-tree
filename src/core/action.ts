@@ -1,17 +1,21 @@
 import { action as mobxAction } from "mobx"
+
 import {
-  getStateTreeNode,
-  fail,
-  argsToArray,
-  IDisposer,
-  getRoot,
   Hook,
-  IAnyStateTreeNode,
-  warnError,
-  AnyObjectNode,
+  argsToArray,
   devMode,
-  IActionContext
-} from "../internal"
+  fail,
+  getRoot,
+  getStateTreeNode,
+  warnError
+} from "../internal.ts"
+
+import type {
+  AnyObjectNode,
+  IActionContext,
+  IAnyStateTreeNode,
+  IDisposer
+} from "../internal.ts"
 
 export type IMiddlewareEventType =
   | "action"
@@ -109,8 +113,12 @@ export function runWithActionContext(context: IMiddlewareEvent, fn: Function) {
 export function getParentActionContext(
   parentContext: IMiddlewareEvent | undefined
 ) {
-  if (!parentContext) return undefined
-  if (parentContext.type === "action") return parentContext
+  if (!parentContext) {
+    return undefined
+  }
+  if (parentContext.type === "action") {
+    return parentContext
+  }
   return parentContext.parentActionEvent
 }
 
@@ -225,7 +233,9 @@ class CollectedMiddlewares {
     let n: AnyObjectNode | null = node
     // Find all middlewares. Optimization: cache this?
     while (n) {
-      if (n.middlewares) this.middlewares.push(n.middlewares)
+      if (n.middlewares) {
+        this.middlewares.push(n.middlewares)
+      }
       n = n.parent
     }
   }
@@ -236,7 +246,9 @@ class CollectedMiddlewares {
 
   getNextMiddleware(): IMiddleware | undefined {
     const array = this.middlewares[this.arrayIndex]
-    if (!array) return undefined
+    if (!array) {
+      return undefined
+    }
     const item = array[this.inArrayIndex++]
     if (!item) {
       this.arrayIndex++
@@ -254,8 +266,9 @@ function runMiddleWares(
 ): any {
   const middlewares = new CollectedMiddlewares(node, originalFn)
   // Short circuit
-  if (middlewares.isEmpty)
+  if (middlewares.isEmpty) {
     return mobxAction(originalFn).apply(null, baseCall.args)
+  }
 
   let result: any = null
 

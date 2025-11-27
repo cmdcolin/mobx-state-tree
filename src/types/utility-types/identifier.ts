@@ -1,19 +1,19 @@
 import {
-  fail,
-  createScalarNode,
+  type AnyObjectNode,
+  type ISimpleType,
+  type IValidationContext,
+  type IValidationResult,
+  ModelType,
+  type ScalarNode,
   SimpleType,
   TypeFlags,
+  assertArg,
+  createScalarNode,
+  fail,
   isType,
-  IValidationContext,
-  IValidationResult,
   typeCheckFailure,
-  ModelType,
-  typeCheckSuccess,
-  ISimpleType,
-  AnyObjectNode,
-  ScalarNode,
-  assertArg
-} from "../../internal"
+  typeCheckSuccess
+} from "../../internal.ts"
 
 abstract class BaseIdentifierType<T> extends SimpleType<T, T, T> {
   readonly flags = TypeFlags.Identifier
@@ -31,10 +31,11 @@ abstract class BaseIdentifierType<T> extends SimpleType<T, T, T> {
     environment: any,
     initialValue: this["C"]
   ): this["N"] {
-    if (!parent || !(parent.type instanceof ModelType))
+    if (!parent || !(parent.type instanceof ModelType)) {
       throw fail(
         `Identifier types can only be instantiated as direct child of a model type`
       )
+    }
 
     return createScalarNode(this, parent, subpath, environment, initialValue)
   }
@@ -46,10 +47,11 @@ abstract class BaseIdentifierType<T> extends SimpleType<T, T, T> {
     subpath: string
   ) {
     // we don't consider detaching here since identifier are scalar nodes, and scalar nodes cannot be detached
-    if (current.storedValue !== newValue)
+    if (current.storedValue !== newValue) {
       throw fail(
         `Tried to change identifier from '${current.storedValue}' to '${newValue}'. Changing identifiers is not allowed.`
       )
+    }
     current.setParent(parent, subpath)
     return current
   }

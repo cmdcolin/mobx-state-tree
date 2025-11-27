@@ -1,10 +1,10 @@
 import {
-  ISimpleType,
-  union,
-  literal,
+  type ISimpleType,
   assertIsString,
-  devMode
-} from "../../internal"
+  devMode,
+  literal,
+  union
+} from "../../internal.ts"
 
 /** @hidden */
 export type UnionStringArray<T extends readonly string[]> = T[number]
@@ -49,6 +49,8 @@ export function enumeration(
     })
   }
   const type = union(...realOptions.map(option => literal("" + option)))
-  if (typeof name === "string") type.name = name
+  if (typeof name === "string") {
+    type.name = name
+  }
   return type
 }

@@ -1,23 +1,26 @@
 import {
   SimpleType,
-  isPrimitive,
+  TypeFlags,
+  createScalarNode,
   fail,
   identity,
-  createScalarNode,
+  isFinite,
+  isFloat,
+  isInteger,
+  isPrimitive,
+  isType,
+  typeCheckFailure,
+  typeCheckSuccess
+} from "../internal.ts"
+
+import type {
+  AnyNode,
+  AnyObjectNode,
   ISimpleType,
   IType,
-  TypeFlags,
   IValidationContext,
-  IValidationResult,
-  typeCheckSuccess,
-  typeCheckFailure,
-  isType,
-  isInteger,
-  AnyObjectNode,
-  AnyNode,
-  isFloat,
-  isFinite
-} from "../internal"
+  IValidationResult
+} from "../internal.ts"
 
 // TODO: implement CoreType using types.custom ?
 /**
@@ -228,7 +231,9 @@ export function getPrimitiveFactoryFromValue(value: any): ISimpleType<any> {
     case "boolean":
       return boolean
     case "object":
-      if (value instanceof Date) return DatePrimitive
+      if (value instanceof Date) {
+        return DatePrimitive
+      }
   }
   throw fail("Cannot determine primitive type from value " + value)
 }

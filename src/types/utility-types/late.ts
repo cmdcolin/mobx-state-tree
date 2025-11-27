@@ -1,17 +1,17 @@
 import {
-  fail,
+  type AnyObjectNode,
   BaseType,
-  IValidationContext,
-  IValidationResult,
+  type ExtractNodeType,
+  type IAnyType,
+  type IValidationContext,
+  type IValidationResult,
   TypeFlags,
-  isType,
-  IAnyType,
-  typeCheckSuccess,
-  AnyObjectNode,
-  ExtractNodeType,
   cannotDetermineSubtype,
-  devMode
-} from "../../internal"
+  devMode,
+  fail,
+  isType,
+  typeCheckSuccess
+} from "../../internal.ts"
 
 class Late<IT extends IAnyType> extends BaseType<
   IT["CreationType"],
@@ -33,20 +33,26 @@ class Late<IT extends IAnyType> extends BaseType<
       try {
         t = this._definition()
       } catch (e) {
-        if (e instanceof ReferenceError)
-          // can happen in strict ES5 code when a definition is self refering
+        if (
+          e instanceof ReferenceError
+        ) // can happen in strict ES5 code when a definition is self refering
+        {
           t = undefined
-        else throw e
+        } else {
+          throw e
+        }
       }
-      if (mustSucceed && t === undefined)
+      if (mustSucceed && t === undefined) {
         throw fail(
           "Late type seems to be used too early, the definition (still) returns undefined"
         )
+      }
       if (t) {
-        if (devMode() && !isType(t))
+        if (devMode() && !isType(t)) {
           throw fail(
             "Failed to determine subtype, make sure types.late returns a type definition."
           )
+        }
         this._subType = t
       }
     }
@@ -142,11 +148,12 @@ export function late(nameOrType: any, maybeType?: () => IAnyType): IAnyType {
   const type = typeof nameOrType === "string" ? maybeType : nameOrType
   // checks that the type is actually a late type
   if (devMode()) {
-    if (!(typeof type === "function" && type.length === 0))
+    if (!(typeof type === "function" && type.length === 0)) {
       throw fail(
         "Invalid late type, expected a function with zero arguments that returns a type, got: " +
           type
       )
+    }
   }
   return new Late(name, type)
 }

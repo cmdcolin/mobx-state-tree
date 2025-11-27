@@ -1,38 +1,42 @@
 import { isComputedProp, isObservableProp } from "mobx"
+
 import {
-  IAnyStateTreeNode,
-  IType,
-  IAnyModelType,
-  getStateTreeNode,
-  IStateTreeNode,
-  isStateTreeNode,
-  IJsonPatch,
-  splitJsonPath,
-  asArray,
   EMPTY_OBJECT,
-  fail,
-  IDisposer,
-  resolveNodeByPath,
-  getRelativePathBetweenNodes,
-  freeze,
-  IAnyType,
-  isModelType,
   InvalidReferenceError,
-  normalizeIdentifier,
-  ReferenceIdentifier,
-  AnyObjectNode,
-  assertIsType,
-  assertIsStateTreeNode,
-  TypeOfValue,
+  asArray,
+  assertArg,
   assertIsFunction,
   assertIsNumber,
+  assertIsStateTreeNode,
   assertIsString,
-  assertArg,
+  assertIsType,
   assertIsValidIdentifier,
-  IActionContext,
+  fail,
+  freeze,
+  getRelativePathBetweenNodes,
   getRunningActionContext,
-  IAnyComplexType
-} from "../internal"
+  getStateTreeNode,
+  isModelType,
+  isStateTreeNode,
+  normalizeIdentifier,
+  resolveNodeByPath,
+  splitJsonPath
+} from "../internal.ts"
+
+import type {
+  AnyObjectNode,
+  IActionContext,
+  IAnyComplexType,
+  IAnyModelType,
+  IAnyStateTreeNode,
+  IAnyType,
+  IDisposer,
+  IJsonPatch,
+  IStateTreeNode,
+  IType,
+  ReferenceIdentifier,
+  TypeOfValue
+} from "../internal.ts"
 
 /** @hidden */
 export type TypeOrStateTreeNodeToStateTreeNode<
@@ -237,7 +241,9 @@ export function recordPatches(
       }
     },
     resume() {
-      if (disposer) return
+      if (disposer) {
+        return
+      }
       disposer = onPatch(subject, (patch, inversePatch) => {
         // skip patches that are asked to be filtered if there's a filter in place
         if (filter && !filter(patch, inversePatch, getRunningActionContext())) {
@@ -274,7 +280,9 @@ export function protect(target: IAnyStateTreeNode): void {
   assertIsStateTreeNode(target, 1)
 
   const node = getStateTreeNode(target)
-  if (!node.isRoot) throw fail("`protect` can only be invoked on root nodes")
+  if (!node.isRoot) {
+    throw fail("`protect` can only be invoked on root nodes")
+  }
   node.isProtectionEnabled = true
 }
 
@@ -307,7 +315,9 @@ export function unprotect(target: IAnyStateTreeNode): void {
   assertIsStateTreeNode(target, 1)
 
   const node = getStateTreeNode(target)
-  if (!node.isRoot) throw fail("`unprotect` can only be invoked on root nodes")
+  if (!node.isRoot) {
+    throw fail("`unprotect` can only be invoked on root nodes")
+  }
   node.isProtectionEnabled = false
 }
 
@@ -351,7 +361,9 @@ export function getSnapshot<S>(
   assertIsStateTreeNode(target, 1)
 
   const node = getStateTreeNode(target)
-  if (applyPostProcess) return node.snapshot
+  if (applyPostProcess) {
+    return node.snapshot
+  }
 
   return freeze(node.type.getSnapshot(node, false))
 }
@@ -373,7 +385,9 @@ export function hasParent(
 
   let parent: AnyObjectNode | null = getStateTreeNode(target).parent
   while (parent) {
-    if (--depth === 0) return true
+    if (--depth === 0) {
+      return true
+    }
     parent = parent.parent
   }
   return false
@@ -403,7 +417,9 @@ export function getParent<IT extends IAnyStateTreeNode | IAnyComplexType>(
   let d = depth
   let parent: AnyObjectNode | null = getStateTreeNode(target).parent
   while (parent) {
-    if (--d === 0) return parent.storedValue as any
+    if (--d === 0) {
+      return parent.storedValue as any
+    }
     parent = parent.parent
   }
   throw fail(
@@ -428,7 +444,9 @@ export function hasParentOfType(
 
   let parent: AnyObjectNode | null = getStateTreeNode(target).parent
   while (parent) {
-    if (type.is(parent.storedValue)) return true
+    if (type.is(parent.storedValue)) {
+      return true
+    }
     parent = parent.parent
   }
   return false
@@ -451,7 +469,9 @@ export function getParentOfType<IT extends IAnyComplexType>(
 
   let parent: AnyObjectNode | null = getStateTreeNode(target).parent
   while (parent) {
-    if (type.is(parent.storedValue)) return parent.storedValue
+    if (type.is(parent.storedValue)) {
+      return parent.storedValue
+    }
     parent = parent.parent
   }
   throw fail(
@@ -651,7 +671,9 @@ export function tryResolve(target: IAnyStateTreeNode, path: string): any {
   assertIsString(path, 2)
 
   const node = resolveNodeByPath(getStateTreeNode(target), path, false)
-  if (node === undefined) return undefined
+  if (node === undefined) {
+    return undefined
+  }
   try {
     return node.value
   } catch (e) {
@@ -730,8 +752,11 @@ export function destroy(target: IAnyStateTreeNode): void {
   assertIsStateTreeNode(target, 1)
 
   const node = getStateTreeNode(target)
-  if (node.isRoot) node.die()
-  else node.parent!.removeChild(node.subpath)
+  if (node.isRoot) {
+    node.die()
+  } else {
+    node.parent!.removeChild(node.subpath)
+  }
 }
 
 /**
@@ -809,7 +834,9 @@ export function getEnv<T = any>(target: IAnyStateTreeNode): T {
 
   const node = getStateTreeNode(target)
   const env = node.root.environment
-  if (!env) return EMPTY_OBJECT as T
+  if (!env) {
+    return EMPTY_OBJECT as T
+  }
   return env
 }
 
@@ -827,7 +854,9 @@ export function walk(
   const node = getStateTreeNode(target)
   // tslint:disable-next-line:no_unused-variable
   node.getChildren().forEach(child => {
-    if (isStateTreeNode(child.storedValue)) walk(child.storedValue, processor)
+    if (isStateTreeNode(child.storedValue)) {
+      walk(child.storedValue, processor)
+    }
   })
   processor(node.storedValue)
 }
@@ -895,11 +924,16 @@ export function getMembers(target: IAnyStateTreeNode): IModelReflectionData {
 
   const props = Object.getOwnPropertyNames(target)
   props.forEach(key => {
-    if (key in reflected.properties) return
+    if (key in reflected.properties) {
+      return
+    }
     const descriptor = Object.getOwnPropertyDescriptor(target, key)!
     if (descriptor.get) {
-      if (isComputedProp(target, key)) reflected.views.push(key)
-      else reflected.volatile.push(key)
+      if (isComputedProp(target, key)) {
+        reflected.views.push(key)
+      } else {
+        reflected.volatile.push(key)
+      }
       return
     }
     if (descriptor.value._isFlowAction === true) {
