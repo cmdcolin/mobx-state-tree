@@ -18,7 +18,7 @@
     "clean": "rimraf dist",
     "prebuild": "yarn clean",
     "format": "yarn prettier --write .",
-    "build": "tsc && rollup -c",
+    "build": "tsc && cpr lib dist --filter=\\.js$ && rollup -c",
     "test": "vitest",
     "test-ci": "yarn test:dev && yarn test:prod",
     "test:dev": "cross-env NODE_ENV=development vitest --run",
@@ -66,5 +66,8 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "cpr": "^3.0.1"
   }
 }
