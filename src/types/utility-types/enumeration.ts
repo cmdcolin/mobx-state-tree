@@ -1,10 +1,5 @@
-import {
-  ISimpleType,
-  assertIsString,
-  devMode,
-  literal,
-  union
-} from "../../internal"
+import type { ISimpleType } from "../../internal.ts"
+import { assertIsString, devMode, literal, union } from "../../internal.ts"
 
 /** @hidden */
 export type UnionStringArray<T extends readonly string[]> = T[number]

@@ -1,9 +1,8 @@
 import { action } from "mobx"
 
-import {
+import type {
   AnyNode,
   AnyObjectNode,
-  BaseNode,
   IChildNodesMap,
   IJsonPatch,
   IStateTreeNode,
@@ -11,7 +10,10 @@ import {
   IValidationResult,
   ModelPrimitive,
   ObjectNode,
-  ScalarNode,
+  ScalarNode
+} from "../../internal.ts"
+import {
+  BaseNode,
   assertArg,
   fail,
   getStateTreeNode,
@@ -23,7 +25,7 @@ import {
   typeCheckFailure,
   typeCheckSuccess,
   typecheckInternal
-} from "../../internal"
+} from "../../internal.ts"
 
 /**
  * @internal

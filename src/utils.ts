@@ -5,7 +5,7 @@ import {
   isObservableObject
 } from "mobx"
 
-import { Primitives } from "./core/type/type.ts"
+import type { Primitives } from "./core/type/type.ts"
 
 const plainObjectString = Object.toString()
 

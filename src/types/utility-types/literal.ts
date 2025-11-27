@@ -1,20 +1,20 @@
-import {
+import type {
   AnyObjectNode,
   ISimpleType,
   IValidationContext,
   IValidationResult,
-  Primitives,
+  Primitives
+} from "../../internal.ts"
+import {
   SimpleType,
   TypeFlags,
   createScalarNode,
-  devMode,
-  fail,
   isPrimitive,
   isType,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal"
-import { assertArg } from "../../utils"
+} from "../../internal.ts"
+import { assertArg } from "../../utils.ts"
 
 /**
  * @internal

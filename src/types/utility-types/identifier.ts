@@ -1,10 +1,12 @@
-import {
+import type {
   AnyObjectNode,
   ISimpleType,
   IValidationContext,
   IValidationResult,
+  ScalarNode
+} from "../../internal.ts"
+import {
   ModelType,
-  ScalarNode,
   SimpleType,
   TypeFlags,
   assertArg,
@@ -13,7 +15,7 @@ import {
   isType,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal"
+} from "../../internal.ts"
 
 abstract class BaseIdentifierType<T> extends SimpleType<T, T, T> {
   readonly flags = TypeFlags.Identifier

@@ -7,14 +7,9 @@ import {
   reaction
 } from "mobx"
 
-import {
+import type {
   AnyNode,
   ArgumentTypes,
-  BaseNode,
-  ComplexType,
-  EMPTY_OBJECT,
-  EventHandlers,
-  Hook,
   IAnyType,
   IDisposer,
   IJsonPatch,
@@ -24,9 +19,16 @@ import {
   IReversibleJsonPatch,
   IStateTreeNode,
   IType,
+  ReferenceIdentifier
+} from "../../internal.ts"
+import {
+  BaseNode,
+  ComplexType,
+  EMPTY_OBJECT,
+  EventHandlers,
+  Hook,
   IdentifierCache,
   NodeLifeCycle,
-  ReferenceIdentifier,
   addHiddenFinalProp,
   convertChildNodesToArray,
   createActionInvoker,
@@ -44,7 +46,7 @@ import {
   splitPatch,
   toJSON,
   warnError
-} from "../../internal"
+} from "../../internal.ts"
 
 let nextNodeId = 1
 

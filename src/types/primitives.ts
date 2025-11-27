@@ -1,10 +1,12 @@
-import {
+import type {
   AnyNode,
   AnyObjectNode,
   ISimpleType,
   IType,
   IValidationContext,
-  IValidationResult,
+  IValidationResult
+} from "../internal.ts"
+import {
   SimpleType,
   TypeFlags,
   createScalarNode,
@@ -17,7 +19,7 @@ import {
   isType,
   typeCheckFailure,
   typeCheckSuccess
-} from "../internal"
+} from "../internal.ts"
 
 // TODO: implement CoreType using types.custom ?
 /**

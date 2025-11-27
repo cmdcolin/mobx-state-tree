@@ -1,20 +1,22 @@
-import {
+import type {
   AnyNode,
   AnyObjectNode,
-  EMPTY_ARRAY,
   IAnyComplexType,
   IAnyType,
   IChildNodesMap,
   IType,
   Instance,
+  STNValue
+} from "../../internal.ts"
+import {
+  EMPTY_ARRAY,
   ObjectNode,
-  STNValue,
   ScalarNode,
   assertArg,
   fail,
   joinJsonPath,
   splitJsonPath
-} from "../../internal"
+} from "../../internal.ts"
 
 /**
  * @internal

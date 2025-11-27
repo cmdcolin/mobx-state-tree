@@ -1,4 +1,4 @@
-import { fail, stringStartsWith } from "../internal"
+import { fail, stringStartsWith } from "../internal.ts"
 
 /**
  * https://tools.ietf.org/html/rfc6902

@@ -11,12 +11,9 @@ import {
   observe
 } from "mobx"
 
-import {
+import type {
   AnyNode,
   AnyObjectNode,
-  ComplexType,
-  EMPTY_ARRAY,
-  EMPTY_OBJECT,
   ExtractCSTWithSTN,
   IAnyStateTreeNode,
   IAnyType,
@@ -26,7 +23,12 @@ import {
   IStateTreeNode,
   IType,
   IValidationContext,
-  IValidationResult,
+  IValidationResult
+} from "../../internal.ts"
+import {
+  ComplexType,
+  EMPTY_ARRAY,
+  EMPTY_OBJECT,
   ObjectNode,
   TypeFlags,
   addHiddenFinalProp,
@@ -49,7 +51,7 @@ import {
   normalizeIdentifier,
   typeCheckFailure,
   typecheckInternal
-} from "../../internal"
+} from "../../internal.ts"
 
 /** @hidden */
 export interface IMSTArray<IT extends IAnyType> extends IObservableArray<

@@ -1,6 +1,5 @@
-import {
+import type {
   AnyObjectNode,
-  BaseType,
   IAnyType,
   IModelType,
   IType,
@@ -11,8 +10,11 @@ import {
   ModelInstanceType,
   ModelProperties,
   ModelSnapshotType2,
+  _NotCustomized
+} from "../../internal.ts"
+import {
+  BaseType,
   TypeFlags,
-  _NotCustomized,
   assertArg,
   assertIsType,
   devMode,

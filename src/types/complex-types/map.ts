@@ -14,11 +14,9 @@ import {
   values
 } from "mobx"
 
-import {
+import type {
   AnyNode,
   AnyObjectNode,
-  ComplexType,
-  EMPTY_OBJECT,
   ExtractCSTWithSTN,
   IAnyModelType,
   IAnyStateTreeNode,
@@ -28,7 +26,11 @@ import {
   IJsonPatch,
   IType,
   IValidationContext,
-  IValidationResult,
+  IValidationResult
+} from "../../internal.ts"
+import {
+  ComplexType,
+  EMPTY_OBJECT,
   ModelType,
   ObjectNode,
   TypeFlags,
@@ -53,7 +55,7 @@ import {
   normalizeIdentifier,
   typeCheckFailure,
   typecheckInternal
-} from "../../internal"
+} from "../../internal.ts"
 
 /** @hidden */
 export interface IMapType<IT extends IAnyType> extends IType<

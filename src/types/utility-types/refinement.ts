@@ -1,21 +1,21 @@
-import {
+import type {
   AnyObjectNode,
-  BaseType,
   ExtractNodeType,
   IAnyType,
   IValidationContext,
-  IValidationResult,
+  IValidationResult
+} from "../../internal.ts"
+import {
+  BaseType,
   TypeFlags,
   assertIsType,
-  devMode,
-  fail,
   getStateTreeNode,
   isStateTreeNode,
   isType,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal"
-import { assertIsFunction, assertIsString } from "../../utils"
+} from "../../internal.ts"
+import { assertIsFunction, assertIsString } from "../../utils.ts"
 
 class Refinement<IT extends IAnyType> extends BaseType<
   IT["CreationType"],

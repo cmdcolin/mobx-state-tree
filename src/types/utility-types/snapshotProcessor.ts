@@ -1,13 +1,15 @@
-import {
+import type {
   AnyObjectNode,
-  BaseType,
-  ComplexType,
   ExtractNodeType,
   IAnyType,
   IType,
   IValidationContext,
   IValidationResult,
-  Instance,
+  Instance
+} from "../../internal.ts"
+import {
+  BaseType,
+  ComplexType,
   ObjectNode,
   TypeFlags,
   assertIsType,

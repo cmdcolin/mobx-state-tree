@@ -1,8 +1,7 @@
 import { isComputedProp, isObservableProp } from "mobx"
 
-import {
+import type {
   AnyObjectNode,
-  EMPTY_OBJECT,
   IActionContext,
   IAnyComplexType,
   IAnyModelType,
@@ -12,9 +11,12 @@ import {
   IJsonPatch,
   IStateTreeNode,
   IType,
-  InvalidReferenceError,
   ReferenceIdentifier,
-  TypeOfValue,
+  TypeOfValue
+} from "../internal.ts"
+import {
+  EMPTY_OBJECT,
+  InvalidReferenceError,
   asArray,
   assertArg,
   assertIsFunction,
@@ -33,7 +35,7 @@ import {
   normalizeIdentifier,
   resolveNodeByPath,
   splitJsonPath
-} from "../internal"
+} from "../internal.ts"
 
 /** @hidden */
 export type TypeOrStateTreeNodeToStateTreeNode<

@@ -74,7 +74,7 @@ export type {
   _CustomJoin,
   _CustomOrOther,
   _NotCustomized
-} from "./internal"
+} from "./internal.ts"
 
 export {
   addDisposer,
@@ -155,6 +155,6 @@ export {
   unescapeJsonPath,
   unprotect,
   walk
-} from "./internal"
+} from "./internal.ts"
 
 console.log("wow")

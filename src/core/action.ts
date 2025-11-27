@@ -1,18 +1,20 @@
 import { action as mobxAction } from "mobx"
 
-import {
+import type {
   AnyObjectNode,
-  Hook,
   IActionContext,
   IAnyStateTreeNode,
-  IDisposer,
+  IDisposer
+} from "../internal.ts"
+import {
+  Hook,
   argsToArray,
   devMode,
   fail,
   getRoot,
   getStateTreeNode,
   warnError
-} from "../internal"
+} from "../internal.ts"
 
 export type IMiddlewareEventType =
   | "action"

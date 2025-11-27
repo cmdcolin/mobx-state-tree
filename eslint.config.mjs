@@ -31,6 +31,7 @@ export default defineConfig(
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unsafe-function-type": "off",
+      curly: "error",
       "import/extensions": ["error", "ignorePackages"],
       "import/no-unresolved": "off",
       "import/order": [

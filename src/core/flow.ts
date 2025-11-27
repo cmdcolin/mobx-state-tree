@@ -1,12 +1,11 @@
-import { argsToArray, fail, setImmediateWithFallback } from "../utils"
+import { argsToArray, fail, setImmediateWithFallback } from "../utils.ts"
+import type { FunctionWithFlag, IMiddlewareEventType } from "./action.ts"
 import {
-  FunctionWithFlag,
-  IMiddlewareEventType,
   getCurrentActionContext,
   getNextActionId,
   getParentActionContext,
   runWithActionContext
-} from "./action"
+} from "./action.ts"
 
 /**
  * @hidden

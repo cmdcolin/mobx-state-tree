@@ -1,9 +1,11 @@
-import {
+import type {
   AnyObjectNode,
   IAnyType,
   IType,
   IValidationContext,
-  IValidationResult,
+  IValidationResult
+} from "../../internal.ts"
+import {
   SimpleType,
   TypeFlags,
   createScalarNode,
@@ -13,7 +15,7 @@ import {
   optional,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal"
+} from "../../internal.ts"
 
 /**
  * @internal

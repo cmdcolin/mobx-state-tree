@@ -14,15 +14,10 @@ import {
   set
 } from "mobx"
 
-import {
+import type {
   AnyNode,
   AnyObjectNode,
-  ArrayType,
-  ComplexType,
-  EMPTY_ARRAY,
-  EMPTY_OBJECT,
   FunctionWithFlag,
-  Hook,
   IAnyType,
   IChildNodesMap,
   IJsonPatch,
@@ -31,10 +26,17 @@ import {
   IValidationContext,
   IValidationResult,
   Instance,
+  _CustomOrOther,
+  _NotCustomized
+} from "../../internal.ts"
+import {
+  ArrayType,
+  ComplexType,
+  EMPTY_ARRAY,
+  EMPTY_OBJECT,
+  Hook,
   MapType,
   TypeFlags,
-  _CustomOrOther,
-  _NotCustomized,
   addHiddenFinalProp,
   addHiddenWritableProp,
   assertArg,
@@ -57,7 +59,7 @@ import {
   optional,
   typeCheckFailure,
   typecheckInternal
-} from "../../internal"
+} from "../../internal.ts"
 
 const PRE_PROCESS_SNAPSHOT = "preProcessSnapshot"
 const POST_PROCESS_SNAPSHOT = "postProcessSnapshot"

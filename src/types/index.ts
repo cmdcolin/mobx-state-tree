@@ -29,7 +29,7 @@ import {
   string,
   undefinedType,
   union
-} from "../internal"
+} from "../internal.ts"
 
 export const types = {
   enumeration,

@@ -1,7 +1,6 @@
-import {
+import type {
   AnyNode,
   AnyObjectNode,
-  Hook,
   IAnyComplexType,
   IAnyStateTreeNode,
   IAnyType,
@@ -11,8 +10,11 @@ import {
   IType,
   IValidationContext,
   IValidationResult,
+  ReferenceIdentifier
+} from "../../internal.ts"
+import {
+  Hook,
   NodeLifeCycle,
-  ReferenceIdentifier,
   SimpleType,
   TypeFlags,
   applyPatch,
@@ -29,7 +31,7 @@ import {
   normalizeIdentifier,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal"
+} from "../../internal.ts"
 
 export type OnReferenceInvalidatedEvent<STN extends IAnyStateTreeNode> = {
   parent: IAnyStateTreeNode

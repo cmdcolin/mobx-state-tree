@@ -1,16 +1,14 @@
 import { IAtom, createAtom } from "mobx"
 
+import type { AnyObjectNode, IAnyType, IDisposer } from "../../internal.ts"
 import {
-  AnyObjectNode,
   EventHandlers,
   Hook,
-  IAnyType,
-  IDisposer,
   NodeLifeCycle,
   devMode,
   escapeJsonPath,
   fail
-} from "../../internal"
+} from "../../internal.ts"
 
 type HookSubscribers = {
   [Hook.afterAttach]: (node: AnyNode, hook: Hook) => void
