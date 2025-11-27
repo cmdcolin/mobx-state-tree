@@ -1,11 +1,3 @@
-import type {
-  AnyObjectNode,
-  ExtractCSTWithSTN,
-  IAnyType,
-  IType,
-  IValidationContext,
-  IValidationResult
-} from "../../internal.ts"
 import {
   BaseType,
   TypeFlags,
@@ -16,6 +8,15 @@ import {
   isType,
   typeCheckSuccess,
   typecheckInternal
+} from "../../internal.ts"
+
+import type {
+  AnyObjectNode,
+  ExtractCSTWithSTN,
+  IAnyType,
+  IType,
+  IValidationContext,
+  IValidationResult
 } from "../../internal.ts"
 
 type IFunctionReturn<T> = () => T

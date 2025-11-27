@@ -1,11 +1,3 @@
-import type {
-  AnyNode,
-  AnyObjectNode,
-  ISimpleType,
-  IType,
-  IValidationContext,
-  IValidationResult
-} from "../internal.ts"
 import {
   SimpleType,
   TypeFlags,
@@ -19,6 +11,15 @@ import {
   isType,
   typeCheckFailure,
   typeCheckSuccess
+} from "../internal.ts"
+
+import type {
+  AnyNode,
+  AnyObjectNode,
+  ISimpleType,
+  IType,
+  IValidationContext,
+  IValidationResult
 } from "../internal.ts"
 
 // TODO: implement CoreType using types.custom ?
@@ -230,7 +231,9 @@ export function getPrimitiveFactoryFromValue(value: any): ISimpleType<any> {
     case "boolean":
       return boolean
     case "object":
-      if (value instanceof Date) return DatePrimitive
+      if (value instanceof Date) {
+        return DatePrimitive
+      }
   }
   throw fail("Cannot determine primitive type from value " + value)
 }

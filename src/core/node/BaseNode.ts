@@ -1,6 +1,5 @@
 import { IAtom, createAtom } from "mobx"
 
-import type { AnyObjectNode, IAnyType, IDisposer } from "../../internal.ts"
 import {
   EventHandlers,
   Hook,
@@ -9,6 +8,8 @@ import {
   escapeJsonPath,
   fail
 } from "../../internal.ts"
+
+import type { AnyObjectNode, IAnyType, IDisposer } from "../../internal.ts"
 
 type HookSubscribers = {
   [Hook.afterAttach]: (node: AnyNode, hook: Hook) => void
@@ -123,7 +124,9 @@ export abstract class BaseNode<C, S, T> {
       }
       this.pathAtom.reportObserved()
     }
-    if (!this.parent) return ""
+    if (!this.parent) {
+      return ""
+    }
     // regenerate escaped subpath if needed
     if (this._escapedSubpath === undefined) {
       this._escapedSubpath = !this._subpath ? "" : escapeJsonPath(this._subpath)

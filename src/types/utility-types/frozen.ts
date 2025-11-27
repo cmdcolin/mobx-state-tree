@@ -1,10 +1,3 @@
-import type {
-  AnyObjectNode,
-  IAnyType,
-  IType,
-  IValidationContext,
-  IValidationResult
-} from "../../internal.ts"
 import {
   SimpleType,
   TypeFlags,
@@ -15,6 +8,14 @@ import {
   optional,
   typeCheckFailure,
   typeCheckSuccess
+} from "../../internal.ts"
+
+import type {
+  AnyObjectNode,
+  IAnyType,
+  IType,
+  IValidationContext,
+  IValidationResult
 } from "../../internal.ts"
 
 /**
@@ -59,7 +60,9 @@ export class Frozen<T> extends SimpleType<T, T, T> {
         "Value is not serializable and cannot be frozen"
       )
     }
-    if (this.subType) return this.subType.validate(value, context)
+    if (this.subType) {
+      return this.subType.validate(value, context)
+    }
     return typeCheckSuccess()
   }
 }
@@ -110,9 +113,13 @@ export function frozen<T = any>(): IType<T, T, T> // do not assume undefined by 
  * @returns
  */
 export function frozen(arg?: any): any {
-  if (arguments.length === 0) return untypedFrozenInstance
-  else if (isType(arg)) return new Frozen(arg)
-  else return optional(untypedFrozenInstance, arg)
+  if (arguments.length === 0) {
+    return untypedFrozenInstance
+  } else if (isType(arg)) {
+    return new Frozen(arg)
+  } else {
+    return optional(untypedFrozenInstance, arg)
+  }
 }
 
 /**

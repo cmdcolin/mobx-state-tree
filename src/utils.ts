@@ -100,8 +100,12 @@ export function isArray(val: any): val is any[] {
 export function asArray<T>(
   val: undefined | null | T | T[] | ReadonlyArray<T>
 ): T[] {
-  if (!val) return EMPTY_ARRAY as any as T[]
-  if (isArray(val)) return val as T[]
+  if (!val) {
+    return EMPTY_ARRAY as any as T[]
+  }
+  if (isArray(val)) {
+    return val as T[]
+  }
   return [val] as T[]
 }
 
@@ -132,7 +136,9 @@ export function extend(a: any, ...b: any[]): any
 export function extend(a: any, ...b: any[]) {
   for (let i = 0; i < b.length; i++) {
     const current = b[i]
-    for (const key in current) a[key] = current[key]
+    for (const key in current) {
+      a[key] = current[key]
+    }
   }
   return a
 }
@@ -142,9 +148,13 @@ export function extend(a: any, ...b: any[]) {
  * @hidden
  */
 export function isPlainObject(value: any): value is { [k: string]: any } {
-  if (value === null || typeof value !== "object") return false
+  if (value === null || typeof value !== "object") {
+    return false
+  }
   const proto = Object.getPrototypeOf(value)
-  if (proto == null) return true
+  if (proto == null) {
+    return true
+  }
   return proto.constructor?.toString() === plainObjectString
 }
 
@@ -185,7 +195,9 @@ export function isPrimitive(
  * Freeze a value and return it (if not in production)
  */
 export function freeze<T>(value: T): T {
-  if (!devMode()) return value
+  if (!devMode()) {
+    return value
+  }
   return isPrimitive(value) || isObservableArray(value)
     ? value
     : Object.freeze(value)
@@ -197,7 +209,9 @@ export function freeze<T>(value: T): T {
  * Recursively freeze a value (if not in production)
  */
 export function deepFreeze<T>(value: T): T {
-  if (!devMode()) return value
+  if (!devMode()) {
+    return value
+  }
   freeze(value)
 
   if (isPlainObject(value)) {
@@ -393,7 +407,9 @@ export function hasOwnProperty(object: object, propName: string) {
  */
 export function argsToArray(args: IArguments): any[] {
   const res = new Array(args.length)
-  for (let i = 0; i < args.length; i++) res[i] = args[i]
+  for (let i = 0; i < args.length; i++) {
+    res[i] = args[i]
+  }
   return res
 }
 
@@ -420,13 +436,17 @@ export const deprecated: DeprecatedFunction = function (
   message: string
 ): void {
   // skip if running production
-  if (!devMode()) return
+  if (!devMode()) {
+    return
+  }
   // warn if hasn't been warned before
   if (deprecated.ids && !deprecated.ids.hasOwnProperty(id)) {
     warnError("Deprecation warning: " + message)
   }
   // mark as warned to avoid duplicate warn message
-  if (deprecated.ids) deprecated.ids[id] = true
+  if (deprecated.ids) {
+    deprecated.ids[id] = true
+  }
 }
 deprecated.ids = {}
 

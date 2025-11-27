@@ -1,11 +1,5 @@
 import { runInAction } from "mobx"
 
-import type {
-  AnyNode,
-  IActionContext,
-  IAnyStateTreeNode,
-  IDisposer
-} from "../internal.ts"
 import {
   addMiddleware,
   applyPatch,
@@ -29,6 +23,13 @@ import {
   warnError
 } from "../internal.ts"
 
+import type {
+  AnyNode,
+  IActionContext,
+  IAnyStateTreeNode,
+  IDisposer
+} from "../internal.ts"
+
 export interface ISerializedActionCall {
   name: string
   path?: string
@@ -49,20 +50,28 @@ function serializeArgument(
   index: number,
   arg: any
 ): any {
-  if (arg instanceof Date) return { $MST_DATE: arg.getTime() }
-  if (isPrimitive(arg)) return arg
+  if (arg instanceof Date) {
+    return { $MST_DATE: arg.getTime() }
+  }
+  if (isPrimitive(arg)) {
+    return arg
+  }
   // We should not serialize MST nodes, even if we can, because we don't know if the receiving party can handle a raw snapshot instead of an
   // MST type instance. So if one wants to serialize a MST node that was pass in, either explitly pass: 1: an id, 2: a (relative) path, 3: a snapshot
-  if (isStateTreeNode(arg))
+  if (isStateTreeNode(arg)) {
     return serializeTheUnserializable(`[MSTNode: ${getType(arg).name}]`)
-  if (typeof arg === "function") return serializeTheUnserializable(`[function]`)
-  if (typeof arg === "object" && !isPlainObject(arg) && !isArray(arg))
+  }
+  if (typeof arg === "function") {
+    return serializeTheUnserializable(`[function]`)
+  }
+  if (typeof arg === "object" && !isPlainObject(arg) && !isArray(arg)) {
     return serializeTheUnserializable(
       `[object ${
         (arg && (arg as any).constructor && (arg as any).constructor.name) ||
         "Complex Object"
       }]`
     )
+  }
   try {
     // Check if serializable, cycle free etc...
     // MWE: there must be a better way....
@@ -74,8 +83,9 @@ function serializeArgument(
 }
 
 function deserializeArgument(adm: AnyNode, value: any): any {
-  if (value && typeof value === "object" && "$MST_DATE" in value)
+  if (value && typeof value === "object" && "$MST_DATE" in value) {
     return new Date(value["$MST_DATE"])
+  }
   return value
 }
 
@@ -112,7 +122,9 @@ function baseApplyAction(
   action: ISerializedActionCall
 ): any {
   const resolvedTarget = tryResolve(target, action.path || "")
-  if (!resolvedTarget) throw fail(`Invalid action path: ${action.path || ""}`)
+  if (!resolvedTarget) {
+    throw fail(`Invalid action path: ${action.path || ""}`)
+  }
   const node = getStateTreeNode(resolvedTarget)
 
   // Reserved functions
@@ -123,8 +135,9 @@ function baseApplyAction(
     return applySnapshot.call(null, resolvedTarget, action.args![0])
   }
 
-  if (!(typeof resolvedTarget[action.name] === "function"))
+  if (!(typeof resolvedTarget[action.name] === "function")) {
     throw fail(`Action '${action.name}' does not exist in '${node.path}'`)
+  }
   return resolvedTarget[action.name].apply(
     resolvedTarget,
     action.args ? action.args.map(v => deserializeArgument(node, v)) : []
@@ -187,7 +200,9 @@ export function recordActions(
       }
     },
     resume() {
-      if (disposer) return
+      if (disposer) {
+        return
+      }
       disposer = onAction(subject, listener)
     },
     replay(target) {
@@ -245,14 +260,16 @@ export function onAction(
   // check all arguments
   assertIsStateTreeNode(target, 1)
   if (devMode()) {
-    if (!isRoot(target))
+    if (!isRoot(target)) {
       warnError(
         "Warning: Attaching onAction listeners to non root nodes is dangerous: No events will be emitted for actions initiated higher up in the tree."
       )
-    if (!isProtected(target))
+    }
+    if (!isProtected(target)) {
       warnError(
         "Warning: Attaching onAction listeners to non protected nodes is dangerous: No events will be emitted for direct modifications without action."
       )
+    }
   }
 
   return addMiddleware(target, function handler(rawCall, next) {

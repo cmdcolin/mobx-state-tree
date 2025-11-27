@@ -14,20 +14,6 @@ import {
   values
 } from "mobx"
 
-import type {
-  AnyNode,
-  AnyObjectNode,
-  ExtractCSTWithSTN,
-  IAnyModelType,
-  IAnyStateTreeNode,
-  IAnyType,
-  IChildNodesMap,
-  IHooksGetter,
-  IJsonPatch,
-  IType,
-  IValidationContext,
-  IValidationResult
-} from "../../internal.ts"
 import {
   ComplexType,
   EMPTY_OBJECT,
@@ -55,6 +41,21 @@ import {
   normalizeIdentifier,
   typeCheckFailure,
   typecheckInternal
+} from "../../internal.ts"
+
+import type {
+  AnyNode,
+  AnyObjectNode,
+  ExtractCSTWithSTN,
+  IAnyModelType,
+  IAnyStateTreeNode,
+  IAnyType,
+  IChildNodesMap,
+  IHooksGetter,
+  IJsonPatch,
+  IType,
+  IValidationContext,
+  IValidationResult
 } from "../../internal.ts"
 
 /** @hidden */
@@ -129,7 +130,9 @@ function tryCollectModelTypes(
   if (subtypes) {
     const subtypesArray = asArray(subtypes)
     for (const subtype of subtypesArray) {
-      if (!tryCollectModelTypes(subtype, modelTypes)) return false
+      if (!tryCollectModelTypes(subtype, modelTypes)) {
+        return false
+      }
     }
   }
   if (type instanceof ModelType) {
@@ -174,7 +177,9 @@ class MSTMap<IT extends IAnyType> extends ObservableMap<string, any> {
   }
 
   put(value: ExtractCSTWithSTN<IT>): IT["Type"] {
-    if (!value) throw fail(`Map.put cannot be used to set empty values`)
+    if (!value) {
+      throw fail(`Map.put cannot be used to set empty values`)
+    }
     if (isStateTreeNode(value)) {
       const node = getStateTreeNode(value)
       if (devMode()) {
@@ -266,7 +271,9 @@ export class MapType<IT extends IAnyType> extends ComplexType<
     if (tryCollectModelTypes(this._subType, modelTypes)) {
       const identifierAttribute: string | undefined = modelTypes.reduce(
         (current: IAnyModelType["identifierAttribute"], type) => {
-          if (!type.identifierAttribute) return current
+          if (!type.identifierAttribute) {
+            return current
+          }
           if (current && current !== type.identifierAttribute) {
             throw fail(
               `The objects in a map should all have the same identifier attribute, expected '${current}', but child of type '${type.name}' declared attribute '${type.identifierAttribute}' as identifier`
@@ -347,7 +354,9 @@ export class MapType<IT extends IAnyType> extends ComplexType<
 
   getChildNode(node: this["N"], key: string): AnyNode {
     const childNode = node.storedValue.get("" + key)
-    if (!childNode) throw fail("Not a child " + key)
+    if (!childNode) {
+      throw fail("Not a child " + key)
+    }
     return childNode
   }
 
@@ -365,7 +374,9 @@ export class MapType<IT extends IAnyType> extends ComplexType<
         {
           const { newValue } = change
           const oldValue = change.object.get(key)
-          if (newValue === oldValue) return null
+          if (newValue === oldValue) {
+            return null
+          }
           typecheckInternal(subType, newValue)
           change.newValue = subType.reconcile(
             node.getChildNode(key),
@@ -398,10 +409,11 @@ export class MapType<IT extends IAnyType> extends ComplexType<
       node instanceof ObjectNode
     ) {
       const identifier = node.identifier!
-      if (identifier !== expected)
+      if (identifier !== expected) {
         throw fail(
           `A map of objects containing an identifier should always store the object under their own identifier. Trying to store key '${identifier}', but expected: '${expected}'`
         )
+      }
     }
   }
 
@@ -488,7 +500,9 @@ export class MapType<IT extends IAnyType> extends ComplexType<
       }
     }
     Object.keys(currentKeys).forEach(key => {
-      if (currentKeys[key] === false) target.delete(key)
+      if (currentKeys[key] === false) {
+        target.delete(key)
+      }
     })
   }
 

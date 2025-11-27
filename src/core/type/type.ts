@@ -1,17 +1,5 @@
 import { action } from "mobx"
 
-import type {
-  AnyNode,
-  AnyObjectNode,
-  IChildNodesMap,
-  IJsonPatch,
-  IStateTreeNode,
-  IValidationContext,
-  IValidationResult,
-  ModelPrimitive,
-  ObjectNode,
-  ScalarNode
-} from "../../internal.ts"
 import {
   BaseNode,
   assertArg,
@@ -25,6 +13,19 @@ import {
   typeCheckFailure,
   typeCheckSuccess,
   typecheckInternal
+} from "../../internal.ts"
+
+import type {
+  AnyNode,
+  AnyObjectNode,
+  IChildNodesMap,
+  IJsonPatch,
+  IStateTreeNode,
+  IValidationContext,
+  IValidationResult,
+  ModelPrimitive,
+  ObjectNode,
+  ScalarNode
 } from "../../internal.ts"
 
 /**
@@ -471,7 +472,9 @@ export abstract class ComplexType<C, S, T> extends BaseType<
   }
 
   private tryToReconcileNode(current: this["N"], newValue: C | T) {
-    if (current.isDetaching) return false
+    if (current.isDetaching) {
+      return false
+    }
     if ((current.snapshot as any) === newValue) {
       // newValue is the current snapshot of the node, noop
       return true

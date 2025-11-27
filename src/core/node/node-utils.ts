@@ -1,3 +1,13 @@
+import {
+  EMPTY_ARRAY,
+  ObjectNode,
+  ScalarNode,
+  assertArg,
+  fail,
+  joinJsonPath,
+  splitJsonPath
+} from "../../internal.ts"
+
 import type {
   AnyNode,
   AnyObjectNode,
@@ -7,15 +17,6 @@ import type {
   IType,
   Instance,
   STNValue
-} from "../../internal.ts"
-import {
-  EMPTY_ARRAY,
-  ObjectNode,
-  ScalarNode,
-  assertArg,
-  fail,
-  joinJsonPath,
-  splitJsonPath
 } from "../../internal.ts"
 
 /**
@@ -134,7 +135,9 @@ export function getRelativePathBetweenNodes(
   const targetParts = splitJsonPath(target.path)
   let common = 0
   for (; common < baseParts.length; common++) {
-    if (baseParts[common] !== targetParts[common]) break
+    if (baseParts[common] !== targetParts[common]) {
+      break
+    }
   }
   // TODO: assert that no targetParts paths are "..", "." or ""!
   return (
@@ -170,7 +173,9 @@ export function resolveNodeByPathParts(
       const part = pathParts[i]
       if (part === "..") {
         current = current!.parent
-        if (current) continue // not everything has a parent
+        if (current) {
+          continue
+        } // not everything has a parent
       } else if (part === ".") {
         continue
       } else if (current) {
@@ -187,7 +192,9 @@ export function resolveNodeByPathParts(
           const subType = current.getChildType(part)
           if (subType) {
             current = current.getChildNode(part)
-            if (current) continue
+            if (current) {
+              continue
+            }
           }
         }
       }
@@ -213,10 +220,14 @@ export function resolveNodeByPathParts(
 export function convertChildNodesToArray(
   childNodes: IChildNodesMap | null
 ): AnyNode[] {
-  if (!childNodes) return EMPTY_ARRAY as AnyNode[]
+  if (!childNodes) {
+    return EMPTY_ARRAY as AnyNode[]
+  }
 
   const keys = Object.keys(childNodes)
-  if (!keys.length) return EMPTY_ARRAY as AnyNode[]
+  if (!keys.length) {
+    return EMPTY_ARRAY as AnyNode[]
+  }
 
   const result = new Array(keys.length) as AnyNode[]
   keys.forEach((key, index) => {

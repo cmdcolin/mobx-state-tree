@@ -1,4 +1,3 @@
-import type { IAnyType, IType } from "../../internal.ts"
 import {
   assertIsType,
   nullType,
@@ -6,6 +5,8 @@ import {
   undefinedType,
   union
 } from "../../internal.ts"
+
+import type { IAnyType, IType } from "../../internal.ts"
 
 const optionalUndefinedType = optional(undefinedType, undefined)
 const optionalNullType = optional(nullType, null)

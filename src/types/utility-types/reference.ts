@@ -1,17 +1,3 @@
-import type {
-  AnyNode,
-  AnyObjectNode,
-  IAnyComplexType,
-  IAnyStateTreeNode,
-  IAnyType,
-  IDisposer,
-  IMaybe,
-  IStateTreeNode,
-  IType,
-  IValidationContext,
-  IValidationResult,
-  ReferenceIdentifier
-} from "../../internal.ts"
 import {
   Hook,
   NodeLifeCycle,
@@ -31,6 +17,21 @@ import {
   normalizeIdentifier,
   typeCheckFailure,
   typeCheckSuccess
+} from "../../internal.ts"
+
+import type {
+  AnyNode,
+  AnyObjectNode,
+  IAnyComplexType,
+  IAnyStateTreeNode,
+  IAnyType,
+  IDisposer,
+  IMaybe,
+  IStateTreeNode,
+  IType,
+  IValidationContext,
+  IValidationResult,
+  ReferenceIdentifier
 } from "../../internal.ts"
 
 export type OnReferenceInvalidatedEvent<STN extends IAnyStateTreeNode> = {
@@ -78,10 +79,11 @@ class StoredReference<IT extends IAnyType> {
       this.identifier = value
     } else if (isStateTreeNode(value)) {
       const targetNode = getStateTreeNode(value)
-      if (!targetNode.identifierAttribute)
+      if (!targetNode.identifierAttribute) {
         throw fail(
           `Can only store references with a defined identifier attribute.`
         )
+      }
       const id = targetNode.unnormalizedIdentifier
       if (id === null || id === undefined) {
         throw fail(
@@ -364,7 +366,9 @@ export class IdentifierReferenceType<
   }
 
   getValue(storedRefNode: this["N"]) {
-    if (!storedRefNode.isAlive) return undefined
+    if (!storedRefNode.isAlive) {
+      return undefined
+    }
     const storedRef: StoredReference<IT> = storedRefNode.storedValue
     return storedRef.resolvedValue as any
   }
@@ -439,7 +443,9 @@ export class CustomReferenceType<
   }
 
   getValue(storedRefNode: this["N"]) {
-    if (!storedRefNode.isAlive) return undefined as any
+    if (!storedRefNode.isAlive) {
+      return undefined as any
+    }
     const referencedNode = this.options.get(
       storedRefNode.storedValue,
       storedRefNode.parent ? storedRefNode.parent.storedValue : null

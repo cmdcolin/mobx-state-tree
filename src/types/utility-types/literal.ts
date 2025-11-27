@@ -1,10 +1,3 @@
-import type {
-  AnyObjectNode,
-  ISimpleType,
-  IValidationContext,
-  IValidationResult,
-  Primitives
-} from "../../internal.ts"
 import {
   SimpleType,
   TypeFlags,
@@ -15,6 +8,14 @@ import {
   typeCheckSuccess
 } from "../../internal.ts"
 import { assertArg } from "../../utils.ts"
+
+import type {
+  AnyObjectNode,
+  ISimpleType,
+  IValidationContext,
+  IValidationResult,
+  Primitives
+} from "../../internal.ts"
 
 /**
  * @internal

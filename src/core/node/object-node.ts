@@ -7,20 +7,6 @@ import {
   reaction
 } from "mobx"
 
-import type {
-  AnyNode,
-  ArgumentTypes,
-  IAnyType,
-  IDisposer,
-  IJsonPatch,
-  IMiddleware,
-  IMiddlewareEvent,
-  IMiddlewareHandler,
-  IReversibleJsonPatch,
-  IStateTreeNode,
-  IType,
-  ReferenceIdentifier
-} from "../../internal.ts"
 import {
   BaseNode,
   ComplexType,
@@ -46,6 +32,21 @@ import {
   splitPatch,
   toJSON,
   warnError
+} from "../../internal.ts"
+
+import type {
+  AnyNode,
+  ArgumentTypes,
+  IAnyType,
+  IDisposer,
+  IJsonPatch,
+  IMiddleware,
+  IMiddlewareEvent,
+  IMiddlewareHandler,
+  IReversibleJsonPatch,
+  IStateTreeNode,
+  IType,
+  ReferenceIdentifier
 } from "../../internal.ts"
 
 let nextNodeId = 1
@@ -252,7 +253,9 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     // "_observableInstanceState" field was touched
     ;(this._snapshotComputed as any).trackAndCompute()
 
-    if (this.isRoot) this._addSnapshotReaction()
+    if (this.isRoot) {
+      this._addSnapshotReaction()
+    }
 
     this._childNodes = EMPTY_OBJECT
 
@@ -279,7 +282,9 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   clearParent(): void {
-    if (!this.parent) return
+    if (!this.parent) {
+      return
+    }
 
     // detach if attached
     this.fireHook(Hook.beforeDetach)
@@ -382,7 +387,9 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
 
   // NOTE: we use this method to get snapshot without creating @computed overhead
   getSnapshot(): S {
-    if (!this.isAlive) return this._snapshotUponDeath!
+    if (!this.isAlive) {
+      return this._snapshotUponDeath!
+    }
     return this._observableInstanceState === ObservableInstanceLifecycle.CREATED
       ? this._getActualSnapshot()
       : this._getCachedInitialSnapshot()
@@ -409,8 +416,12 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   private isRunningAction(): boolean {
-    if (this._isRunningAction) return true
-    if (this.isRoot) return false
+    if (this._isRunningAction) {
+      return true
+    }
+    if (this.isRoot) {
+      return false
+    }
     return this.parent!.isRunningAction()
   }
 
@@ -507,7 +518,9 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
 
   // bound on the constructor
   unbox(childNode: AnyNode | undefined): AnyNode | undefined {
-    if (!childNode) return childNode
+    if (!childNode) {
+      return childNode
+    }
 
     this.assertAlive({
       subpath: childNode.subpath || childNode.subpathUponDeath
@@ -532,7 +545,9 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   detach(): void {
-    if (!this.isAlive) throw fail(`Error while detaching, node is not alive.`)
+    if (!this.isAlive) {
+      throw fail(`Error while detaching, node is not alive.`)
+    }
 
     this.clearParent()
   }
@@ -562,7 +577,9 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
       "@APPLY_SNAPSHOT",
       (snapshot: C) => {
         // if the snapshot is the same as the current one, avoid performing a reconcile
-        if (snapshot === (self.snapshot as any)) return
+        if (snapshot === (self.snapshot as any)) {
+          return
+        }
         // else, apply it by calling the type logic
         return self.type.applySnapshot(self, snapshot as any)
       }
@@ -573,7 +590,9 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   die(): void {
-    if (!this.isAlive || this.state === NodeLifeCycle.DETACHING) return
+    if (!this.isAlive || this.state === NodeLifeCycle.DETACHING) {
+      return
+    }
     this.aboutToDie()
     this.finalizeDeath()
   }
@@ -637,7 +656,9 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
       const [patch, reversePatch] = splitPatch(localizedPatch)
       this._internalEventsEmit(InternalEvents.Patch, patch, reversePatch)
     }
-    if (this.parent) this.parent.emitPatch(basePatch, source)
+    if (this.parent) {
+      this.parent.emitPatch(basePatch, source)
+    }
   }
 
   hasDisposer(disposer: () => void): boolean {
@@ -677,8 +698,11 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     includeHooks: boolean = true
   ): IDisposer {
     const middleware = { handler, includeHooks }
-    if (!this.middlewares) this.middlewares = [middleware]
-    else this.middlewares.push(middleware)
+    if (!this.middlewares) {
+      this.middlewares = [middleware]
+    } else {
+      this.middlewares.push(middleware)
+    }
 
     return () => {
       this.removeMiddleware(middleware)

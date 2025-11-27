@@ -14,21 +14,6 @@ import {
   set
 } from "mobx"
 
-import type {
-  AnyNode,
-  AnyObjectNode,
-  FunctionWithFlag,
-  IAnyType,
-  IChildNodesMap,
-  IJsonPatch,
-  IStateTreeNode,
-  IType,
-  IValidationContext,
-  IValidationResult,
-  Instance,
-  _CustomOrOther,
-  _NotCustomized
-} from "../../internal.ts"
 import {
   ArrayType,
   ComplexType,
@@ -59,6 +44,22 @@ import {
   optional,
   typeCheckFailure,
   typecheckInternal
+} from "../../internal.ts"
+
+import type {
+  AnyNode,
+  AnyObjectNode,
+  FunctionWithFlag,
+  IAnyType,
+  IChildNodesMap,
+  IJsonPatch,
+  IStateTreeNode,
+  IType,
+  IValidationContext,
+  IValidationResult,
+  Instance,
+  _CustomOrOther,
+  _NotCustomized
 } from "../../internal.ts"
 
 const PRE_PROCESS_SNAPSHOT = "preProcessSnapshot"
@@ -404,10 +405,11 @@ export class ModelType<
     let identifierAttribute: string | undefined = undefined
     this.forAllProps((propName, propType) => {
       if (propType.flags & TypeFlags.Identifier) {
-        if (identifierAttribute)
+        if (identifierAttribute) {
           throw fail(
             `Cannot define property '${propName}' as object identifier, property '${identifierAttribute}' is already defined as identifier property`
           )
+        }
         identifierAttribute = propName
       }
     })
@@ -434,23 +436,26 @@ export class ModelType<
 
   private instantiateActions(self: this["T"], actions: ModelActions): void {
     // check if return is correct
-    if (!isPlainObject(actions))
+    if (!isPlainObject(actions)) {
       throw fail(
         `actions initializer should return a plain object containing actions`
       )
+    }
 
     // bind actions to the object created
     Object.keys(actions).forEach(name => {
       // warn if preprocessor was given
-      if (name === PRE_PROCESS_SNAPSHOT)
+      if (name === PRE_PROCESS_SNAPSHOT) {
         throw fail(
           `Cannot define action '${PRE_PROCESS_SNAPSHOT}', it should be defined using 'type.preProcessSnapshot(fn)' instead`
         )
+      }
       // warn if postprocessor was given
-      if (name === POST_PROCESS_SNAPSHOT)
+      if (name === POST_PROCESS_SNAPSHOT) {
         throw fail(
           `Cannot define action '${POST_PROCESS_SNAPSHOT}', it should be defined using 'type.postProcessSnapshot(fn)' instead`
         )
+      }
 
       let action2 = actions[name]
 
@@ -511,10 +516,11 @@ export class ModelType<
     }
   ): void {
     // check views return
-    if (!isPlainObject(state))
+    if (!isPlainObject(state)) {
       throw fail(
         `volatile state initializer should return a plain object containing state`
       )
+    }
     set(self, state)
   }
 
@@ -525,13 +531,20 @@ export class ModelType<
   >(fn: (self: Instance<this>) => { actions?: A; views?: V; state?: VS }) {
     const initializer = (self: Instance<this>) => {
       const { actions, views, state, ...rest } = fn(self)
-      for (const key in rest)
+      for (const key in rest) {
         throw fail(
           `The \`extend\` function should return an object with a subset of the fields 'actions', 'views' and 'state'. Found invalid key '${key}'`
         )
-      if (state) this.instantiateVolatileState(self, state)
-      if (views) this.instantiateViews(self, views)
-      if (actions) this.instantiateActions(self, actions)
+      }
+      if (state) {
+        this.instantiateVolatileState(self, state)
+      }
+      if (views) {
+        this.instantiateViews(self, views)
+      }
+      if (actions) {
+        this.instantiateActions(self, actions)
+      }
       return self
     }
     return this.cloneAndEnhance({ initializers: [initializer] })
@@ -547,10 +560,11 @@ export class ModelType<
 
   private instantiateViews(self: this["T"], views: object): void {
     // check views return
-    if (!isPlainObject(views))
+    if (!isPlainObject(views)) {
       throw fail(
         `views initializer should return a plain object containing views`
       )
+    }
     Object.getOwnPropertyNames(views).forEach(key => {
       // is this a computed property?
       const descriptor = Object.getOwnPropertyDescriptor(views, key)!
@@ -575,20 +589,24 @@ export class ModelType<
 
   preProcessSnapshot: MT["preProcessSnapshot"] = preProcessor => {
     const currentPreprocessor = this.preProcessor
-    if (!currentPreprocessor) return this.cloneAndEnhance({ preProcessor })
-    else
+    if (!currentPreprocessor) {
+      return this.cloneAndEnhance({ preProcessor })
+    } else {
       return this.cloneAndEnhance({
         preProcessor: snapshot => currentPreprocessor(preProcessor(snapshot))
       })
+    }
   }
 
   postProcessSnapshot: MT["postProcessSnapshot"] = postProcessor => {
     const currentPostprocessor = this.postProcessor
-    if (!currentPostprocessor) return this.cloneAndEnhance({ postProcessor })
-    else
+    if (!currentPostprocessor) {
+      return this.cloneAndEnhance({ postProcessor })
+    } else {
       return this.cloneAndEnhance({
         postProcessor: snapshot => postProcessor(currentPostprocessor(snapshot))
       })
+    }
   }
 
   instantiate(
@@ -691,10 +709,14 @@ export class ModelType<
   }
 
   getChildNode(node: this["N"], key: string): AnyNode {
-    if (!(key in this.properties)) throw fail("Not a value property: " + key)
+    if (!(key in this.properties)) {
+      throw fail("Not a value property: " + key)
+    }
     const adm = _getAdministration(node.storedValue, key)
     const childNode = adm.raw?.()
-    if (!childNode) throw fail("Node not available for property " + key)
+    if (!childNode) {
+      throw fail("Node not available for property " + key)
+    }
     return childNode
   }
 
@@ -746,7 +768,9 @@ export class ModelType<
 
   applySnapshotPostProcessor(snapshot: any) {
     const postProcessor = this.postProcessor
-    if (postProcessor) return postProcessor.call(null, snapshot)
+    if (postProcessor) {
+      return postProcessor.call(null, snapshot)
+    }
     return snapshot
   }
 

@@ -1,3 +1,17 @@
+import {
+  BaseType,
+  TypeFlags,
+  assertArg,
+  assertIsType,
+  devMode,
+  fail,
+  flattenTypeErrors,
+  isPlainObject,
+  isType,
+  typeCheckFailure,
+  typeCheckSuccess
+} from "../../internal.ts"
+
 import type {
   AnyObjectNode,
   IAnyType,
@@ -11,19 +25,6 @@ import type {
   ModelProperties,
   ModelSnapshotType2,
   _NotCustomized
-} from "../../internal.ts"
-import {
-  BaseType,
-  TypeFlags,
-  assertArg,
-  assertIsType,
-  devMode,
-  fail,
-  flattenTypeErrors,
-  isPlainObject,
-  isType,
-  typeCheckFailure,
-  typeCheckSuccess
 } from "../../internal.ts"
 
 export type ITypeDispatcher = (snapshot: any) => IAnyType
@@ -63,7 +64,9 @@ export class Union extends BaseType<any, any, any> {
       ...options
     }
     this._dispatcher = options.dispatcher
-    if (!options.eager) this._eager = false
+    if (!options.eager) {
+      this._eager = false
+    }
   }
 
   isAssignableFrom(type: IAnyType) {
@@ -83,7 +86,9 @@ export class Union extends BaseType<any, any, any> {
     initialValue: this["C"] | this["T"]
   ): this["N"] {
     const type = this.determineType(initialValue, undefined)
-    if (!type) throw fail("No matching type for union " + this.describe()) // can happen in prod builds
+    if (!type) {
+      throw fail("No matching type for union " + this.describe())
+    } // can happen in prod builds
     return type.instantiate(parent, subpath, environment, initialValue)
   }
 
@@ -94,7 +99,9 @@ export class Union extends BaseType<any, any, any> {
     subpath: string
   ): this["N"] {
     const type = this.determineType(newValue, current.getReconciliationType())
-    if (!type) throw fail("No matching type for union " + this.describe()) // can happen in prod builds
+    if (!type) {
+      throw fail("No matching type for union " + this.describe())
+    } // can happen in prod builds
     return type.reconcile(current, newValue, parent, subpath)
   }
 
@@ -135,14 +142,19 @@ export class Union extends BaseType<any, any, any> {
       const type = this._types[i]
       const errors = type.validate(value, context)
       if (errors.length === 0) {
-        if (this._eager) return typeCheckSuccess()
-        else applicableTypes++
+        if (this._eager) {
+          return typeCheckSuccess()
+        } else {
+          applicableTypes++
+        }
       } else {
         allErrors.push(errors)
       }
     }
 
-    if (applicableTypes === 1) return typeCheckSuccess()
+    if (applicableTypes === 1) {
+      return typeCheckSuccess()
+    }
     return typeCheckFailure(
       context,
       value,
