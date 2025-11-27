@@ -1,4 +1,4 @@
-import { test, expect, describe } from "vitest"
+import { test, expect, describe, it } from "vitest"
 import {
   addMiddleware,
   createActionTrackingMiddleware2,

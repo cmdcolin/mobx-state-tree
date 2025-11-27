@@ -16,16 +16,18 @@ test("performs well on large scenario", () => {
   expect(largeScenario(10, 0, 10).elapsed < TOO_SLOW_MS).toBe(true)
   expect(largeScenario(10, 10, 10).elapsed < TOO_SLOW_MS).toBe(true)
 })
-test("timer", (done) => {
-  const go = start()
-  setTimeout(function () {
-    const lap = go(true)
+test("timer", () => {
+  return new Promise<void>((resolve) => {
+    const go = start()
     setTimeout(function () {
-      const d = go()
-      expect(lap).not.toBe(0)
-      expect(d).not.toBe(0)
-      expect(lap).not.toBe(d)
-      done()
+      const lap = go(true)
+      setTimeout(function () {
+        const d = go()
+        expect(lap).not.toBe(0)
+        expect(d).not.toBe(0)
+        expect(lap).not.toBe(d)
+        resolve()
+      }, 2)
     }, 2)
-  }, 2)
+  })
 })

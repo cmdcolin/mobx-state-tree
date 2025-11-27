@@ -240,8 +240,8 @@ describe("Model properties objects", () => {
           types.model({
             [hook]: types.string
           })
-        }).toThrowErrorMatchingInlineSnapshot(
-          `[Error: [mobx-state-tree] Hook '${hook}' was defined as property. Hooks should be defined as part of the actions]`
+        }).toThrow(
+          `[mobx-state-tree] Hook '${hook}' was defined as property. Hooks should be defined as part of the actions`
         )
       })
     })

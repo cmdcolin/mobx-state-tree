@@ -1,18 +1,16 @@
-import { test, expect, describe } from "vitest"
+import { it, test, expect, describe } from "vitest"
 import { t } from "../../src"
 import { Hook, NodeLifeCycle } from "../../src/internal"
 
 describe("types.number", () => {
   describe("methods", () => {
     describe("create", () => {
-      describe("with no arguments", () => {
-        if (process.env.NODE_ENV !== "production") {
-          it("should throw an error in development", () => {
-            expect(() => {
-              t.number.create()
-            }).toThrow()
-          })
-        }
+      describe.runIf(process.env.NODE_ENV !== "production")("with no arguments", () => {
+        it("should throw an error in development", () => {
+          expect(() => {
+            t.number.create()
+          }).toThrow()
+        })
       })
       describe("with a number argument", () => {
         it("should return a number", () => {
@@ -20,24 +18,25 @@ describe("types.number", () => {
           expect(typeof n).toBe("number")
         })
       })
-      describe("with argument of different types", () => {
-        // Keep in mind, Infinity and NaN are treated as numbers in JavaScript, so we won't test for them here.
-        const testCases = [
-          null,
-          undefined,
-          "string",
-          true,
-          [],
-          function () {},
-          new Date(),
-          /a/,
-          new Map(),
-          new Set(),
-          Symbol(),
-          new Error()
-        ]
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with argument of different types",
+        () => {
+          // Keep in mind, Infinity and NaN are treated as numbers in JavaScript, so we won't test for them here.
+          const testCases = [
+            null,
+            undefined,
+            "string",
+            true,
+            [],
+            function () {},
+            new Date(),
+            /a/,
+            new Map(),
+            new Set(),
+            Symbol(),
+            new Error()
+          ]
 
-        if (process.env.NODE_ENV !== "production") {
           testCases.forEach((testCase) => {
             it(`should throw an error when passed ${JSON.stringify(testCase)}`, () => {
               expect(() => {
@@ -46,7 +45,7 @@ describe("types.number", () => {
             })
           })
         }
-      })
+      )
     })
     describe("describe", () => {
       it("should return the value 'number'", () => {
@@ -68,16 +67,14 @@ describe("types.number", () => {
       })
     })
     describe("instantiate", () => {
-      if (process.env.NODE_ENV !== "production") {
-        describe("with invalid arguments", () => {
-          it("should not throw an error", () => {
-            expect(() => {
-              // @ts-ignore
-              t.number.instantiate()
-            }).not.toThrow()
-          })
+      describe.runIf(process.env.NODE_ENV !== "production")("with invalid arguments", () => {
+        it("should not throw an error", () => {
+          expect(() => {
+            // @ts-ignore
+            t.number.instantiate()
+          }).not.toThrow()
         })
-      }
+      })
       describe("with a number argument", () => {
         it("should return an object", () => {
           const n = t.number.instantiate(null, "", {}, 1)
@@ -282,35 +279,33 @@ describe("types.number", () => {
           expect(called).toBe(true)
         })
       })
-      describe("setParent", () => {
-        if (process.env.NODE_ENV !== "production") {
-          describe("with null", () => {
-            it("should throw an error", () => {
-              const n = t.number.instantiate(null, "", {}, 1)
-              expect(() => {
-                n.setParent(null, "foo")
-              }).toThrow()
-            })
+      describe.runIf(process.env.NODE_ENV !== "production")("setParent", () => {
+        describe("with null", () => {
+          it("should throw an error", () => {
+            const n = t.number.instantiate(null, "", {}, 1)
+            expect(() => {
+              n.setParent(null, "foo")
+            }).toThrow()
           })
-          describe("with a parent object", () => {
-            it("should throw an error", () => {
-              const Parent = t.model({
-                child: t.number
-              })
-
-              const parent = Parent.create({ child: 1 })
-
-              const n = t.number.instantiate(null, "", {}, 1)
-
-              expect(() => {
-                // @ts-ignore
-                n.setParent(parent, "bar")
-              }).toThrow(
-                "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
-              )
+        })
+        describe("with a parent object", () => {
+          it("should throw an error", () => {
+            const Parent = t.model({
+              child: t.number
             })
+
+            const parent = Parent.create({ child: 1 })
+
+            const n = t.number.instantiate(null, "", {}, 1)
+
+            expect(() => {
+              // @ts-ignore
+              n.setParent(parent, "bar")
+            }).toThrow(
+              "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
+            )
           })
-        }
+        })
       })
     })
   })

@@ -1,18 +1,16 @@
-import { test, expect, describe } from "vitest"
+import { it, test, expect, describe } from "vitest"
 import { t } from "../../src"
 import { Hook, NodeLifeCycle } from "../../src/internal"
 
 describe("types.boolean", () => {
   describe("methods", () => {
     describe("create", () => {
-      describe("with no arguments", () => {
-        if (process.env.NODE_ENV !== "production") {
-          it("should throw an error in development", () => {
-            expect(() => {
-              t.boolean.create()
-            }).toThrow()
-          })
-        }
+      describe.runIf(process.env.NODE_ENV !== "production")("with no arguments", () => {
+        it("should throw an error in development", () => {
+          expect(() => {
+            t.boolean.create()
+          }).toThrow()
+        })
       })
       describe("with a boolean argument", () => {
         it("should return a boolean", () => {
@@ -20,25 +18,26 @@ describe("types.boolean", () => {
           expect(typeof n).toBe("boolean")
         })
       })
-      describe("with argument of different types", () => {
-        const testCases = [
-          null,
-          undefined,
-          "string",
-          1,
-          [],
-          function () {},
-          new Date(),
-          /a/,
-          new Map(),
-          new Set(),
-          Symbol(),
-          new Error(),
-          Infinity,
-          NaN
-        ]
+      describe.runIf(process.env.NODE_ENV !== "production")(
+        "with argument of different types",
+        () => {
+          const testCases = [
+            null,
+            undefined,
+            "string",
+            1,
+            [],
+            function () {},
+            new Date(),
+            /a/,
+            new Map(),
+            new Set(),
+            Symbol(),
+            new Error(),
+            Infinity,
+            NaN
+          ]
 
-        if (process.env.NODE_ENV !== "production") {
           testCases.forEach((testCase) => {
             it(`should throw an error when passed ${JSON.stringify(testCase)}`, () => {
               expect(() => {
@@ -47,7 +46,7 @@ describe("types.boolean", () => {
             })
           })
         }
-      })
+      )
     })
     describe("describe", () => {
       it("should return the value 'boolean'", () => {
@@ -69,16 +68,14 @@ describe("types.boolean", () => {
       })
     })
     describe("instantiate", () => {
-      if (process.env.NODE_ENV !== "production") {
-        describe("with invalid arguments", () => {
-          it("should not throw an error", () => {
-            expect(() => {
-              // @ts-ignore
-              t.boolean.instantiate()
-            }).not.toThrow()
-          })
+      describe.runIf(process.env.NODE_ENV !== "production")("with invalid arguments", () => {
+        it("should not throw an error", () => {
+          expect(() => {
+            // @ts-ignore
+            t.boolean.instantiate()
+          }).not.toThrow()
         })
-      }
+      })
       describe("with a boolean argument", () => {
         it("should return an object", () => {
           const b = t.boolean.instantiate(null, "", {}, true)
@@ -285,35 +282,33 @@ describe("types.boolean", () => {
           expect(called).toBe(true)
         })
       })
-      describe("setParent", () => {
-        if (process.env.NODE_ENV !== "production") {
-          describe("with null", () => {
-            it("should throw an error", () => {
-              const b = t.boolean.instantiate(null, "", {}, true)
-              expect(() => {
-                b.setParent(null, "foo")
-              }).toThrow()
-            })
+      describe.runIf(process.env.NODE_ENV !== "production")("setParent", () => {
+        describe("with null", () => {
+          it("should throw an error", () => {
+            const b = t.boolean.instantiate(null, "", {}, true)
+            expect(() => {
+              b.setParent(null, "foo")
+            }).toThrow()
           })
-          describe("with a parent object", () => {
-            it("should throw an error", () => {
-              const Parent = t.model({
-                child: t.boolean
-              })
-
-              const parent = Parent.create({ child: true })
-
-              const b = t.boolean.instantiate(null, "", {}, true)
-
-              expect(() => {
-                // @ts-ignore
-                b.setParent(parent, "bar")
-              }).toThrow(
-                "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
-              )
+        })
+        describe("with a parent object", () => {
+          it("should throw an error", () => {
+            const Parent = t.model({
+              child: t.boolean
             })
+
+            const parent = Parent.create({ child: true })
+
+            const b = t.boolean.instantiate(null, "", {}, true)
+
+            expect(() => {
+              // @ts-ignore
+              b.setParent(parent, "bar")
+            }).toThrow(
+              "[mobx-state-tree] assertion failed: scalar nodes cannot change their parent"
+            )
           })
-        }
+        })
       })
     })
   })

@@ -1,9 +1,9 @@
-import { test, expect, describe } from "vitest"
+import { test, expect, describe, vi, beforeEach, it } from "vitest"
 import { t } from "../../src/index"
 import { Hook, ObjectNode, onPatch, unprotect } from "../../src/internal"
 
 const warnMock = vi.fn()
-jest.spyOn(console, "warn").mockImplementation(warnMock)
+vi.spyOn(console, "warn").mockImplementation(warnMock)
 
 const TestModel = t.model("TestModel", {
   title: t.string
@@ -31,7 +31,7 @@ const TestModelWithIdentifier = t.model("TestModelWithIdentifier", {
  */
 describe("ObjectNode", () => {
   beforeEach(() => {
-    jest.resetAllMocks()
+    vi.resetAllMocks()
   })
   describe("constructor", () => {
     // Since ObjectNode is not exported as part of the MST API, we don't have tests for invalid parameters, but we expect an error in this scenario.
@@ -462,7 +462,7 @@ describe("ObjectNode", () => {
           const node = new ObjectNode(TestModel as any, null, "", {}, { title: "hello" })
           const identifierCache = node.root.identifierCache
           const identifierCacheNotifySpy = identifierCache
-            ? jest.spyOn(identifierCache, "notifyDied")
+            ? vi.spyOn(identifierCache, "notifyDied")
             : vi.fn()
           node.createObservableInstance()
           node.die()

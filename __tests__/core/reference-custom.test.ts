@@ -116,68 +116,70 @@ test("it should support custom references - adv", () => {
   expect(p.inversePatches).toMatchSnapshot()
 })
 
-test("it should support dynamic loading", (done) => {
-  const events: string[] = []
-  const User = types.model({
-    name: types.string,
-    age: 0
-  })
-  const UserByNameReference = types.maybe(
-    types.reference(User, {
-      get(identifier: string, parent): any {
-        return (parent as Instance<typeof Store>).getOrLoadUser(identifier)
-      },
-      set(value) {
-        return value.name
-      }
+test("it should support dynamic loading", () => {
+  return new Promise<void>((resolve) => {
+    const events: string[] = []
+    const User = types.model({
+      name: types.string,
+      age: 0
     })
-  )
-  const Store = types
-    .model({
-      users: types.array(User),
-      selection: UserByNameReference
-    })
-    .actions((self) => ({
-      loadUser: flow(function* loadUser(name: string) {
-        events.push("loading " + name)
-        self.users.push({ name })
-        yield new Promise((resolve) => {
-          setTimeout(resolve, 200)
-        })
-        events.push("loaded " + name)
-        const user = (self.users.find((u) => u.name === name)!.age = name.length * 3) // wonderful!
-      })
-    }))
-    .views((self) => ({
-      // Important: a view so that the reference will automatically react to the reference being changed!
-      getOrLoadUser(name: string) {
-        const user = self.users.find((u) => u.name === name) || null
-        if (!user) {
-          /*
-                    TODO: this is ugly, but workaround the idea that views should be side effect free.
-                    We need a more elegant solution..
-                */
-          setImmediate(() => self.loadUser(name))
+    const UserByNameReference = types.maybe(
+      types.reference(User, {
+        get(identifier: string, parent): any {
+          return (parent as Instance<typeof Store>).getOrLoadUser(identifier)
+        },
+        set(value) {
+          return value.name
         }
-        return user
+      })
+    )
+    const Store = types
+      .model({
+        users: types.array(User),
+        selection: UserByNameReference
+      })
+      .actions((self) => ({
+        loadUser: flow(function* loadUser(name: string) {
+          events.push("loading " + name)
+          self.users.push({ name })
+          yield new Promise((r) => {
+            setTimeout(r, 200)
+          })
+          events.push("loaded " + name)
+          const user = (self.users.find((u) => u.name === name)!.age = name.length * 3) // wonderful!
+        })
+      }))
+      .views((self) => ({
+        // Important: a view so that the reference will automatically react to the reference being changed!
+        getOrLoadUser(name: string) {
+          const user = self.users.find((u) => u.name === name) || null
+          if (!user) {
+            /*
+                      TODO: this is ugly, but workaround the idea that views should be side effect free.
+                      We need a more elegant solution..
+                  */
+            setImmediate(() => self.loadUser(name))
+          }
+          return user
+        }
+      }))
+    const s = Store.create({
+      users: [],
+      selection: "Mattia"
+    })
+    unprotect(s)
+    expect(events).toEqual([])
+    expect(s.users.length).toBe(0)
+    expect(s.selection).toBe(null)
+    when(
+      () => s.users.length === 1 && s.users[0].age === 18 && s.users[0].name === "Mattia",
+      () => {
+        expect(s.selection).toBe(s.users[0])
+        expect(events).toEqual(["loading Mattia", "loaded Mattia"])
+        resolve()
       }
-    }))
-  const s = Store.create({
-    users: [],
-    selection: "Mattia"
+    )
   })
-  unprotect(s)
-  expect(events).toEqual([])
-  expect(s.users.length).toBe(0)
-  expect(s.selection).toBe(null)
-  when(
-    () => s.users.length === 1 && s.users[0].age === 18 && s.users[0].name === "Mattia",
-    () => {
-      expect(s.selection).toBe(s.users[0])
-      expect(events).toEqual(["loading Mattia", "loaded Mattia"])
-      done()
-    }
-  )
 })
 
 test("custom reference / safe custom reference to another store works", () => {

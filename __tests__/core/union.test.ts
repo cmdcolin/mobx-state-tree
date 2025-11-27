@@ -1,4 +1,4 @@
-import { test, expect, describe } from "vitest"
+import { it, test, expect, describe } from "vitest"
 import { configure } from "mobx"
 import {
   types,
