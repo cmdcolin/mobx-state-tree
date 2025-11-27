@@ -1,16 +1,13 @@
 import {
+  type AnyObjectNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   SimpleType,
   TypeFlags,
   createScalarNode,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal.ts"
-
-import type {
-  AnyObjectNode,
-  IType,
-  IValidationContext,
-  IValidationResult
 } from "../../internal.ts"
 
 export interface CustomTypeOptions<S, T> {

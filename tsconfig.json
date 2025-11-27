@@ -1,9 +1,14 @@
 {
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "lib",
     "target": "esnext",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "declaration": true,
     "moduleResolution": "node",
     "sourceMap": true,

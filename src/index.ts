@@ -154,7 +154,6 @@ export {
   types as t,
   unescapeJsonPath,
   unprotect,
-  walk
+  walk,
+  setDevMode
 } from "./internal.ts"
-
-console.log("wow")

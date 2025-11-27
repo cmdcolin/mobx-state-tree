@@ -1,6 +1,18 @@
 import {
+  type AnyObjectNode,
   BaseType,
+  type IAnyType,
+  type IModelType,
+  type IType,
+  type IValidationContext,
+  type IValidationError,
+  type IValidationResult,
+  type ModelCreationType2,
+  type ModelInstanceType,
+  type ModelProperties,
+  type ModelSnapshotType2,
   TypeFlags,
+  type _NotCustomized,
   assertArg,
   assertIsType,
   devMode,
@@ -10,21 +22,6 @@ import {
   isType,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal.ts"
-
-import type {
-  AnyObjectNode,
-  IAnyType,
-  IModelType,
-  IType,
-  IValidationContext,
-  IValidationError,
-  IValidationResult,
-  ModelCreationType2,
-  ModelInstanceType,
-  ModelProperties,
-  ModelSnapshotType2,
-  _NotCustomized
 } from "../../internal.ts"
 
 export type ITypeDispatcher = (snapshot: any) => IAnyType

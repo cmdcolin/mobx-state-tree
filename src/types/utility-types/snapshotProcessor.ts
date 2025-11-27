@@ -1,6 +1,13 @@
 import {
+  type AnyObjectNode,
   BaseType,
   ComplexType,
+  type ExtractNodeType,
+  type IAnyType,
+  type Instance,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   ObjectNode,
   TypeFlags,
   assertIsType,
@@ -11,16 +18,6 @@ import {
   isType,
   isUnionType,
   typeCheckFailure
-} from "../../internal.ts"
-
-import type {
-  AnyObjectNode,
-  ExtractNodeType,
-  IAnyType,
-  IType,
-  IValidationContext,
-  IValidationResult,
-  Instance
 } from "../../internal.ts"
 
 /** @hidden */

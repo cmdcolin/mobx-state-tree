@@ -1,6 +1,10 @@
 import { runInAction } from "mobx"
 
 import {
+  type AnyNode,
+  type IActionContext,
+  type IAnyStateTreeNode,
+  type IDisposer,
   addMiddleware,
   applyPatch,
   applySnapshot,
@@ -21,13 +25,6 @@ import {
   isStateTreeNode,
   tryResolve,
   warnError
-} from "../internal.ts"
-
-import type {
-  AnyNode,
-  IActionContext,
-  IAnyStateTreeNode,
-  IDisposer
 } from "../internal.ts"
 
 export interface ISerializedActionCall {

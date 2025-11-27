@@ -1,5 +1,10 @@
 import {
+  type AnyObjectNode,
   BaseType,
+  type ExtractNodeType,
+  type IAnyType,
+  type IValidationContext,
+  type IValidationResult,
   TypeFlags,
   assertIsType,
   getStateTreeNode,
@@ -9,14 +14,6 @@ import {
   typeCheckSuccess
 } from "../../internal.ts"
 import { assertIsFunction, assertIsString } from "../../utils.ts"
-
-import type {
-  AnyObjectNode,
-  ExtractNodeType,
-  IAnyType,
-  IValidationContext,
-  IValidationResult
-} from "../../internal.ts"
 
 class Refinement<IT extends IAnyType> extends BaseType<
   IT["CreationType"],

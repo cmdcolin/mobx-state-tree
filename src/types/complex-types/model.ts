@@ -15,13 +15,26 @@ import {
 } from "mobx"
 
 import {
+  type AnyNode,
+  type AnyObjectNode,
   ArrayType,
   ComplexType,
   EMPTY_ARRAY,
   EMPTY_OBJECT,
+  type FunctionWithFlag,
   Hook,
+  type IAnyType,
+  type IChildNodesMap,
+  type IJsonPatch,
+  type IStateTreeNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
+  type Instance,
   MapType,
   TypeFlags,
+  type _CustomOrOther,
+  type _NotCustomized,
   addHiddenFinalProp,
   addHiddenWritableProp,
   assertArg,
@@ -44,22 +57,6 @@ import {
   optional,
   typeCheckFailure,
   typecheckInternal
-} from "../../internal.ts"
-
-import type {
-  AnyNode,
-  AnyObjectNode,
-  FunctionWithFlag,
-  IAnyType,
-  IChildNodesMap,
-  IJsonPatch,
-  IStateTreeNode,
-  IType,
-  IValidationContext,
-  IValidationResult,
-  Instance,
-  _CustomOrOther,
-  _NotCustomized
 } from "../../internal.ts"
 
 const PRE_PROCESS_SNAPSHOT = "preProcessSnapshot"

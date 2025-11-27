@@ -1,19 +1,16 @@
 import {
+  type AnyObjectNode,
   BaseType,
+  type ExtractNodeType,
+  type IAnyType,
+  type IValidationContext,
+  type IValidationResult,
   TypeFlags,
   cannotDetermineSubtype,
   devMode,
   fail,
   isType,
   typeCheckSuccess
-} from "../../internal.ts"
-
-import type {
-  AnyObjectNode,
-  ExtractNodeType,
-  IAnyType,
-  IValidationContext,
-  IValidationResult
 } from "../../internal.ts"
 
 class Late<IT extends IAnyType> extends BaseType<

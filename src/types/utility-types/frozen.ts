@@ -1,4 +1,9 @@
 import {
+  type AnyObjectNode,
+  type IAnyType,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   SimpleType,
   TypeFlags,
   createScalarNode,
@@ -8,14 +13,6 @@ import {
   optional,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal.ts"
-
-import type {
-  AnyObjectNode,
-  IAnyType,
-  IType,
-  IValidationContext,
-  IValidationResult
 } from "../../internal.ts"
 
 /**

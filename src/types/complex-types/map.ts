@@ -15,8 +15,20 @@ import {
 } from "mobx"
 
 import {
+  type AnyNode,
+  type AnyObjectNode,
   ComplexType,
   EMPTY_OBJECT,
+  type ExtractCSTWithSTN,
+  type IAnyModelType,
+  type IAnyStateTreeNode,
+  type IAnyType,
+  type IChildNodesMap,
+  type IHooksGetter,
+  type IJsonPatch,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   ModelType,
   ObjectNode,
   TypeFlags,
@@ -41,21 +53,6 @@ import {
   normalizeIdentifier,
   typeCheckFailure,
   typecheckInternal
-} from "../../internal.ts"
-
-import type {
-  AnyNode,
-  AnyObjectNode,
-  ExtractCSTWithSTN,
-  IAnyModelType,
-  IAnyStateTreeNode,
-  IAnyType,
-  IChildNodesMap,
-  IHooksGetter,
-  IJsonPatch,
-  IType,
-  IValidationContext,
-  IValidationResult
 } from "../../internal.ts"
 
 /** @hidden */

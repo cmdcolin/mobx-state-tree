@@ -1,4 +1,6 @@
 import {
+  type AnyNode,
+  type AnyObjectNode,
   ComplexType,
   ObjectNode,
   ScalarNode,
@@ -6,8 +8,6 @@ import {
   fail,
   getStateTreeNodeSafe
 } from "../../internal.ts"
-
-import type { AnyNode, AnyObjectNode } from "../../internal.ts"
 
 /**
  * @internal

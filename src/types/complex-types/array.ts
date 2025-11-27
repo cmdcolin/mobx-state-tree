@@ -12,9 +12,21 @@ import {
 } from "mobx"
 
 import {
+  type AnyNode,
+  type AnyObjectNode,
   ComplexType,
   EMPTY_ARRAY,
   EMPTY_OBJECT,
+  type ExtractCSTWithSTN,
+  type IAnyStateTreeNode,
+  type IAnyType,
+  type IChildNodesMap,
+  type IHooksGetter,
+  type IJsonPatch,
+  type IStateTreeNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   ObjectNode,
   TypeFlags,
   addHiddenFinalProp,
@@ -37,21 +49,6 @@ import {
   normalizeIdentifier,
   typeCheckFailure,
   typecheckInternal
-} from "../../internal.ts"
-
-import type {
-  AnyNode,
-  AnyObjectNode,
-  ExtractCSTWithSTN,
-  IAnyStateTreeNode,
-  IAnyType,
-  IChildNodesMap,
-  IHooksGetter,
-  IJsonPatch,
-  IStateTreeNode,
-  IType,
-  IValidationContext,
-  IValidationResult
 } from "../../internal.ts"
 
 /** @hidden */

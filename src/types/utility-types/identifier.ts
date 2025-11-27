@@ -1,5 +1,10 @@
 import {
+  type AnyObjectNode,
+  type ISimpleType,
+  type IValidationContext,
+  type IValidationResult,
   ModelType,
+  type ScalarNode,
   SimpleType,
   TypeFlags,
   assertArg,
@@ -8,14 +13,6 @@ import {
   isType,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal.ts"
-
-import type {
-  AnyObjectNode,
-  ISimpleType,
-  IValidationContext,
-  IValidationResult,
-  ScalarNode
 } from "../../internal.ts"
 
 abstract class BaseIdentifierType<T> extends SimpleType<T, T, T> {

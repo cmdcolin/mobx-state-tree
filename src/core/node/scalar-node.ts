@@ -1,6 +1,7 @@
 import { action } from "mobx"
 
 import {
+  type AnyObjectNode,
   BaseNode,
   Hook,
   NodeLifeCycle,
@@ -9,8 +10,6 @@ import {
   fail,
   freeze
 } from "../../internal.ts"
-
-import type { AnyObjectNode } from "../../internal.ts"
 
 /**
  * @internal

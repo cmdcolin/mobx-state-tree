@@ -470,12 +470,22 @@ export function isTypeCheckingEnabled() {
   )
 }
 
+let _devMode = process.env.NODE_ENV !== "production"
+
 /**
  * @internal
  * @hidden
  */
 export function devMode() {
-  return process.env.NODE_ENV !== "production"
+  return _devMode
+}
+
+/**
+ * @internal
+ * @hidden
+ */
+export function setDevMode(value: boolean) {
+  _devMode = value
 }
 
 /**

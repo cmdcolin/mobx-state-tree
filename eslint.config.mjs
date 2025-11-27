@@ -33,23 +33,7 @@ export default defineConfig(
       "@typescript-eslint/no-unsafe-function-type": "off",
       curly: "error",
       "import/extensions": ["error", "ignorePackages"],
-      "import/no-unresolved": "off",
-      "import/order": [
-        "error",
-        {
-          named: true,
-          "newlines-between": "always",
-          alphabetize: {
-            order: "asc"
-          },
-          groups: [
-            "builtin",
-            ["external", "internal"],
-            ["parent", "sibling", "index", "object"],
-            "type"
-          ]
-        }
-      ]
+      "import/no-unresolved": "off"
     }
   }
 )

@@ -1,6 +1,8 @@
+import {
+  type IAnyStateTreeNode,
+  type IMiddlewareEvent
+} from "../internal.ts"
 import { getCurrentActionContext } from "./action.ts"
-
-import type { IAnyStateTreeNode, IMiddlewareEvent } from "../internal.ts"
 
 export interface IActionContext {
   /** Event name (action name for actions) */

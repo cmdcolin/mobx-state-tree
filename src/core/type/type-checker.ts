@@ -1,5 +1,7 @@
 import {
   EMPTY_ARRAY,
+  type ExtractCSTWithSTN,
+  type IAnyType,
   fail,
   getStateTreeNode,
   isPrimitive,
@@ -7,8 +9,6 @@ import {
   isStateTreeNode,
   isTypeCheckingEnabled
 } from "../../internal.ts"
-
-import type { ExtractCSTWithSTN, IAnyType } from "../../internal.ts"
 
 /** Validation context entry, this is, where the validation should run against which type */
 export interface IValidationContextEntry {
