@@ -80,7 +80,6 @@
     "functional-reactive-programming",
     "state management"
   ],
-  "gitHead": "27ec7ac0b0743a367fb01a7f40192f3042bd91f2",
   "prettier": {
     "printWidth": 100,
     "tabWidth": 2,
