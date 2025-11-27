@@ -36,11 +36,14 @@ import {
   addHiddenWritableProp,
   asArray,
   cannotDetermineSubtype,
+  createActionInvoker,
   createObjectNode,
+  devMode,
   escapeJsonPath,
   fail,
   flattenTypeErrors,
   getContextForPath,
+  getSnapshot,
   getStateTreeNode,
   isMutable,
   isPlainObject,
@@ -49,10 +52,7 @@ import {
   isValidIdentifier,
   normalizeIdentifier,
   typeCheckFailure,
-  typecheckInternal,
-  getSnapshot,
-  devMode,
-  createActionInvoker
+  typecheckInternal
 } from "../../internal"
 
 /** @hidden */

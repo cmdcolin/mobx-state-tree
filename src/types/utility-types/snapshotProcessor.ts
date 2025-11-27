@@ -18,7 +18,7 @@ import {
   isType,
   isUnionType,
   typeCheckFailure
-} from "../../internal"
+} from "../../internal.ts"
 
 /** @hidden */
 declare const $mstNotCustomized: unique symbol

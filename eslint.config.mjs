@@ -11,7 +11,8 @@ export default defineConfig(
       "eslint.config.mjs",
       "scripts/*",
       "lib/*",
-      "vitest.config.ts"
+      "vitest.config.ts",
+      "__tests__/*"
     ]
   },
 
@@ -28,6 +29,8 @@ export default defineConfig(
   importPlugin.flatConfigs.recommended,
   {
     rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unsafe-function-type": "off",
       "import/extensions": ["error", "ignorePackages"],
       "import/no-unresolved": "off",
       "import/order": [

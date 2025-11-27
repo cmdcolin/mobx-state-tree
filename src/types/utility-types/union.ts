@@ -22,7 +22,7 @@ import {
   isType,
   typeCheckFailure,
   typeCheckSuccess
-} from "../../internal"
+} from "../../internal.ts"
 
 export type ITypeDispatcher = (snapshot: any) => IAnyType
 

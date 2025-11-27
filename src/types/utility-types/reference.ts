@@ -1,7 +1,4 @@
 import {
-  normalizeIdentifier,
-  getIdentifier,
-  applyPatch,
   AnyNode,
   AnyObjectNode,
   Hook,
@@ -18,15 +15,18 @@ import {
   ReferenceIdentifier,
   SimpleType,
   TypeFlags,
+  applyPatch,
   assertIsType,
   createScalarNode,
   devMode,
   fail,
+  getIdentifier,
   getStateTreeNode,
   isModelType,
   isStateTreeNode,
   isValidIdentifier,
   maybe,
+  normalizeIdentifier,
   typeCheckFailure,
   typeCheckSuccess
 } from "../../internal"
