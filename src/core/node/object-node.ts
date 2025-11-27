@@ -216,6 +216,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     const type = this.type
 
     try {
+      // @ts-expect-error
       this.storedValue = type.createNewInstance(this._childNodes)
       this.preboot()
 
