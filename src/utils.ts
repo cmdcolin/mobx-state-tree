@@ -4,7 +4,7 @@ import {
   _getGlobalState,
   defineProperty as mobxDefineProperty
 } from "mobx"
-import { Primitives } from "./core/type/type"
+import { Primitives } from "./core/type/type.ts"
 
 const plainObjectString = Object.toString()
 

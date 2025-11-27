@@ -1,5 +1,5 @@
 {
-  "name": "@jbrowse/mobx-state-tree",
+  "name": "mobx-state-tree",
   "version": "5.4.2",
   "description": "Fork of mobx-state-tree from v5.4.2 for use in jbrowse",
   "type": "module",
@@ -14,6 +14,7 @@
   },
   "sideEffects": false,
   "scripts": {
+    "lint": "eslint --report-unused-disable-directives --max-warnings 0",
     "clean": "rimraf dist",
     "prebuild": "yarn clean",
     "format": "yarn prettier --write .",
@@ -60,5 +61,9 @@
     "frp",
     "functional-reactive-programming",
     "state management"
-  ]
+  ],
+  "dependencies": {
+    "eslint": "^9.39.1",
+    "eslint-plugin-import": "^2.32.0"
+  }
 }
