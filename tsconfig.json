@@ -1,25 +1,22 @@
 {
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
-    "outDir": "lib/",
+    "outDir": "dist",
     "target": "esnext",
-    "sourceMap": false,
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "declaration": true,
-    "module": "esnext",
-    "removeComments": false,
     "moduleResolution": "node",
-    "experimentalDecorators": true,
+    "sourceMap": true,
     "strict": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "noImplicitAny": true,
-    "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "importHelpers": true,
-    "stripInternal": true,
-    "downlevelIteration": true,
-    "lib": ["es6"],
-    "useDefineForClassFields": true
-  },
-  "files": ["src/index.ts"]
+    "noFallthroughCasesInSwitch": true,
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "esModuleInterop": true
+  }
 }
