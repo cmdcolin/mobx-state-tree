@@ -20,7 +20,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "clean": "rimraf dist  lib",
+    "clean": "rimraf dist",
     "prebuild": "yarn clean",
     "format": "yarn prettier --write .",
     "build": "tsc && tsdown src/index.ts --format esm,cjs --dts",
@@ -28,24 +28,18 @@
     "test-ci": "yarn test:dev && yarn test:prod",
     "test:dev": "cross-env NODE_ENV=development vitest --run",
     "test:prod": "cross-env NODE_ENV=production vitest --run",
-    "tag-new-version": "yarn version && git push --tags",
+    "preversion": "yarn build && yarn test-ci",
+    "postversion": "git push --follow-tags",
     "build-docs": "yarn fix-typedoc && rimraf ./docs/API && typedoc --options ./typedocconfig.js",
-    "publish-docs": "yarn build-docs && cd ./website && GIT_USER=jamonholmgren USE_SSH=true yarn publish-gh-pages",
     "start": "cd website && yarn start",
-    "fix-typedoc": "rimraf ./node_modules/typedoc/node_modules/typescript",
-    "prettier:list": "prettier --list-different \"src/**/*.ts\" \"__tests__/**/*.ts\"",
-    "prettier:check": "prettier --check \"src/**/*.ts\" \"__tests__/**/*.ts\"",
-    "prettier:write": "prettier --write \"src/**/*.ts\" \"__tests__/**/*.ts\""
+    "fix-typedoc": "rimraf ./node_modules/typedoc/node_modules/typescript"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mobxjs/mobx-state-tree.git"
+    "url": "https://github.com/cmdcolin/mobx-state-tree.git"
   },
   "author": "Michel Weststrate",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/mobxjs/mobx-state-tree/issues"
-  },
   "files": [
     "dist/"
   ],
