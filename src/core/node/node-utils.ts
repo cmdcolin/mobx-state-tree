@@ -1,20 +1,23 @@
 import {
-  fail,
-  ObjectNode,
-  splitJsonPath,
-  joinJsonPath,
-  ScalarNode,
-  IChildNodesMap,
   EMPTY_ARRAY,
-  AnyObjectNode,
-  AnyNode,
-  IAnyType,
-  IType,
+  ObjectNode,
+  ScalarNode,
   assertArg,
-  STNValue,
+  fail,
+  joinJsonPath,
+  splitJsonPath
+} from "../../internal.ts"
+
+import type {
+  AnyNode,
+  AnyObjectNode,
+  IAnyComplexType,
+  IAnyType,
+  IChildNodesMap,
+  IType,
   Instance,
-  IAnyComplexType
-} from "../../internal"
+  STNValue
+} from "../../internal.ts"
 
 /**
  * @internal
@@ -47,9 +50,8 @@ export interface IStateTreeNode<IT extends IAnyType = IAnyType> {
 }
 
 /** @hidden */
-export type TypeOfValue<T extends IAnyStateTreeNode> = T extends IStateTreeNode<infer IT>
-  ? IT
-  : never
+export type TypeOfValue<T extends IAnyStateTreeNode> =
+  T extends IStateTreeNode<infer IT> ? IT : never
 
 /**
  * Represents any state tree node instance.
@@ -98,7 +100,9 @@ export function getStateTreeNode(value: IAnyStateTreeNode): AnyObjectNode {
  * @internal
  * @hidden
  */
-export function getStateTreeNodeSafe(value: IAnyStateTreeNode): AnyObjectNode | null {
+export function getStateTreeNodeSafe(
+  value: IAnyStateTreeNode
+): AnyObjectNode | null {
   return (value && value.$treenode) || null
 }
 
@@ -116,7 +120,10 @@ const doubleDot = (_: any) => ".."
  * @internal
  * @hidden
  */
-export function getRelativePathBetweenNodes(base: AnyObjectNode, target: AnyObjectNode): string {
+export function getRelativePathBetweenNodes(
+  base: AnyObjectNode,
+  target: AnyObjectNode
+): string {
   // PRE condition target is (a child of) base!
   if (base.root !== target.root) {
     throw fail(
@@ -128,10 +135,15 @@ export function getRelativePathBetweenNodes(base: AnyObjectNode, target: AnyObje
   const targetParts = splitJsonPath(target.path)
   let common = 0
   for (; common < baseParts.length; common++) {
-    if (baseParts[common] !== targetParts[common]) break
+    if (baseParts[common] !== targetParts[common]) {
+      break
+    }
   }
   // TODO: assert that no targetParts paths are "..", "." or ""!
-  return baseParts.slice(common).map(doubleDot).join("/") + joinJsonPath(targetParts.slice(common))
+  return (
+    baseParts.slice(common).map(doubleDot).join("/") +
+    joinJsonPath(targetParts.slice(common))
+  )
 }
 
 /**
@@ -161,7 +173,9 @@ export function resolveNodeByPathParts(
       const part = pathParts[i]
       if (part === "..") {
         current = current!.parent
-        if (current) continue // not everything has a parent
+        if (current) {
+          continue
+        } // not everything has a parent
       } else if (part === ".") {
         continue
       } else if (current) {
@@ -178,7 +192,9 @@ export function resolveNodeByPathParts(
           const subType = current.getChildType(part)
           if (subType) {
             current = current.getChildNode(part)
-            if (current) continue
+            if (current) {
+              continue
+            }
           }
         }
       }
@@ -201,11 +217,17 @@ export function resolveNodeByPathParts(
  * @internal
  * @hidden
  */
-export function convertChildNodesToArray(childNodes: IChildNodesMap | null): AnyNode[] {
-  if (!childNodes) return EMPTY_ARRAY as AnyNode[]
+export function convertChildNodesToArray(
+  childNodes: IChildNodesMap | null
+): AnyNode[] {
+  if (!childNodes) {
+    return EMPTY_ARRAY as AnyNode[]
+  }
 
   const keys = Object.keys(childNodes)
-  if (!keys.length) return EMPTY_ARRAY as AnyNode[]
+  if (!keys.length) {
+    return EMPTY_ARRAY as AnyNode[]
+  }
 
   const result = new Array(keys.length) as AnyNode[]
   keys.forEach((key, index) => {

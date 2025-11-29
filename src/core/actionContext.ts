@@ -1,5 +1,5 @@
-import { IAnyStateTreeNode, IMiddlewareEvent } from "../internal"
-import { getCurrentActionContext } from "./action"
+import { type IAnyStateTreeNode, type IMiddlewareEvent } from "../internal.ts"
+import { getCurrentActionContext } from "./action.ts"
 
 export interface IActionContext {
   /** Event name (action name for actions) */
@@ -36,7 +36,8 @@ function _isActionContextThisOrChildOf(
   sameOrParent: number | IActionContext | IMiddlewareEvent,
   includeSame: boolean
 ) {
-  const parentId = typeof sameOrParent === "number" ? sameOrParent : sameOrParent.id
+  const parentId =
+    typeof sameOrParent === "number" ? sameOrParent : sameOrParent.id
 
   let current: IActionContext | IMiddlewareEvent | undefined = includeSame
     ? actionContext

@@ -1,14 +1,15 @@
-import {
-  fail,
-  freeze,
-  NodeLifeCycle,
-  Hook,
-  BaseNode,
-  AnyObjectNode,
-  SimpleType,
-  devMode
-} from "../../internal"
 import { action } from "mobx"
+
+import {
+  type AnyObjectNode,
+  BaseNode,
+  Hook,
+  NodeLifeCycle,
+  SimpleType,
+  devMode,
+  fail,
+  freeze
+} from "../../internal.ts"
 
 /**
  * @internal
@@ -49,7 +50,9 @@ export class ScalarNode<C, S, T> extends BaseNode<C, S, T> {
 
   get root(): AnyObjectNode {
     // future optimization: store root ref in the node and maintain it
-    if (!this.parent) throw fail(`This scalar node is not part of a tree`)
+    if (!this.parent) {
+      throw fail(`This scalar node is not part of a tree`)
+    }
     return this.parent.root
   }
 
@@ -94,7 +97,9 @@ export class ScalarNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   die(): void {
-    if (!this.isAlive || this.state === NodeLifeCycle.DETACHING) return
+    if (!this.isAlive || this.state === NodeLifeCycle.DETACHING) {
+      return
+    }
     this.aboutToDie()
     this.finalizeDeath()
   }

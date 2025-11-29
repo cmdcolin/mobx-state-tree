@@ -1,57 +1,60 @@
 import {
-  _getAdministration,
-  action,
   IArrayDidChange,
   IArraySplice,
   IArrayWillChange,
   IArrayWillSplice,
-  intercept,
   IObservableArray,
+  _getAdministration,
+  action,
+  intercept,
   observable,
   observe
 } from "mobx"
+
 import {
+  type AnyNode,
+  type AnyObjectNode,
+  ComplexType,
+  EMPTY_ARRAY,
+  EMPTY_OBJECT,
+  type ExtractCSTWithSTN,
+  type IAnyStateTreeNode,
+  type IAnyType,
+  type IChildNodesMap,
+  type IHooksGetter,
+  type IJsonPatch,
+  type IStateTreeNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
+  ObjectNode,
+  TypeFlags,
   addHiddenFinalProp,
   addHiddenWritableProp,
-  AnyNode,
-  AnyObjectNode,
   assertIsType,
-  ComplexType,
   convertChildNodesToArray,
   createActionInvoker,
   createObjectNode,
   devMode,
-  EMPTY_ARRAY,
-  EMPTY_OBJECT,
-  ExtractCSTWithSTN,
   fail,
   flattenTypeErrors,
   getContextForPath,
   getStateTreeNode,
-  IAnyStateTreeNode,
-  IAnyType,
-  IChildNodesMap,
-  IHooksGetter,
-  IJsonPatch,
   isArray,
   isNode,
   isPlainObject,
   isStateTreeNode,
-  IStateTreeNode,
   isType,
-  IType,
-  IValidationContext,
-  IValidationResult,
   mobxShallow,
   normalizeIdentifier,
-  ObjectNode,
   typeCheckFailure,
-  typecheckInternal,
-  TypeFlags
-} from "../../internal"
+  typecheckInternal
+} from "../../internal.ts"
 
 /** @hidden */
-export interface IMSTArray<IT extends IAnyType> extends IObservableArray<IT["Type"]> {
+export interface IMSTArray<IT extends IAnyType> extends IObservableArray<
+  IT["Type"]
+> {
   // needs to be split or else it will complain about not being compatible with the array interface
   push(...items: IT["Type"][]): number
   push(...items: ExtractCSTWithSTN<IT>[]): number
@@ -60,19 +63,32 @@ export interface IMSTArray<IT extends IAnyType> extends IObservableArray<IT["Typ
   concat(...items: ConcatArray<ExtractCSTWithSTN<IT>>[]): IT["Type"][]
 
   concat(...items: (IT["Type"] | ConcatArray<IT["Type"]>)[]): IT["Type"][]
-  concat(...items: (ExtractCSTWithSTN<IT> | ConcatArray<ExtractCSTWithSTN<IT>>)[]): IT["Type"][]
+  concat(
+    ...items: (ExtractCSTWithSTN<IT> | ConcatArray<ExtractCSTWithSTN<IT>>)[]
+  ): IT["Type"][]
 
   splice(start: number, deleteCount?: number): IT["Type"][]
-  splice(start: number, deleteCount: number, ...items: IT["Type"][]): IT["Type"][]
-  splice(start: number, deleteCount: number, ...items: ExtractCSTWithSTN<IT>[]): IT["Type"][]
+  splice(
+    start: number,
+    deleteCount: number,
+    ...items: IT["Type"][]
+  ): IT["Type"][]
+  splice(
+    start: number,
+    deleteCount: number,
+    ...items: ExtractCSTWithSTN<IT>[]
+  ): IT["Type"][]
 
   unshift(...items: IT["Type"][]): number
   unshift(...items: ExtractCSTWithSTN<IT>[]): number
 }
 
 /** @hidden */
-export interface IArrayType<IT extends IAnyType>
-  extends IType<readonly IT["CreationType"][] | undefined, IT["SnapshotType"][], IMSTArray<IT>> {
+export interface IArrayType<IT extends IAnyType> extends IType<
+  readonly IT["CreationType"][] | undefined,
+  IT["SnapshotType"][],
+  IMSTArray<IT>
+> {
   hooks(hooks: IHooksGetter<IMSTArray<IAnyType>>): IArrayType<IT>
 }
 
@@ -98,7 +114,9 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
 
   hooks(hooks: IHooksGetter<IMSTArray<IT>>) {
     const hookInitializers =
-      this.hookInitializers.length > 0 ? this.hookInitializers.concat(hooks) : [hooks]
+      this.hookInitializers.length > 0
+        ? this.hookInitializers.concat(hooks)
+        : [hooks]
     return new ArrayType(this.name, this._subType, hookInitializers)
   }
 
@@ -111,7 +129,10 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
     return createObjectNode(this, parent, subpath, environment, initialValue)
   }
 
-  initializeChildNodes(objNode: this["N"], snapshot: this["C"] = []): IChildNodesMap {
+  initializeChildNodes(
+    objNode: this["N"],
+    snapshot: this["C"] = []
+  ): IChildNodesMap {
     const subType = (objNode.type as this)._subType
     const result: IChildNodesMap = {}
     snapshot.forEach((item, index) => {
@@ -123,19 +144,30 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
 
   createNewInstance(childNodes: IChildNodesMap): this["T"] {
     const options = { ...mobxShallow, name: this.name }
-    return observable.array(convertChildNodesToArray(childNodes), options) as this["T"]
+    return observable.array(
+      convertChildNodesToArray(childNodes),
+      options
+    ) as this["T"]
   }
 
   finalizeNewInstance(node: this["N"], instance: this["T"]): void {
     _getAdministration(instance).dehancer = node.unbox
 
     const type = node.type as this
-    type.hookInitializers.forEach((initializer) => {
+    type.hookInitializers.forEach(initializer => {
       const hooks = initializer(instance)
-      Object.keys(hooks).forEach((name) => {
+      Object.keys(hooks).forEach(name => {
         const hook = hooks[name as keyof typeof hooks]!
-        const actionInvoker = createActionInvoker(instance as IAnyStateTreeNode, name, hook)
-        ;(!devMode() ? addHiddenFinalProp : addHiddenWritableProp)(instance, name, actionInvoker)
+        const actionInvoker = createActionInvoker(
+          instance as IAnyStateTreeNode,
+          name,
+          hook
+        )
+        ;(!devMode() ? addHiddenFinalProp : addHiddenWritableProp)(
+          instance,
+          name,
+          actionInvoker
+        )
       })
     })
 
@@ -153,7 +185,9 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
 
   getChildNode(node: this["N"], key: string): AnyNode {
     const index = Number(key)
-    if (index < node.storedValue.length) return node.storedValue[index]
+    if (index < node.storedValue.length) {
+      return node.storedValue[index]
+    }
     throw fail("Not a child: " + key)
   }
 
@@ -168,7 +202,9 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
     switch (change.type) {
       case "update":
         {
-          if (change.newValue === change.object[change.index]) return null
+          if (change.newValue === change.object[change.index]) {
+            return null
+          }
 
           const updatedNodes = reconcileArrayChildren(
             node,
@@ -201,7 +237,10 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
 
           // update paths of remaining items
           for (let i = index + removedCount; i < childNodes.length; i++) {
-            childNodes[i].setParent(node, "" + (i + added.length - removedCount))
+            childNodes[i].setParent(
+              node,
+              "" + (i + added.length - removedCount)
+            )
           }
         }
         break
@@ -210,12 +249,12 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
   }
 
   getSnapshot(node: this["N"]): this["S"] {
-    return node.getChildren().map((childNode) => childNode.snapshot)
+    return node.getChildren().map(childNode => childNode.snapshot)
   }
 
   processInitialSnapshot(childNodes: IChildNodesMap): this["S"] {
     const processed: this["S"] = []
-    Object.keys(childNodes).forEach((key) => {
+    Object.keys(childNodes).forEach(key => {
       processed.push(childNodes[key].getSnapshot())
     })
     return processed
@@ -235,7 +274,7 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
           node
         )
       case "splice":
-        for (let i = change.removedCount - 1; i >= 0; i--)
+        for (let i = change.removedCount - 1; i >= 0; i--) {
           node.emitPatch(
             {
               op: "remove",
@@ -244,7 +283,8 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
             },
             node
           )
-        for (let i = 0; i < change.addedCount; i++)
+        }
+        for (let i = 0; i < change.addedCount; i++) {
           node.emitPatch(
             {
               op: "add",
@@ -254,6 +294,7 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
             },
             node
           )
+        }
         return
     }
   }
@@ -284,14 +325,20 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
     return this._subType
   }
 
-  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
+  isValidSnapshot(
+    value: this["C"],
+    context: IValidationContext
+  ): IValidationResult {
     if (!isArray(value)) {
       return typeCheckFailure(context, value, "Value is not an array")
     }
 
     return flattenTypeErrors(
       value.map((item, index) =>
-        this._subType.validate(item, getContextForPath(context, "" + index, this._subType))
+        this._subType.validate(
+          item,
+          getContextForPath(context, "" + index, this._subType)
+        )
       )
     )
   }
@@ -352,7 +399,9 @@ function reconcileArrayChildren<TT>(
 
     // for some reason, instead of newValue we got a node, fallback to the storedValue
     // TODO: https://github.com/mobxjs/mobx-state-tree/issues/340#issuecomment-325581681
-    if (isNode(newValue)) newValue = newValue.storedValue
+    if (isNode(newValue)) {
+      newValue = newValue.storedValue
+    }
 
     if (!oldNode && !hasNewNode) {
       // both are empty, end
@@ -371,7 +420,10 @@ function reconcileArrayChildren<TT>(
     } else if (!oldNode) {
       // there is no old node, create it
       // check if already belongs to the same parent. if so, avoid pushing item in. only swapping can occur.
-      if (isStateTreeNode(newValue) && getStateTreeNode(newValue).parent === parent) {
+      if (
+        isStateTreeNode(newValue) &&
+        getStateTreeNode(newValue).parent === parent
+      ) {
         // this node is owned by this parent, but not in the reconcilable set, so it must be double
         throw fail(
           `Cannot add an object to a state tree if it is already part of the same or another state tree. Tried to assign an object to '${
@@ -398,7 +450,13 @@ function reconcileArrayChildren<TT>(
       }
 
       nothingChanged = false
-      const newNode = valueAsNode(childType, parent, newPath, newValue, oldMatch)
+      const newNode = valueAsNode(
+        childType,
+        parent,
+        newPath,
+        newValue,
+        oldMatch
+      )
       oldNodes.splice(i, 0, newNode)
     }
   }

@@ -1,21 +1,19 @@
 import {
-  isStateTreeNode,
-  getStateTreeNode,
-  IValidationContext,
-  IValidationResult,
-  typeCheckSuccess,
-  typeCheckFailure,
-  isType,
-  fail,
-  TypeFlags,
-  IAnyType,
-  AnyObjectNode,
+  type AnyObjectNode,
   BaseType,
-  ExtractNodeType,
+  type ExtractNodeType,
+  type IAnyType,
+  type IValidationContext,
+  type IValidationResult,
+  TypeFlags,
   assertIsType,
-  devMode
-} from "../../internal"
-import { assertIsString, assertIsFunction } from "../../utils"
+  getStateTreeNode,
+  isStateTreeNode,
+  isType,
+  typeCheckFailure,
+  typeCheckSuccess
+} from "../../internal.ts"
+import { assertIsFunction, assertIsString } from "../../utils.ts"
 
 class Refinement<IT extends IAnyType> extends BaseType<
   IT["CreationType"],
@@ -47,18 +45,30 @@ class Refinement<IT extends IAnyType> extends BaseType<
     initialValue: this["C"] | this["T"]
   ): this["N"] {
     // create the child type
-    return this._subtype.instantiate(parent, subpath, environment, initialValue) as any
+    return this._subtype.instantiate(
+      parent,
+      subpath,
+      environment,
+      initialValue
+    ) as any
   }
 
   isAssignableFrom(type: IAnyType) {
     return this._subtype.isAssignableFrom(type)
   }
 
-  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
+  isValidSnapshot(
+    value: this["C"],
+    context: IValidationContext
+  ): IValidationResult {
     const subtypeErrors = this._subtype.validate(value, context)
-    if (subtypeErrors.length > 0) return subtypeErrors
+    if (subtypeErrors.length > 0) {
+      return subtypeErrors
+    }
 
-    const snapshot = isStateTreeNode(value) ? getStateTreeNode(value).snapshot : value
+    const snapshot = isStateTreeNode(value)
+      ? getStateTreeNode(value).snapshot
+      : value
 
     if (!this._predicate(snapshot)) {
       return typeCheckFailure(context, value, this._message(value))
@@ -102,10 +112,17 @@ export function refinement<IT extends IAnyType>(
  * @returns
  */
 export function refinement(...args: any[]): IAnyType {
-  const name = typeof args[0] === "string" ? args.shift() : isType(args[0]) ? args[0].name : null
+  const name =
+    typeof args[0] === "string"
+      ? args.shift()
+      : isType(args[0])
+        ? args[0].name
+        : null
   const type = args[0]
   const predicate = args[1]
-  const message = args[2] ? args[2] : (v: any) => "Value does not respect the refinement predicate"
+  const message = args[2]
+    ? args[2]
+    : (v: any) => "Value does not respect the refinement predicate"
   // ensures all parameters are correct
   assertIsType(type, [1, 2])
   assertIsString(name, 1)

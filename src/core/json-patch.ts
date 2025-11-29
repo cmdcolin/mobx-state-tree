@@ -1,4 +1,4 @@
-import { fail, stringStartsWith } from "../internal"
+import { fail, stringStartsWith } from "../internal.ts"
 
 /**
  * https://tools.ietf.org/html/rfc6902
@@ -18,8 +18,12 @@ export interface IReversibleJsonPatch extends IJsonPatch {
  * @internal
  * @hidden
  */
-export function splitPatch(patch: IReversibleJsonPatch): [IJsonPatch, IJsonPatch] {
-  if (!("oldValue" in patch)) throw fail(`Patches without \`oldValue\` field cannot be inversed`)
+export function splitPatch(
+  patch: IReversibleJsonPatch
+): [IJsonPatch, IJsonPatch] {
+  if (!("oldValue" in patch)) {
+    throw fail(`Patches without \`oldValue\` field cannot be inversed`)
+  }
   return [stripPatch(patch), invertPatch(patch)]
 }
 
@@ -78,7 +82,9 @@ export function escapeJsonPath(path: string): string {
   if (isNumber(path) === true) {
     return "" + path
   }
-  if (path.indexOf("/") === -1 && path.indexOf("~") === -1) return path
+  if (path.indexOf("/") === -1 && path.indexOf("~") === -1) {
+    return path
+  }
   return path.replace(/~/g, "~0").replace(/\//g, "~1")
 }
 
@@ -97,7 +103,9 @@ export function unescapeJsonPath(path: string): string {
  */
 export function joinJsonPath(path: string[]): string {
   // `/` refers to property with an empty name, while `` refers to root itself!
-  if (path.length === 0) return ""
+  if (path.length === 0) {
+    return ""
+  }
 
   const getPathStr = (p: string[]) => p.map(escapeJsonPath).join("/")
   if (path[0] === "." || path[0] === "..") {
@@ -127,7 +135,9 @@ export function splitJsonPath(path: string): string[] {
     stringStartsWith(path, "./") ||
     stringStartsWith(path, "../")
   if (!valid) {
-    throw fail(`a json path must be either rooted, empty or relative, but got '${path}'`)
+    throw fail(
+      `a json path must be either rooted, empty or relative, but got '${path}'`
+    )
   }
 
   // '/a/b/c' -> ["a", "b", "c"]

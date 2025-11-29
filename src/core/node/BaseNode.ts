@@ -1,15 +1,16 @@
+import { IAtom, createAtom } from "mobx"
+
 import {
-  AnyObjectNode,
-  NodeLifeCycle,
-  Hook,
-  escapeJsonPath,
+  type AnyObjectNode,
   EventHandlers,
-  IAnyType,
-  IDisposer,
+  Hook,
+  type IAnyType,
+  type IDisposer,
+  NodeLifeCycle,
   devMode,
+  escapeJsonPath,
   fail
-} from "../../internal"
-import { createAtom, IAtom } from "mobx"
+} from "../../internal.ts"
 
 type HookSubscribers = {
   [Hook.afterAttach]: (node: AnyNode, hook: Hook) => void
@@ -71,7 +72,10 @@ export abstract class BaseNode<C, S, T> {
     }
   }
 
-  registerHook<H extends Hook>(hook: H, hookHandler: HookSubscribers[H]): IDisposer {
+  registerHook<H extends Hook>(
+    hook: H,
+    hookHandler: HookSubscribers[H]
+  ): IDisposer {
     if (!this._hookSubscribers) {
       this._hookSubscribers = new EventHandlers()
     }
@@ -121,12 +125,16 @@ export abstract class BaseNode<C, S, T> {
       }
       this.pathAtom.reportObserved()
     }
-    if (!this.parent) return ""
+    if (!this.parent) {
+      return ""
+    }
     // regenerate escaped subpath if needed
     if (this._escapedSubpath === undefined) {
       this._escapedSubpath = !this._subpath ? "" : escapeJsonPath(this._subpath)
     }
-    return this.parent.getEscapedPath(reportObserved) + "/" + this._escapedSubpath
+    return (
+      this.parent.getEscapedPath(reportObserved) + "/" + this._escapedSubpath
+    )
   }
 
   get isRoot(): boolean {
@@ -135,7 +143,10 @@ export abstract class BaseNode<C, S, T> {
 
   abstract get root(): AnyObjectNode
 
-  abstract setParent(newParent: AnyObjectNode | null, subpath: string | null): void
+  abstract setParent(
+    newParent: AnyObjectNode | null,
+    subpath: string | null
+  ): void
 
   abstract get snapshot(): S
   abstract getSnapshot(): S
@@ -164,7 +175,9 @@ export abstract class BaseNode<C, S, T> {
     if (devMode()) {
       if (!this.isAlive) {
         // istanbul ignore next
-        throw fail("assertion failed: cannot finalize the creation of a node that is already dead")
+        throw fail(
+          "assertion failed: cannot finalize the creation of a node that is already dead"
+        )
       }
     }
 

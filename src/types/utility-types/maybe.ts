@@ -1,25 +1,36 @@
 import {
-  union,
-  optional,
-  IType,
-  undefinedType,
+  type IAnyType,
+  type IType,
+  assertIsType,
   nullType,
-  IAnyType,
-  assertIsType
-} from "../../internal"
+  optional,
+  undefinedType,
+  union
+} from "../../internal.ts"
 
 const optionalUndefinedType = optional(undefinedType, undefined)
 const optionalNullType = optional(nullType, null)
 
 /** @hidden */
-export interface IMaybeIType<IT extends IAnyType, C, O>
-  extends IType<IT["CreationType"] | C, IT["SnapshotType"] | O, IT["TypeWithoutSTN"] | O> {}
+export interface IMaybeIType<IT extends IAnyType, C, O> extends IType<
+  IT["CreationType"] | C,
+  IT["SnapshotType"] | O,
+  IT["TypeWithoutSTN"] | O
+> {}
 
 /** @hidden */
-export interface IMaybe<IT extends IAnyType> extends IMaybeIType<IT, undefined, undefined> {}
+export interface IMaybe<IT extends IAnyType> extends IMaybeIType<
+  IT,
+  undefined,
+  undefined
+> {}
 
 /** @hidden */
-export interface IMaybeNull<IT extends IAnyType> extends IMaybeIType<IT, null | undefined, null> {}
+export interface IMaybeNull<IT extends IAnyType> extends IMaybeIType<
+  IT,
+  null | undefined,
+  null
+> {}
 
 /**
  * `types.maybe` - Maybe will make a type nullable, and also optional.

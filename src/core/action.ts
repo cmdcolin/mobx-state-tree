@@ -1,17 +1,21 @@
 import { action as mobxAction } from "mobx"
+
 import {
-  getStateTreeNode,
-  fail,
-  argsToArray,
-  IDisposer,
-  getRoot,
   Hook,
-  IAnyStateTreeNode,
-  warnError,
-  AnyObjectNode,
+  argsToArray,
   devMode,
-  IActionContext
-} from "../internal"
+  fail,
+  getRoot,
+  getStateTreeNode,
+  warnError
+} from "../internal.ts"
+
+import type {
+  AnyObjectNode,
+  IActionContext,
+  IAnyStateTreeNode,
+  IDisposer
+} from "../internal.ts"
 
 export type IMiddlewareEventType =
   | "action"
@@ -106,9 +110,15 @@ export function runWithActionContext(context: IMiddlewareEvent, fn: Function) {
  * @internal
  * @hidden
  */
-export function getParentActionContext(parentContext: IMiddlewareEvent | undefined) {
-  if (!parentContext) return undefined
-  if (parentContext.type === "action") return parentContext
+export function getParentActionContext(
+  parentContext: IMiddlewareEvent | undefined
+) {
+  if (!parentContext) {
+    return undefined
+  }
+  if (parentContext.type === "action") {
+    return parentContext
+  }
   return parentContext.parentActionEvent
 }
 
@@ -136,7 +146,9 @@ export function createActionInvoker<T extends FunctionWithFlag>(
         tree: getRoot(target),
         rootId: parentContext ? parentContext.rootId : id,
         parentId: parentContext ? parentContext.id : 0,
-        allParentIds: parentContext ? [...parentContext.allParentIds, parentContext.id] : [],
+        allParentIds: parentContext
+          ? [...parentContext.allParentIds, parentContext.id]
+          : [],
         parentEvent: parentContext,
         parentActionEvent: parentActionContext
       },
@@ -221,7 +233,9 @@ class CollectedMiddlewares {
     let n: AnyObjectNode | null = node
     // Find all middlewares. Optimization: cache this?
     while (n) {
-      if (n.middlewares) this.middlewares.push(n.middlewares)
+      if (n.middlewares) {
+        this.middlewares.push(n.middlewares)
+      }
       n = n.parent
     }
   }
@@ -232,7 +246,9 @@ class CollectedMiddlewares {
 
   getNextMiddleware(): IMiddleware | undefined {
     const array = this.middlewares[this.arrayIndex]
-    if (!array) return undefined
+    if (!array) {
+      return undefined
+    }
     const item = array[this.inArrayIndex++]
     if (!item) {
       this.arrayIndex++
@@ -250,7 +266,9 @@ function runMiddleWares(
 ): any {
   const middlewares = new CollectedMiddlewares(node, originalFn)
   // Short circuit
-  if (middlewares.isEmpty) return mobxAction(originalFn).apply(null, baseCall.args)
+  if (middlewares.isEmpty) {
+    return mobxAction(originalFn).apply(null, baseCall.args)
+  }
 
   let result: any = null
 
@@ -268,7 +286,10 @@ function runMiddleWares(
     }
 
     let nextInvoked = false
-    function next(call2: IMiddlewareEvent, callback?: (value: any) => any): void {
+    function next(
+      call2: IMiddlewareEvent,
+      callback?: (value: any) => any
+    ): void {
       nextInvoked = true
       // the result can contain
       // - the non manipulated return value from an action

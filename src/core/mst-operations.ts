@@ -1,42 +1,47 @@
 import { isComputedProp, isObservableProp } from "mobx"
+
 import {
-  IAnyStateTreeNode,
-  IType,
-  IAnyModelType,
-  getStateTreeNode,
-  IStateTreeNode,
-  isStateTreeNode,
-  IJsonPatch,
-  splitJsonPath,
-  asArray,
   EMPTY_OBJECT,
-  fail,
-  IDisposer,
-  resolveNodeByPath,
-  getRelativePathBetweenNodes,
-  freeze,
-  IAnyType,
-  isModelType,
   InvalidReferenceError,
-  normalizeIdentifier,
-  ReferenceIdentifier,
-  AnyObjectNode,
-  assertIsType,
-  assertIsStateTreeNode,
-  TypeOfValue,
+  asArray,
+  assertArg,
   assertIsFunction,
   assertIsNumber,
+  assertIsStateTreeNode,
   assertIsString,
-  assertArg,
+  assertIsType,
   assertIsValidIdentifier,
-  IActionContext,
+  fail,
+  freeze,
+  getRelativePathBetweenNodes,
   getRunningActionContext,
-  IAnyComplexType
-} from "../internal"
+  getStateTreeNode,
+  isModelType,
+  isStateTreeNode,
+  normalizeIdentifier,
+  resolveNodeByPath,
+  splitJsonPath
+} from "../internal.ts"
+
+import type {
+  AnyObjectNode,
+  IActionContext,
+  IAnyComplexType,
+  IAnyModelType,
+  IAnyStateTreeNode,
+  IAnyType,
+  IDisposer,
+  IJsonPatch,
+  IStateTreeNode,
+  IType,
+  ReferenceIdentifier,
+  TypeOfValue
+} from "../internal.ts"
 
 /** @hidden */
-export type TypeOrStateTreeNodeToStateTreeNode<T extends IAnyType | IAnyStateTreeNode> =
-  T extends IType<any, any, infer TT> ? TT & IStateTreeNode<T> : T
+export type TypeOrStateTreeNodeToStateTreeNode<
+  T extends IAnyType | IAnyStateTreeNode
+> = T extends IType<any, any, infer TT> ? TT & IStateTreeNode<T> : T
 
 /**
  * Returns the _actual_ type of the given tree node. (Or throws)
@@ -66,7 +71,10 @@ export function getType(object: IAnyStateTreeNode): IAnyComplexType {
  * @param propertyName
  * @returns
  */
-export function getChildType(object: IAnyStateTreeNode, propertyName?: string): IAnyType {
+export function getChildType(
+  object: IAnyStateTreeNode,
+  propertyName?: string
+): IAnyType {
   assertIsStateTreeNode(object, 1)
 
   return getStateTreeNode(object).getChildType(propertyName)
@@ -128,7 +136,7 @@ export function applyPatch(
 ): void {
   // check all arguments
   assertIsStateTreeNode(target, 1)
-  assertArg(patch, (p) => typeof p === "object", "object or array", 2)
+  assertArg(patch, p => typeof p === "object", "object or array", 2)
 
   getStateTreeNode(target).applyPatches(asArray(patch))
 }
@@ -214,7 +222,9 @@ export function recordPatches(
     },
     get reversedInversePatches() {
       if (!publicData.reversedInversePatches) {
-        publicData.reversedInversePatches = data.inversePatches.slice().reverse()
+        publicData.reversedInversePatches = data.inversePatches
+          .slice()
+          .reverse()
       }
       return publicData.reversedInversePatches
     },
@@ -231,7 +241,9 @@ export function recordPatches(
       }
     },
     resume() {
-      if (disposer) return
+      if (disposer) {
+        return
+      }
       disposer = onPatch(subject, (patch, inversePatch) => {
         // skip patches that are asked to be filtered if there's a filter in place
         if (filter && !filter(patch, inversePatch, getRunningActionContext())) {
@@ -268,7 +280,9 @@ export function protect(target: IAnyStateTreeNode): void {
   assertIsStateTreeNode(target, 1)
 
   const node = getStateTreeNode(target)
-  if (!node.isRoot) throw fail("`protect` can only be invoked on root nodes")
+  if (!node.isRoot) {
+    throw fail("`protect` can only be invoked on root nodes")
+  }
   node.isProtectionEnabled = true
 }
 
@@ -301,7 +315,9 @@ export function unprotect(target: IAnyStateTreeNode): void {
   assertIsStateTreeNode(target, 1)
 
   const node = getStateTreeNode(target)
-  if (!node.isRoot) throw fail("`unprotect` can only be invoked on root nodes")
+  if (!node.isRoot) {
+    throw fail("`unprotect` can only be invoked on root nodes")
+  }
   node.isProtectionEnabled = false
 }
 
@@ -319,7 +335,10 @@ export function isProtected(target: IAnyStateTreeNode): boolean {
  * @param snapshot
  * @returns
  */
-export function applySnapshot<C>(target: IStateTreeNode<IType<C, any, any>>, snapshot: C) {
+export function applySnapshot<C>(
+  target: IStateTreeNode<IType<C, any, any>>,
+  snapshot: C
+) {
   // check all arguments
   assertIsStateTreeNode(target, 1)
 
@@ -342,7 +361,9 @@ export function getSnapshot<S>(
   assertIsStateTreeNode(target, 1)
 
   const node = getStateTreeNode(target)
-  if (applyPostProcess) return node.snapshot
+  if (applyPostProcess) {
+    return node.snapshot
+  }
 
   return freeze(node.type.getSnapshot(node, false))
 }
@@ -354,14 +375,19 @@ export function getSnapshot<S>(
  * @param depth How far should we look upward? 1 by default.
  * @returns
  */
-export function hasParent(target: IAnyStateTreeNode, depth: number = 1): boolean {
+export function hasParent(
+  target: IAnyStateTreeNode,
+  depth: number = 1
+): boolean {
   // check all arguments
   assertIsStateTreeNode(target, 1)
   assertIsNumber(depth, 2, 0)
 
   let parent: AnyObjectNode | null = getStateTreeNode(target).parent
   while (parent) {
-    if (--depth === 0) return true
+    if (--depth === 0) {
+      return true
+    }
     parent = parent.parent
   }
   return false
@@ -391,10 +417,14 @@ export function getParent<IT extends IAnyStateTreeNode | IAnyComplexType>(
   let d = depth
   let parent: AnyObjectNode | null = getStateTreeNode(target).parent
   while (parent) {
-    if (--d === 0) return parent.storedValue as any
+    if (--d === 0) {
+      return parent.storedValue as any
+    }
     parent = parent.parent
   }
-  throw fail(`Failed to find the parent of ${getStateTreeNode(target)} at depth ${depth}`)
+  throw fail(
+    `Failed to find the parent of ${getStateTreeNode(target)} at depth ${depth}`
+  )
 }
 
 /**
@@ -404,14 +434,19 @@ export function getParent<IT extends IAnyStateTreeNode | IAnyComplexType>(
  * @param type
  * @returns
  */
-export function hasParentOfType(target: IAnyStateTreeNode, type: IAnyComplexType): boolean {
+export function hasParentOfType(
+  target: IAnyStateTreeNode,
+  type: IAnyComplexType
+): boolean {
   // check all arguments
   assertIsStateTreeNode(target, 1)
   assertIsType(type, 2)
 
   let parent: AnyObjectNode | null = getStateTreeNode(target).parent
   while (parent) {
-    if (type.is(parent.storedValue)) return true
+    if (type.is(parent.storedValue)) {
+      return true
+    }
     parent = parent.parent
   }
   return false
@@ -434,10 +469,14 @@ export function getParentOfType<IT extends IAnyComplexType>(
 
   let parent: AnyObjectNode | null = getStateTreeNode(target).parent
   while (parent) {
-    if (type.is(parent.storedValue)) return parent.storedValue
+    if (type.is(parent.storedValue)) {
+      return parent.storedValue
+    }
     parent = parent.parent
   }
-  throw fail(`Failed to find the parent of ${getStateTreeNode(target)} of a given type`)
+  throw fail(
+    `Failed to find the parent of ${getStateTreeNode(target)} of a given type`
+  )
 }
 
 /**
@@ -577,7 +616,9 @@ export function tryReference<N extends IAnyStateTreeNode>(
         return isAlive(node) ? node : undefined
       }
     } else {
-      throw fail("The reference to be checked is not one of node, null or undefined")
+      throw fail(
+        "The reference to be checked is not one of node, null or undefined"
+      )
     }
   } catch (e) {
     if (e instanceof InvalidReferenceError) {
@@ -605,7 +646,9 @@ export function isValidReference<N extends IAnyStateTreeNode>(
     } else if (isStateTreeNode(node)) {
       return checkIfAlive ? isAlive(node) : true
     } else {
-      throw fail("The reference to be checked is not one of node, null or undefined")
+      throw fail(
+        "The reference to be checked is not one of node, null or undefined"
+      )
     }
   } catch (e) {
     if (e instanceof InvalidReferenceError) {
@@ -628,7 +671,9 @@ export function tryResolve(target: IAnyStateTreeNode, path: string): any {
   assertIsString(path, 2)
 
   const node = resolveNodeByPath(getStateTreeNode(target), path, false)
-  if (node === undefined) return undefined
+  if (node === undefined) {
+    return undefined
+  }
   try {
     return node.value
   } catch (e) {
@@ -646,12 +691,18 @@ export function tryResolve(target: IAnyStateTreeNode, path: string): any {
  * @param target
  * @returns
  */
-export function getRelativePath(base: IAnyStateTreeNode, target: IAnyStateTreeNode): string {
+export function getRelativePath(
+  base: IAnyStateTreeNode,
+  target: IAnyStateTreeNode
+): string {
   // check all arguments
   assertIsStateTreeNode(base, 1)
   assertIsStateTreeNode(target, 2)
 
-  return getRelativePathBetweenNodes(getStateTreeNode(base), getStateTreeNode(target))
+  return getRelativePathBetweenNodes(
+    getStateTreeNode(base),
+    getStateTreeNode(target)
+  )
 }
 
 /**
@@ -677,8 +728,8 @@ export function clone<T extends IAnyStateTreeNode>(
     keepEnvironment === true
       ? node.root.environment
       : keepEnvironment === false
-      ? undefined
-      : keepEnvironment
+        ? undefined
+        : keepEnvironment
   ) // it's an object or something else
 }
 
@@ -701,8 +752,11 @@ export function destroy(target: IAnyStateTreeNode): void {
   assertIsStateTreeNode(target, 1)
 
   const node = getStateTreeNode(target)
-  if (node.isRoot) node.die()
-  else node.parent!.removeChild(node.subpath)
+  if (node.isRoot) {
+    node.die()
+  } else {
+    node.parent!.removeChild(node.subpath)
+  }
 }
 
 /**
@@ -749,7 +803,10 @@ export function isAlive(target: IAnyStateTreeNode): boolean {
  * @param disposer
  * @returns The same disposer that was passed as argument
  */
-export function addDisposer(target: IAnyStateTreeNode, disposer: IDisposer): IDisposer {
+export function addDisposer(
+  target: IAnyStateTreeNode,
+  disposer: IDisposer
+): IDisposer {
   // check all arguments
   assertIsStateTreeNode(target, 1)
   assertIsFunction(disposer, 2)
@@ -777,7 +834,9 @@ export function getEnv<T = any>(target: IAnyStateTreeNode): T {
 
   const node = getStateTreeNode(target)
   const env = node.root.environment
-  if (!env) return EMPTY_OBJECT as T
+  if (!env) {
+    return EMPTY_OBJECT as T
+  }
   return env
 }
 
@@ -794,8 +853,10 @@ export function walk(
 
   const node = getStateTreeNode(target)
   // tslint:disable-next-line:no_unused-variable
-  node.getChildren().forEach((child) => {
-    if (isStateTreeNode(child.storedValue)) walk(child.storedValue, processor)
+  node.getChildren().forEach(child => {
+    if (isStateTreeNode(child.storedValue)) {
+      walk(child.storedValue, processor)
+    }
   })
   processor(node.storedValue)
 }
@@ -822,7 +883,7 @@ export function getPropertyMembers(
     type = typeOrNode as IAnyModelType
   }
 
-  assertArg(type, (t) => isModelType(t), "model type or model instance", 1)
+  assertArg(type, t => isModelType(t), "model type or model instance", 1)
 
   return {
     name: type.name,
@@ -862,12 +923,17 @@ export function getMembers(target: IAnyStateTreeNode): IModelReflectionData {
   }
 
   const props = Object.getOwnPropertyNames(target)
-  props.forEach((key) => {
-    if (key in reflected.properties) return
+  props.forEach(key => {
+    if (key in reflected.properties) {
+      return
+    }
     const descriptor = Object.getOwnPropertyDescriptor(target, key)!
     if (descriptor.get) {
-      if (isComputedProp(target, key)) reflected.views.push(key)
-      else reflected.volatile.push(key)
+      if (isComputedProp(target, key)) {
+        reflected.views.push(key)
+      } else {
+        reflected.volatile.push(key)
+      }
       return
     }
     if (descriptor.value._isFlowAction === true) {
@@ -884,9 +950,9 @@ export function getMembers(target: IAnyStateTreeNode): IModelReflectionData {
   return reflected
 }
 
-export function cast<O extends string | number | boolean | null | undefined = never>(
-  snapshotOrInstance: O
-): O
+export function cast<
+  O extends string | number | boolean | null | undefined = never
+>(snapshotOrInstance: O): O
 export function cast<O = never>(
   snapshotOrInstance:
     | TypeOfValue<O>["CreationType"]
@@ -955,7 +1021,9 @@ export function cast(snapshotOrInstance: any): any {
  */
 export function castToSnapshot<I>(
   snapshotOrInstance: I
-): Extract<I, IAnyStateTreeNode> extends never ? I : TypeOfValue<I>["CreationType"] {
+): Extract<I, IAnyStateTreeNode> extends never
+  ? I
+  : TypeOfValue<I>["CreationType"] {
   return snapshotOrInstance as any
 }
 

@@ -1,14 +1,14 @@
 import {
-  createScalarNode,
+  type AnyObjectNode,
+  type IType,
+  type IValidationContext,
+  type IValidationResult,
   SimpleType,
-  IType,
   TypeFlags,
-  IValidationContext,
-  IValidationResult,
-  typeCheckSuccess,
+  createScalarNode,
   typeCheckFailure,
-  AnyObjectNode
-} from "../../internal"
+  typeCheckSuccess
+} from "../../internal.ts"
 
 export interface CustomTypeOptions<S, T> {
   /** Friendly name */
@@ -71,7 +71,9 @@ export interface CustomTypeOptions<S, T> {
  * @param options
  * @returns
  */
-export function custom<S, T>(options: CustomTypeOptions<S, T>): IType<S | T, S, T> {
+export function custom<S, T>(
+  options: CustomTypeOptions<S, T>
+): IType<S | T, S, T> {
   return new CustomType<S, T>(options)
 }
 
@@ -90,12 +92,21 @@ export class CustomType<S, T> extends SimpleType<S | T, S, T> {
     return this.name
   }
 
-  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
-    if (this.options.isTargetType(value)) return typeCheckSuccess()
+  isValidSnapshot(
+    value: this["C"],
+    context: IValidationContext
+  ): IValidationResult {
+    if (this.options.isTargetType(value)) {
+      return typeCheckSuccess()
+    }
 
     const typeError: string = this.options.getValidationMessage(value as S)
     if (typeError) {
-      return typeCheckFailure(context, value, `Invalid value for type '${this.name}': ${typeError}`)
+      return typeCheckFailure(
+        context,
+        value,
+        `Invalid value for type '${this.name}': ${typeError}`
+      )
     }
     return typeCheckSuccess()
   }
@@ -112,17 +123,27 @@ export class CustomType<S, T> extends SimpleType<S | T, S, T> {
   ): this["N"] {
     const valueToStore: T = this.options.isTargetType(initialValue)
       ? (initialValue as T)
-      : this.options.fromSnapshot(initialValue as S, parent && parent.root.environment)
+      : this.options.fromSnapshot(
+          initialValue as S,
+          parent && parent.root.environment
+        )
     return createScalarNode(this, parent, subpath, environment, valueToStore)
   }
 
-  reconcile(current: this["N"], value: S | T, parent: AnyObjectNode, subpath: string): this["N"] {
+  reconcile(
+    current: this["N"],
+    value: S | T,
+    parent: AnyObjectNode,
+    subpath: string
+  ): this["N"] {
     const isSnapshot = !this.options.isTargetType(value)
     // in theory customs use scalar nodes which cannot be detached, but still...
     if (!current.isDetaching) {
       const unchanged =
         current.type === this &&
-        (isSnapshot ? value === current.snapshot : value === current.storedValue)
+        (isSnapshot
+          ? value === current.snapshot
+          : value === current.storedValue)
       if (unchanged) {
         current.setParent(parent, subpath)
         return current

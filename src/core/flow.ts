@@ -1,12 +1,12 @@
-import { argsToArray, fail, setImmediateWithFallback } from "../utils"
+import { argsToArray, fail, setImmediateWithFallback } from "../utils.ts"
 import {
-  FunctionWithFlag,
   getCurrentActionContext,
   getNextActionId,
   getParentActionContext,
-  IMiddlewareEventType,
   runWithActionContext
-} from "./action"
+} from "./action.ts"
+
+import type { FunctionWithFlag, IMiddlewareEventType } from "./action.ts"
 
 /**
  * @hidden
@@ -57,7 +57,9 @@ export function castFlowReturn<T>(val: T): T {
  * }))
  * ```
  */
-export function toGeneratorFunction<R, Args extends any[]>(p: (...args: Args) => Promise<R>) {
+export function toGeneratorFunction<R, Args extends any[]>(
+  p: (...args: Args) => Promise<R>
+) {
   return function* (...args: Args) {
     return (yield p(...args)) as R
   }
