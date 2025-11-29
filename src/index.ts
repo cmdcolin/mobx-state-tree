@@ -153,3 +153,4 @@ export {
   toGeneratorFunction,
   toGenerator
 } from "./internal"
+console.log("wow")
