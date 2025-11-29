@@ -1,14 +1,8 @@
-import {
-  type IActionContext,
-  type IMiddlewareEvent,
-  type IMiddlewareHandler
-} from "../internal.ts"
+import { IMiddlewareEvent, IMiddlewareHandler, IActionContext } from "../internal"
 
 type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
 
-export interface IActionTrackingMiddleware2Call<
-  TEnv
-> extends Readonly<IActionContext> {
+export interface IActionTrackingMiddleware2Call<TEnv> extends Readonly<IActionContext> {
   env: TEnv | undefined
   readonly parentCall?: IActionTrackingMiddleware2Call<TEnv>
 }
@@ -99,8 +93,7 @@ export function createActionTrackingMiddleware2<TEnv = any>(
         parentCall: parentRunningAction && parentRunningAction.call
       }
 
-      const passesFilter =
-        !middlewareHooks.filter || middlewareHooks.filter(newCall)
+      const passesFilter = !middlewareHooks.filter || middlewareHooks.filter(newCall)
       const hooks = passesFilter ? middlewareHooks : undefined
 
       const runningAction = new RunningAction(hooks, newCall)

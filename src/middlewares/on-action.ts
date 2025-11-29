@@ -1,31 +1,31 @@
 import { runInAction } from "mobx"
 
 import {
-  type AnyNode,
-  type IActionContext,
-  type IAnyStateTreeNode,
-  type IDisposer,
-  addMiddleware,
-  applyPatch,
-  applySnapshot,
-  asArray,
-  assertArg,
-  assertIsStateTreeNode,
-  devMode,
-  fail,
-  getRelativePathBetweenNodes,
-  getRunningActionContext,
   getStateTreeNode,
+  isStateTreeNode,
+  addMiddleware,
+  tryResolve,
+  applyPatch,
   getType,
-  isArray,
+  applySnapshot,
+  isRoot,
+  isProtected,
+  fail,
   isPlainObject,
   isPrimitive,
-  isProtected,
-  isRoot,
-  isStateTreeNode,
-  tryResolve,
-  warnError
-} from "../internal.ts"
+  IDisposer,
+  isArray,
+  asArray,
+  getRelativePathBetweenNodes,
+  IAnyStateTreeNode,
+  warnError,
+  AnyNode,
+  assertIsStateTreeNode,
+  devMode,
+  assertArg,
+  IActionContext,
+  getRunningActionContext
+} from "../internal"
 
 export interface ISerializedActionCall {
   name: string
@@ -41,34 +41,19 @@ export interface IActionRecorder {
   replay(target: IAnyStateTreeNode): void
 }
 
-function serializeArgument(
-  node: AnyNode,
-  actionName: string,
-  index: number,
-  arg: any
-): any {
-  if (arg instanceof Date) {
-    return { $MST_DATE: arg.getTime() }
-  }
-  if (isPrimitive(arg)) {
-    return arg
-  }
+function serializeArgument(node: AnyNode, actionName: string, index: number, arg: any): any {
+  if (arg instanceof Date) return { $MST_DATE: arg.getTime() }
+  if (isPrimitive(arg)) return arg
   // We should not serialize MST nodes, even if we can, because we don't know if the receiving party can handle a raw snapshot instead of an
   // MST type instance. So if one wants to serialize a MST node that was pass in, either explitly pass: 1: an id, 2: a (relative) path, 3: a snapshot
-  if (isStateTreeNode(arg)) {
-    return serializeTheUnserializable(`[MSTNode: ${getType(arg).name}]`)
-  }
-  if (typeof arg === "function") {
-    return serializeTheUnserializable(`[function]`)
-  }
-  if (typeof arg === "object" && !isPlainObject(arg) && !isArray(arg)) {
+  if (isStateTreeNode(arg)) return serializeTheUnserializable(`[MSTNode: ${getType(arg).name}]`)
+  if (typeof arg === "function") return serializeTheUnserializable(`[function]`)
+  if (typeof arg === "object" && !isPlainObject(arg) && !isArray(arg))
     return serializeTheUnserializable(
       `[object ${
-        (arg && (arg as any).constructor && (arg as any).constructor.name) ||
-        "Complex Object"
+        (arg && (arg as any).constructor && (arg as any).constructor.name) || "Complex Object"
       }]`
     )
-  }
   try {
     // Check if serializable, cycle free etc...
     // MWE: there must be a better way....
@@ -80,9 +65,8 @@ function serializeArgument(
 }
 
 function deserializeArgument(adm: AnyNode, value: any): any {
-  if (value && typeof value === "object" && "$MST_DATE" in value) {
+  if (value && typeof value === "object" && "$MST_DATE" in value)
     return new Date(value["$MST_DATE"])
-  }
   return value
 }
 
@@ -107,21 +91,16 @@ export function applyAction(
 ): void {
   // check all arguments
   assertIsStateTreeNode(target, 1)
-  assertArg(actions, a => typeof a === "object", "object or array", 2)
+  assertArg(actions, (a) => typeof a === "object", "object or array", 2)
 
   runInAction(() => {
-    asArray(actions).forEach(action => baseApplyAction(target, action))
+    asArray(actions).forEach((action) => baseApplyAction(target, action))
   })
 }
 
-function baseApplyAction(
-  target: IAnyStateTreeNode,
-  action: ISerializedActionCall
-): any {
+function baseApplyAction(target: IAnyStateTreeNode, action: ISerializedActionCall): any {
   const resolvedTarget = tryResolve(target, action.path || "")
-  if (!resolvedTarget) {
-    throw fail(`Invalid action path: ${action.path || ""}`)
-  }
+  if (!resolvedTarget) throw fail(`Invalid action path: ${action.path || ""}`)
   const node = getStateTreeNode(resolvedTarget)
 
   // Reserved functions
@@ -132,12 +111,11 @@ function baseApplyAction(
     return applySnapshot.call(null, resolvedTarget, action.args![0])
   }
 
-  if (!(typeof resolvedTarget[action.name] === "function")) {
+  if (!(typeof resolvedTarget[action.name] === "function"))
     throw fail(`Action '${action.name}' does not exist in '${node.path}'`)
-  }
   return resolvedTarget[action.name].apply(
     resolvedTarget,
-    action.args ? action.args.map(v => deserializeArgument(node, v)) : []
+    action.args ? action.args.map((v) => deserializeArgument(node, v)) : []
   )
 }
 
@@ -168,10 +146,7 @@ function baseApplyAction(
  */
 export function recordActions(
   subject: IAnyStateTreeNode,
-  filter?: (
-    action: ISerializedActionCall,
-    actionContext: IActionContext | undefined
-  ) => boolean
+  filter?: (action: ISerializedActionCall, actionContext: IActionContext | undefined) => boolean
 ): IActionRecorder {
   // check all arguments
   assertIsStateTreeNode(subject, 1)
@@ -197,9 +172,7 @@ export function recordActions(
       }
     },
     resume() {
-      if (disposer) {
-        return
-      }
+      if (disposer) return
       disposer = onAction(subject, listener)
     },
     replay(target) {
@@ -257,16 +230,14 @@ export function onAction(
   // check all arguments
   assertIsStateTreeNode(target, 1)
   if (devMode()) {
-    if (!isRoot(target)) {
+    if (!isRoot(target))
       warnError(
         "Warning: Attaching onAction listeners to non root nodes is dangerous: No events will be emitted for actions initiated higher up in the tree."
       )
-    }
-    if (!isProtected(target)) {
+    if (!isProtected(target))
       warnError(
         "Warning: Attaching onAction listeners to non protected nodes is dangerous: No events will be emitted for direct modifications without action."
       )
-    }
   }
 
   return addMiddleware(target, function handler(rawCall, next) {

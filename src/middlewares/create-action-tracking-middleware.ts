@@ -1,9 +1,6 @@
-import { type IMiddlewareEvent, type IMiddlewareHandler } from "../internal.ts"
+import { IMiddlewareEvent, IMiddlewareHandler } from "../internal"
 
-const runningActions = new Map<
-  number,
-  { async: boolean; call: IMiddlewareEvent; context: any }
->()
+const runningActions = new Map<number, { async: boolean; call: IMiddlewareEvent; context: any }>()
 
 export interface IActionTrackingMiddlewareHooks<T> {
   filter?: (call: IMiddlewareEvent) => boolean

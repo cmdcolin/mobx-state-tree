@@ -1,19 +1,19 @@
 import {
-  type AnyObjectNode,
-  type IAnyType,
-  type IType,
-  type IValidationContext,
-  type IValidationResult,
-  SimpleType,
-  TypeFlags,
-  createScalarNode,
-  deepFreeze,
   isSerializable,
+  deepFreeze,
+  createScalarNode,
+  IValidationContext,
+  IValidationResult,
+  typeCheckSuccess,
+  typeCheckFailure,
+  TypeFlags,
   isType,
   optional,
-  typeCheckFailure,
-  typeCheckSuccess
-} from "../../internal.ts"
+  IType,
+  IAnyType,
+  AnyObjectNode,
+  SimpleType
+} from "../../internal"
 
 /**
  * @internal
@@ -37,29 +37,14 @@ export class Frozen<T> extends SimpleType<T, T, T> {
     value: this["C"]
   ): this["N"] {
     // create the node
-    return createScalarNode(
-      this,
-      parent,
-      subpath,
-      environment,
-      deepFreeze(value)
-    )
+    return createScalarNode(this, parent, subpath, environment, deepFreeze(value))
   }
 
-  isValidSnapshot(
-    value: this["C"],
-    context: IValidationContext
-  ): IValidationResult {
+  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
     if (!isSerializable(value)) {
-      return typeCheckFailure(
-        context,
-        value,
-        "Value is not serializable and cannot be frozen"
-      )
+      return typeCheckFailure(context, value, "Value is not serializable and cannot be frozen")
     }
-    if (this.subType) {
-      return this.subType.validate(value, context)
-    }
+    if (this.subType) return this.subType.validate(value, context)
     return typeCheckSuccess()
   }
 }
@@ -110,13 +95,9 @@ export function frozen<T = any>(): IType<T, T, T> // do not assume undefined by 
  * @returns
  */
 export function frozen(arg?: any): any {
-  if (arguments.length === 0) {
-    return untypedFrozenInstance
-  } else if (isType(arg)) {
-    return new Frozen(arg)
-  } else {
-    return optional(untypedFrozenInstance, arg)
-  }
+  if (arguments.length === 0) return untypedFrozenInstance
+  else if (isType(arg)) return new Frozen(arg)
+  else return optional(untypedFrozenInstance, arg)
 }
 
 /**
@@ -125,8 +106,6 @@ export function frozen(arg?: any): any {
  * @param type
  * @returns
  */
-export function isFrozenType<IT extends IType<T | any, T, T>, T = any>(
-  type: IT
-): type is IT {
+export function isFrozenType<IT extends IType<T | any, T, T>, T = any>(type: IT): type is IT {
   return isType(type) && (type.flags & TypeFlags.Frozen) > 0
 }

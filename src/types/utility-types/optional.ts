@@ -1,20 +1,20 @@
 import {
-  type AnyObjectNode,
-  BaseType,
-  type ExtractCSTWithSTN,
-  type IAnyType,
-  type IType,
-  type IValidationContext,
-  type IValidationResult,
-  TypeFlags,
-  assertIsType,
-  devMode,
-  fail,
   isStateTreeNode,
+  IType,
+  TypeFlags,
   isType,
+  IValidationContext,
+  IValidationResult,
+  typecheckInternal,
   typeCheckSuccess,
-  typecheckInternal
-} from "../../internal.ts"
+  fail,
+  IAnyType,
+  AnyObjectNode,
+  BaseType,
+  assertIsType,
+  ExtractCSTWithSTN,
+  devMode
+} from "../../internal"
 
 type IFunctionReturn<T> = () => T
 
@@ -44,10 +44,7 @@ export class OptionalValue<
 
   constructor(
     private readonly _subtype: IT,
-    private readonly _defaultValue: IOptionalValue<
-      IT["CreationType"],
-      IT["Type"]
-    >,
+    private readonly _defaultValue: IOptionalValue<IT["CreationType"], IT["Type"]>,
     readonly optionalValues: OptionalVals
   ) {
     super(_subtype.name)
@@ -65,12 +62,7 @@ export class OptionalValue<
   ): this["N"] {
     if (this.optionalValues.indexOf(initialValue) >= 0) {
       const defaultInstanceOrSnapshot = this.getDefaultInstanceOrSnapshot()
-      return this._subtype.instantiate(
-        parent,
-        subpath,
-        environment,
-        defaultInstanceOrSnapshot
-      )
+      return this._subtype.instantiate(parent, subpath, environment, defaultInstanceOrSnapshot)
     }
     return this._subtype.instantiate(parent, subpath, environment, initialValue)
   }
@@ -106,10 +98,7 @@ export class OptionalValue<
     return defaultInstanceOrSnapshot
   }
 
-  isValidSnapshot(
-    value: this["C"],
-    context: IValidationContext
-  ): IValidationResult {
+  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
     // defaulted values can be skipped
     if (this.optionalValues.indexOf(value) >= 0) {
       return typeCheckSuccess()
@@ -134,24 +123,19 @@ export type OptionalDefaultValueOrFunction<IT extends IAnyType> =
   | (() => ExtractCSTWithSTN<IT>)
 
 /** @hidden */
-export interface IOptionalIType<
-  IT extends IAnyType,
-  OptionalVals extends ValidOptionalValues
-> extends IType<
-  IT["CreationType"] | OptionalVals[number],
-  IT["SnapshotType"],
-  IT["TypeWithoutSTN"]
-> {}
+export interface IOptionalIType<IT extends IAnyType, OptionalVals extends ValidOptionalValues>
+  extends IType<
+    IT["CreationType"] | OptionalVals[number],
+    IT["SnapshotType"],
+    IT["TypeWithoutSTN"]
+  > {}
 
 function checkOptionalPreconditions<IT extends IAnyType>(
   type: IAnyType,
   defaultValueOrFunction: OptionalDefaultValueOrFunction<IT>
 ) {
   // make sure we never pass direct instances
-  if (
-    typeof defaultValueOrFunction !== "function" &&
-    isStateTreeNode(defaultValueOrFunction)
-  ) {
+  if (typeof defaultValueOrFunction !== "function" && isStateTreeNode(defaultValueOrFunction)) {
     throw fail(
       "default value cannot be an instance, pass a snapshot or a function that creates an instance/snapshot instead"
     )
@@ -172,10 +156,7 @@ export function optional<IT extends IAnyType>(
   type: IT,
   defaultValueOrFunction: OptionalDefaultValueOrFunction<IT>
 ): IOptionalIType<IT, [undefined]>
-export function optional<
-  IT extends IAnyType,
-  OptionalVals extends ValidOptionalValues
->(
+export function optional<IT extends IAnyType, OptionalVals extends ValidOptionalValues>(
   type: IT,
   defaultValueOrFunction: OptionalDefaultValueOrFunction<IT>,
   optionalValues: OptionalVals
@@ -222,10 +203,7 @@ export function optional<
  *                       that will be converted into the default. `[ undefined ]` is assumed when none is provided
  * @returns
  */
-export function optional<
-  IT extends IAnyType,
-  OptionalVals extends ValidOptionalValues
->(
+export function optional<IT extends IAnyType, OptionalVals extends ValidOptionalValues>(
   type: IT,
   defaultValueOrFunction: OptionalDefaultValueOrFunction<IT>,
   optionalValues?: OptionalVals

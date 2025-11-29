@@ -1,53 +1,43 @@
 // noinspection ES6UnusedImports
+import { action, computed, IComputedValue, reaction, _allowStateChangesInsideComputed } from "mobx"
 import {
-  IComputedValue,
-  _allowStateChangesInsideComputed,
-  action,
-  computed,
-  reaction
-} from "mobx"
-
-import {
-  BaseNode,
-  ComplexType,
-  EMPTY_OBJECT,
-  EventHandlers,
-  Hook,
-  IdentifierCache,
-  NodeLifeCycle,
   addHiddenFinalProp,
+  ComplexType,
   convertChildNodesToArray,
   createActionInvoker,
-  devMode,
-  escapeJsonPath,
+  EMPTY_OBJECT,
   extend,
   fail,
   freeze,
-  getCurrentActionContext,
-  getLivelinessChecking,
-  getPath,
-  normalizeIdentifier,
+  IAnyType,
+  IdentifierCache,
+  IDisposer,
+  IJsonPatch,
+  IMiddleware,
+  IMiddlewareHandler,
+  IReversibleJsonPatch,
+  NodeLifeCycle,
   resolveNodeByPathParts,
   splitJsonPath,
   splitPatch,
   toJSON,
-  warnError
-} from "../../internal.ts"
-
-import type {
-  AnyNode,
-  ArgumentTypes,
-  IAnyType,
-  IDisposer,
-  IJsonPatch,
-  IMiddleware,
+  EventHandlers,
+  Hook,
+  BaseNode,
+  getLivelinessChecking,
+  normalizeIdentifier,
+  ReferenceIdentifier,
   IMiddlewareEvent,
-  IMiddlewareHandler,
-  IReversibleJsonPatch,
+  escapeJsonPath,
+  getPath,
+  warnError,
+  AnyNode,
   IStateTreeNode,
+  ArgumentTypes,
   IType,
-  ReferenceIdentifier
-} from "../../internal.ts"
+  devMode,
+  getCurrentActionContext
+} from "../../internal"
 
 let nextNodeId = 1
 
@@ -148,10 +138,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
       this.identifierCache = new IdentifierCache()
     }
 
-    this._childNodes = complexType.initializeChildNodes(
-      this,
-      this._initialSnapshot
-    )
+    this._childNodes = complexType.initializeChildNodes(this, this._initialSnapshot)
 
     // identifier can not be changed during lifecycle of a node
     // so we safely can read it from initial snapshot
@@ -186,10 +173,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   createObservableInstanceIfNeeded(fireHooks = true): void {
-    if (
-      this._observableInstanceState ===
-      ObservableInstanceLifecycle.UNINITIALIZED
-    ) {
+    if (this._observableInstanceState === ObservableInstanceLifecycle.UNINITIALIZED) {
       this.createObservableInstance(fireHooks)
     }
   }
@@ -217,8 +201,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     // the same reference again
     while (
       parent &&
-      parent._observableInstanceState ===
-        ObservableInstanceLifecycle.UNINITIALIZED
+      parent._observableInstanceState === ObservableInstanceLifecycle.UNINITIALIZED
     ) {
       parentChain.unshift(parent)
       parent = parent.parent
@@ -233,7 +216,6 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     const type = this.type
 
     try {
-      // @ts-expect-error
       this.storedValue = type.createNewInstance(this._childNodes)
       this.preboot()
 
@@ -253,9 +235,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     // "_observableInstanceState" field was touched
     ;(this._snapshotComputed as any).trackAndCompute()
 
-    if (this.isRoot) {
-      this._addSnapshotReaction()
-    }
+    if (this.isRoot) this._addSnapshotReaction()
 
     this._childNodes = EMPTY_OBJECT
 
@@ -282,9 +262,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   clearParent(): void {
-    if (!this.parent) {
-      return
-    }
+    if (!this.parent) return
 
     // detach if attached
     this.fireHook(Hook.beforeDetach)
@@ -333,11 +311,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
           `A state tree is not allowed to contain itself. Cannot assign ${this} to path '${newParent.path}/${subpath}'`
         )
       }
-      if (
-        !this.parent &&
-        !!this.environment &&
-        this.environment !== newParent.root.environment
-      ) {
+      if (!this.parent && !!this.environment && this.environment !== newParent.root.environment) {
         throw fail(
           `A state tree cannot be made part of another state tree as long as their environments are different.`
         )
@@ -360,9 +334,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     this.fireInternalHook(name)
 
     const fn =
-      this.storedValue &&
-      typeof this.storedValue === "object" &&
-      (this.storedValue as any)[name]
+      this.storedValue && typeof this.storedValue === "object" && (this.storedValue as any)[name]
     if (typeof fn === "function") {
       // we check for it to allow old mobx peer dependencies that don't have the method to work (even when still bugged)
       if (_allowStateChangesInsideComputed) {
@@ -387,9 +359,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
 
   // NOTE: we use this method to get snapshot without creating @computed overhead
   getSnapshot(): S {
-    if (!this.isAlive) {
-      return this._snapshotUponDeath!
-    }
+    if (!this.isAlive) return this._snapshotUponDeath!
     return this._observableInstanceState === ObservableInstanceLifecycle.CREATED
       ? this._getActualSnapshot()
       : this._getCachedInitialSnapshot()
@@ -405,10 +375,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
       const childNodes = this._childNodes
       const snapshot = this._initialSnapshot
 
-      this._cachedInitialSnapshot = type.processInitialSnapshot(
-        childNodes,
-        snapshot
-      )
+      this._cachedInitialSnapshot = type.processInitialSnapshot(childNodes, snapshot)
       this._cachedInitialSnapshotCreated = true
     }
 
@@ -416,12 +383,8 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   private isRunningAction(): boolean {
-    if (this._isRunningAction) {
-      return true
-    }
-    if (this.isRoot) {
-      return false
-    }
+    if (this._isRunningAction) return true
+    if (this.isRoot) return false
     return this.parent!.isRunningAction()
   }
 
@@ -445,11 +408,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     let actionContext = context.actionContext || getCurrentActionContext()
 
     // try to use a real action context if possible since it includes the action name
-    if (
-      actionContext &&
-      actionContext.type !== "action" &&
-      actionContext.parentActionEvent
-    ) {
+    if (actionContext && actionContext.type !== "action" && actionContext.parentActionEvent) {
       actionContext = actionContext.parentActionEvent
     }
 
@@ -457,10 +416,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     if (actionContext && actionContext.name != null) {
       // try to use the context, and if it not available use the node one
       const actionPath =
-        (actionContext &&
-          actionContext.context &&
-          getPath(actionContext.context)) ||
-        escapedPath
+        (actionContext && actionContext.context && getPath(actionContext.context)) || escapedPath
       actionFullPath = `${actionPath}.${actionContext.name}()`
     }
 
@@ -473,8 +429,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     })
     this._autoUnbox = false
     try {
-      return this._observableInstanceState ===
-        ObservableInstanceLifecycle.CREATED
+      return this._observableInstanceState === ObservableInstanceLifecycle.CREATED
         ? this.type.getChildNode(this, subpath)
         : this._childNodes![subpath]
     } finally {
@@ -486,8 +441,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     this.assertAlive(EMPTY_OBJECT)
     this._autoUnbox = false
     try {
-      return this._observableInstanceState ===
-        ObservableInstanceLifecycle.CREATED
+      return this._observableInstanceState === ObservableInstanceLifecycle.CREATED
         ? this.type.getChildren(this)
         : convertChildNodesToArray(this._childNodes)
     } finally {
@@ -518,9 +472,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
 
   // bound on the constructor
   unbox(childNode: AnyNode | undefined): AnyNode | undefined {
-    if (!childNode) {
-      return childNode
-    }
+    if (!childNode) return childNode
 
     this.assertAlive({
       subpath: childNode.subpath || childNode.subpathUponDeath
@@ -536,7 +488,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
 
   finalizeCreation(): void {
     this.baseFinalizeCreation(() => {
-      for (const child of this.getChildren()) {
+      for (let child of this.getChildren()) {
         child.finalizeCreation()
       }
 
@@ -545,9 +497,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   detach(): void {
-    if (!this.isAlive) {
-      throw fail(`Error while detaching, node is not alive.`)
-    }
+    if (!this.isAlive) throw fail(`Error while detaching, node is not alive.`)
 
     this.clearParent()
   }
@@ -558,16 +508,13 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
       this.storedValue,
       "@APPLY_PATCHES",
       (patches: IJsonPatch[]) => {
-        patches.forEach(patch => {
+        patches.forEach((patch) => {
           if (!patch.path) {
             self.type.applySnapshot(self, patch.value)
             return
           }
           const parts = splitJsonPath(patch.path)
-          const node = resolveNodeByPathParts(
-            self,
-            parts.slice(0, -1)
-          ) as AnyObjectNode
+          const node = resolveNodeByPathParts(self, parts.slice(0, -1)) as AnyObjectNode
           node.applyPatchLocally(parts[parts.length - 1], patch)
         })
       }
@@ -577,9 +524,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
       "@APPLY_SNAPSHOT",
       (snapshot: C) => {
         // if the snapshot is the same as the current one, avoid performing a reconcile
-        if (snapshot === (self.snapshot as any)) {
-          return
-        }
+        if (snapshot === (self.snapshot as any)) return
         // else, apply it by calling the type logic
         return self.type.applySnapshot(self, snapshot as any)
       }
@@ -590,22 +535,17 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
   }
 
   die(): void {
-    if (!this.isAlive || this.state === NodeLifeCycle.DETACHING) {
-      return
-    }
+    if (!this.isAlive || this.state === NodeLifeCycle.DETACHING) return
     this.aboutToDie()
     this.finalizeDeath()
   }
 
   aboutToDie(): void {
-    if (
-      this._observableInstanceState ===
-      ObservableInstanceLifecycle.UNINITIALIZED
-    ) {
+    if (this._observableInstanceState === ObservableInstanceLifecycle.UNINITIALIZED) {
       return
     }
 
-    this.getChildren().forEach(node => {
+    this.getChildren().forEach((node) => {
       node.aboutToDie()
     })
 
@@ -619,7 +559,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
 
   finalizeDeath(): void {
     // invariant: not called directly but from "die"
-    this.getChildren().forEach(node => {
+    this.getChildren().forEach((node) => {
       node.finalizeDeath()
     })
     this.root.identifierCache!.notifyDied(this)
@@ -642,9 +582,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     this._internalEventsEmit(InternalEvents.Snapshot, snapshot)
   }
 
-  onPatch(
-    handler: (patch: IJsonPatch, reversePatch: IJsonPatch) => void
-  ): IDisposer {
+  onPatch(handler: (patch: IJsonPatch, reversePatch: IJsonPatch) => void): IDisposer {
     return this._internalEventsRegister(InternalEvents.Patch, handler)
   }
 
@@ -656,9 +594,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
       const [patch, reversePatch] = splitPatch(localizedPatch)
       this._internalEventsEmit(InternalEvents.Patch, patch, reversePatch)
     }
-    if (this.parent) {
-      this.parent.emitPatch(basePatch, source)
-    }
+    if (this.parent) this.parent.emitPatch(basePatch, source)
   }
 
   hasDisposer(disposer: () => void): boolean {
@@ -670,16 +606,12 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
       this._internalEventsRegister(InternalEvents.Dispose, disposer, true)
       return
     }
-    throw fail(
-      "cannot add a disposer when it is already registered for execution"
-    )
+    throw fail("cannot add a disposer when it is already registered for execution")
   }
 
   removeDisposer(disposer: () => void): void {
     if (!this._internalEventsHas(InternalEvents.Dispose, disposer)) {
-      throw fail(
-        "cannot remove a disposer which was never registered for execution"
-      )
+      throw fail("cannot remove a disposer which was never registered for execution")
     }
     this._internalEventsUnregister(InternalEvents.Dispose, disposer)
   }
@@ -693,16 +625,10 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     }
   }
 
-  addMiddleWare(
-    handler: IMiddlewareHandler,
-    includeHooks: boolean = true
-  ): IDisposer {
+  addMiddleWare(handler: IMiddlewareHandler, includeHooks: boolean = true): IDisposer {
     const middleware = { handler, includeHooks }
-    if (!this.middlewares) {
-      this.middlewares = [middleware]
-    } else {
-      this.middlewares.push(middleware)
-    }
+    if (!this.middlewares) this.middlewares = [middleware]
+    else this.middlewares.push(middleware)
 
     return () => {
       this.removeMiddleware(middleware)
@@ -721,7 +647,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     if (!this._hasSnapshotReaction) {
       const snapshotDisposer = reaction(
         () => this.snapshot,
-        snapshot => this.emitSnapshot(snapshot),
+        (snapshot) => this.emitSnapshot(snapshot),
         snapshotReactionOptions
       )
       this.addDisposer(snapshotDisposer)
@@ -754,9 +680,7 @@ export class ObjectNode<C, S, T> extends BaseNode<C, S, T> {
     event: IE,
     eventHandler: InternalEventHandlers<S>[IE]
   ): boolean {
-    return (
-      !!this._internalEvents && this._internalEvents.has(event, eventHandler)
-    )
+    return !!this._internalEvents && this._internalEvents.has(event, eventHandler)
   }
 
   private _internalEventsUnregister<IE extends InternalEvents>(

@@ -1,24 +1,24 @@
 import {
-  type AnyObjectNode,
+  IType,
+  IAnyType,
   BaseType,
-  ComplexType,
-  type ExtractNodeType,
-  type IAnyType,
-  type Instance,
-  type IType,
-  type IValidationContext,
-  type IValidationResult,
-  ObjectNode,
-  TypeFlags,
-  assertIsType,
-  devMode,
-  fail,
-  getSnapshot,
   isStateTreeNode,
+  IValidationContext,
+  IValidationResult,
+  AnyObjectNode,
+  TypeFlags,
+  ExtractNodeType,
+  assertIsType,
   isType,
+  getSnapshot,
+  devMode,
+  ComplexType,
+  typeCheckFailure,
   isUnionType,
-  typeCheckFailure
-} from "../../internal.ts"
+  Instance,
+  ObjectNode,
+  fail
+} from "../../internal"
 
 /** @hidden */
 declare const $mstNotCustomized: unique symbol
@@ -33,9 +33,7 @@ export interface _NotCustomized {
   readonly [$mstNotCustomized]: undefined
 }
 /** @hidden */
-export type _CustomOrOther<Custom, Other> = Custom extends _NotCustomized
-  ? Other
-  : Custom
+export type _CustomOrOther<Custom, Other> = Custom extends _NotCustomized ? Other : Custom
 
 class SnapshotProcessor<IT extends IAnyType, CustomC, CustomS> extends BaseType<
   _CustomOrOther<CustomC, IT["CreationType"]>,
@@ -66,9 +64,7 @@ class SnapshotProcessor<IT extends IAnyType, CustomC, CustomS> extends BaseType<
     return sn as any
   }
 
-  private preProcessSnapshotSafe(
-    sn: this["C"]
-  ): IT["CreationType"] | typeof $preProcessorFailed {
+  private preProcessSnapshotSafe(sn: this["C"]): IT["CreationType"] | typeof $preProcessorFailed {
     try {
       return this.preProcessSnapshot(sn)
     } catch (e) {
@@ -76,16 +72,9 @@ class SnapshotProcessor<IT extends IAnyType, CustomC, CustomS> extends BaseType<
     }
   }
 
-  private postProcessSnapshot(
-    sn: IT["SnapshotType"],
-    node: this["N"]
-  ): this["S"] {
+  private postProcessSnapshot(sn: IT["SnapshotType"], node: this["N"]): this["S"] {
     if (this._processors.postProcessor) {
-      return this._processors.postProcessor!.call(
-        null,
-        sn,
-        node.storedValue
-      ) as any
+      return this._processors.postProcessor!.call(null, sn, node.storedValue) as any
     }
     return sn
   }
@@ -98,8 +87,7 @@ class SnapshotProcessor<IT extends IAnyType, CustomC, CustomS> extends BaseType<
       node.hasSnapshotPostProcessor = !!this._processors.postProcessor
     }
     const oldGetSnapshot = node.getSnapshot
-    node.getSnapshot = () =>
-      this.postProcessSnapshot(oldGetSnapshot.call(node), node) as any
+    node.getSnapshot = () => this.postProcessSnapshot(oldGetSnapshot.call(node), node) as any
     if (!isUnionType(this._subtype)) {
       node.getReconciliationType = () => {
         return this
@@ -149,10 +137,7 @@ class SnapshotProcessor<IT extends IAnyType, CustomC, CustomS> extends BaseType<
     return applyPostProcess ? this.postProcessSnapshot(sn, node) : sn
   }
 
-  isValidSnapshot(
-    value: this["C"],
-    context: IValidationContext
-  ): IValidationResult {
+  isValidSnapshot(value: this["C"], context: IValidationContext): IValidationResult {
     const processedSn = this.preProcessSnapshotSafe(value)
     if (processedSn === $preProcessorFailed) {
       return typeCheckFailure(context, value, "Failed to preprocess value")
@@ -168,15 +153,12 @@ class SnapshotProcessor<IT extends IAnyType, CustomC, CustomS> extends BaseType<
     const value = isType(thing)
       ? this._subtype
       : isStateTreeNode(thing)
-        ? getSnapshot(thing, false)
-        : this.preProcessSnapshotSafe(thing)
+      ? getSnapshot(thing, false)
+      : this.preProcessSnapshotSafe(thing)
     if (value === $preProcessorFailed) {
       return false
     }
-    return (
-      this._subtype.validate(value, [{ path: "", type: this._subtype }])
-        .length === 0
-    )
+    return this._subtype.validate(value, [{ path: "", type: this._subtype }]).length === 0
   }
 
   isAssignableFrom(type: IAnyType): boolean {
@@ -207,15 +189,12 @@ function proxyNodeTypeMethods(
 /**
  * A type that has its snapshots processed.
  */
-export interface ISnapshotProcessor<
-  IT extends IAnyType,
-  CustomC,
-  CustomS
-> extends IType<
-  _CustomOrOther<CustomC, IT["CreationType"]>,
-  _CustomOrOther<CustomS, IT["SnapshotType"]>,
-  IT["TypeWithoutSTN"]
-> {}
+export interface ISnapshotProcessor<IT extends IAnyType, CustomC, CustomS>
+  extends IType<
+    _CustomOrOther<CustomC, IT["CreationType"]>,
+    _CustomOrOther<CustomS, IT["SnapshotType"]>,
+    IT["TypeWithoutSTN"]
+  > {}
 
 /**
  * Snapshot processors.
@@ -276,17 +255,11 @@ export function snapshotProcessor<
 ): ISnapshotProcessor<IT, CustomC, CustomS> {
   assertIsType(type, 1)
   if (devMode()) {
-    if (
-      processors.postProcessor &&
-      typeof processors.postProcessor !== "function"
-    ) {
+    if (processors.postProcessor && typeof processors.postProcessor !== "function") {
       // istanbul ignore next
       throw fail("postSnapshotProcessor must be a function")
     }
-    if (
-      processors.preProcessor &&
-      typeof processors.preProcessor !== "function"
-    ) {
+    if (processors.preProcessor && typeof processors.preProcessor !== "function") {
       // istanbul ignore next
       throw fail("preSnapshotProcessor must be a function")
     }
