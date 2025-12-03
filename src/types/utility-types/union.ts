@@ -11,6 +11,7 @@ import {
   type ModelInstanceType,
   type ModelProperties,
   type ModelSnapshotType2,
+  ModelType,
   TypeFlags,
   type _NotCustomized,
   assertArg,
@@ -20,6 +21,7 @@ import {
   flattenTypeErrors,
   isPlainObject,
   isType,
+  isTypeCheckingEnabled,
   typeCheckFailure,
   typeCheckSuccess
 } from "../../internal.ts"
@@ -111,6 +113,14 @@ export class Union extends BaseType<any, any, any> {
       return this._dispatcher(value)
     }
 
+    // fast path: when type checking is disabled, try quick structural matching first
+    if (!isTypeCheckingEnabled()) {
+      const quickMatch = this.tryQuickMatch(value, reconcileCurrentType)
+      if (quickMatch) {
+        return quickMatch
+      }
+    }
+
     // find the most accomodating type
     // if we are using reconciliation try the current node type first (fix for #1045)
     if (reconcileCurrentType) {
@@ -123,6 +133,69 @@ export class Union extends BaseType<any, any, any> {
     } else {
       return this._types.find(type => type.is(value))
     }
+  }
+
+  private tryQuickMatch(
+    value: any,
+    reconcileCurrentType: IAnyType | undefined
+  ): IAnyType | undefined {
+    // for non-object values, try primitive matching
+    if (!isPlainObject(value)) {
+      return this.tryMatchPrimitive(value)
+    }
+
+    // for objects, try structural matching against model types
+    const typesToCheck = reconcileCurrentType
+      ? [reconcileCurrentType, ...this._types.filter(t => t !== reconcileCurrentType)]
+      : this._types
+
+    for (const type of typesToCheck) {
+      if (this.snapshotLooksLikeType(value, type)) {
+        return type
+      }
+    }
+    return undefined
+  }
+
+  private tryMatchPrimitive(value: any): IAnyType | undefined {
+    const valueType = typeof value
+    for (const type of this._types) {
+      const flags = type.flags
+      if (
+        (valueType === "string" && flags & TypeFlags.String) ||
+        (valueType === "number" && flags & (TypeFlags.Number | TypeFlags.Integer | TypeFlags.Float | TypeFlags.Finite)) ||
+        (valueType === "boolean" && flags & TypeFlags.Boolean) ||
+        (value === null && flags & TypeFlags.Null) ||
+        (value === undefined && flags & TypeFlags.Undefined)
+      ) {
+        return type
+      }
+      // for literals, check exact value match
+      if (flags & TypeFlags.Literal) {
+        if (type.is(value)) {
+          return type
+        }
+      }
+    }
+    return undefined
+  }
+
+  private snapshotLooksLikeType(value: any, type: IAnyType): boolean {
+    // for model types, check if snapshot has all the required property keys
+    if (type instanceof ModelType) {
+      const props = type.properties
+      const propKeys = Object.keys(props)
+      // check that all non-optional properties exist in value
+      for (const key of propKeys) {
+        const propType = props[key]!
+        const isOptional = propType.flags & TypeFlags.Optional
+        if (!isOptional && !(key in value)) {
+          return false
+        }
+      }
+      return true
+    }
+    return false
   }
 
   isValidSnapshot(
