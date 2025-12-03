@@ -136,7 +136,7 @@ export function typeCheckFailure(
 export function flattenTypeErrors(
   errors: IValidationResult[]
 ): IValidationResult {
-  return errors.reduce((a, i) => a.concat(i), [])
+  return errors.flat()
 }
 
 // TODO; doublecheck: typecheck should only needed to be invoked from: type.create and array / map / value.property will change
