@@ -146,7 +146,10 @@ export class Union extends BaseType<any, any, any> {
 
     // for objects, try structural matching against model types
     const typesToCheck = reconcileCurrentType
-      ? [reconcileCurrentType, ...this._types.filter(t => t !== reconcileCurrentType)]
+      ? [
+          reconcileCurrentType,
+          ...this._types.filter(t => t !== reconcileCurrentType)
+        ]
       : this._types
 
     for (const type of typesToCheck) {
@@ -163,7 +166,12 @@ export class Union extends BaseType<any, any, any> {
       const flags = type.flags
       if (
         (valueType === "string" && flags & TypeFlags.String) ||
-        (valueType === "number" && flags & (TypeFlags.Number | TypeFlags.Integer | TypeFlags.Float | TypeFlags.Finite)) ||
+        (valueType === "number" &&
+          flags &
+            (TypeFlags.Number |
+              TypeFlags.Integer |
+              TypeFlags.Float |
+              TypeFlags.Finite)) ||
         (valueType === "boolean" && flags & TypeFlags.Boolean) ||
         (value === null && flags & TypeFlags.Null) ||
         (value === undefined && flags & TypeFlags.Undefined)

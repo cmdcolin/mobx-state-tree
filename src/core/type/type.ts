@@ -17,7 +17,10 @@ import {
 
 // Cache for validation results to avoid re-validating the same object against the same type
 // Uses WeakMap so cached objects can be garbage collected
-const validationCache = new WeakMap<object, WeakMap<BaseType<any, any, any, any>, IValidationResult>>()
+const validationCache = new WeakMap<
+  object,
+  WeakMap<BaseType<any, any, any, any>, IValidationResult>
+>()
 
 import type {
   AnyNode,
