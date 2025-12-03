@@ -54,6 +54,7 @@ import {
   isType,
   mobxShallow,
   optional,
+  popContext,
   typeCheckFailure,
   typeCheckSuccess,
   typecheckInternal
@@ -788,10 +789,10 @@ export class ModelType<
     }
 
     for (const key of this.propertyNames) {
-      const errors = this.properties[key]!.validate(
-        snapshot[key],
-        getContextForPath(context, key, this.properties[key]!)
-      )
+      const propType = this.properties[key]!
+      getContextForPath(context, key, propType)
+      const errors = propType.validate(snapshot[key], context)
+      popContext(context)
       if (errors.length > 0) {
         return errors
       }

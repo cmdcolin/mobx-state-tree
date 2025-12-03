@@ -50,6 +50,7 @@ import {
   isType,
   isValidIdentifier,
   normalizeIdentifier,
+  popContext,
   typeCheckFailure,
   typeCheckSuccess,
   typecheckInternal
@@ -516,10 +517,9 @@ export class MapType<IT extends IAnyType> extends ComplexType<
     }
 
     for (const key of Object.keys(value)) {
-      const errors = this._subType.validate(
-        value[key],
-        getContextForPath(context, key, this._subType)
-      )
+      getContextForPath(context, key, this._subType)
+      const errors = this._subType.validate(value[key], context)
+      popContext(context)
       if (errors.length > 0) {
         return errors
       }

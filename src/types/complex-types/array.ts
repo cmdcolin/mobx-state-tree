@@ -46,6 +46,7 @@ import {
   isType,
   mobxShallow,
   normalizeIdentifier,
+  popContext,
   typeCheckFailure,
   typeCheckSuccess,
   typecheckInternal
@@ -334,10 +335,9 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
     }
 
     for (let i = 0; i < value.length; i++) {
-      const errors = this._subType.validate(
-        value[i],
-        getContextForPath(context, "" + i, this._subType)
-      )
+      getContextForPath(context, "" + i, this._subType)
+      const errors = this._subType.validate(value[i], context)
+      popContext(context)
       if (errors.length > 0) {
         return errors
       }
