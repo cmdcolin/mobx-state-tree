@@ -77,11 +77,15 @@ function createTestModels(mst: typeof mstBranch1) {
 const models1 = createTestModels(mstBranch1)
 const models2 = createTestModels(mstBranch2)
 
-// Generate large snapshot data
+// Counter to generate unique snapshots (avoids caching)
+let snapshotCounter = 0
+
+// Generate large snapshot data - each call creates a unique snapshot to avoid caching
 function generateLargeArraySnapshot(count: number) {
+  const batch = snapshotCounter++
   return {
     items: Array.from({ length: count }, (_, i) => ({
-      id: `item-${i}`,
+      id: `item-${batch}-${i}`,
       name: `Item ${i}`,
       value: i * 10,
       tags: ["tag1", "tag2", "tag3"]
@@ -90,39 +94,40 @@ function generateLargeArraySnapshot(count: number) {
 }
 
 function generateZooSnapshot(count: number) {
+  const batch = snapshotCounter++
   const types = ["dog", "cat", "bird"] as const
   return {
     animals: Array.from({ length: count }, (_, i) => {
       const type = types[i % 3]
       if (type === "dog") {
-        return { type: "dog", name: `Animal ${i}`, breed: "labrador" }
+        return { type: "dog", name: `Animal ${batch}-${i}`, breed: "labrador" }
       } else if (type === "cat") {
-        return { type: "cat", name: `Animal ${i}`, indoor: true }
+        return { type: "cat", name: `Animal ${batch}-${i}`, indoor: true }
       } else {
-        return { type: "bird", name: `Animal ${i}`, canFly: true }
+        return { type: "bird", name: `Animal ${batch}-${i}`, canFly: true }
       }
     })
   }
 }
 
-function generateDeepTreeSnapshot(width: number, depth: number) {
-  const level3 = Array.from({ length: width }, (_, i) => ({ value: `leaf-${i}` }))
-  const level2 = Array.from({ length: width }, () => ({ children: level3 }))
-  const level1 = Array.from({ length: width }, () => ({ children: level2 }))
+function generateDeepTreeSnapshot(width: number) {
+  const batch = snapshotCounter++
+  const level3 = Array.from({ length: width }, (_, i) => ({ value: `leaf-${batch}-${i}` }))
+  const level2 = Array.from({ length: width }, () => ({ children: [...level3] }))
+  const level1 = Array.from({ length: width }, () => ({ children: [...level2] }))
   return { children: level1 }
 }
 
-const benchOpts = { warmupIterations: 5, iterations: 50 }
+const benchOpts = { warmupIterations: 3, iterations: 20 }
 
 // ============================================
 // Benchmark: Large Array Creation
 // ============================================
 describe("Large array creation (1000 items)", () => {
-  const snapshot = generateLargeArraySnapshot(1000)
-
   bench(
     branch1Name,
     () => {
+      const snapshot = generateLargeArraySnapshot(1000)
       models1.Container.create(snapshot)
     },
     benchOpts
@@ -131,6 +136,7 @@ describe("Large array creation (1000 items)", () => {
   bench(
     branch2Name,
     () => {
+      const snapshot = generateLargeArraySnapshot(1000)
       models2.Container.create(snapshot)
     },
     benchOpts
@@ -141,11 +147,10 @@ describe("Large array creation (1000 items)", () => {
 // Benchmark: Union Type Array (discriminated unions)
 // ============================================
 describe("Union type array creation (500 animals)", () => {
-  const snapshot = generateZooSnapshot(500)
-
   bench(
     branch1Name,
     () => {
+      const snapshot = generateZooSnapshot(500)
       models1.Zoo.create(snapshot)
     },
     benchOpts
@@ -154,6 +159,7 @@ describe("Union type array creation (500 animals)", () => {
   bench(
     branch2Name,
     () => {
+      const snapshot = generateZooSnapshot(500)
       models2.Zoo.create(snapshot)
     },
     benchOpts
@@ -163,12 +169,11 @@ describe("Union type array creation (500 animals)", () => {
 // ============================================
 // Benchmark: Deep nested tree
 // ============================================
-describe("Deep nested tree creation (5x5x5)", () => {
-  const snapshot = generateDeepTreeSnapshot(5, 3)
-
+describe("Deep nested tree creation (5x5x5 = 125 nodes)", () => {
   bench(
     branch1Name,
     () => {
+      const snapshot = generateDeepTreeSnapshot(5)
       models1.DeepTree.create(snapshot)
     },
     benchOpts
@@ -177,6 +182,7 @@ describe("Deep nested tree creation (5x5x5)", () => {
   bench(
     branch2Name,
     () => {
+      const snapshot = generateDeepTreeSnapshot(5)
       models2.DeepTree.create(snapshot)
     },
     benchOpts
@@ -186,22 +192,14 @@ describe("Deep nested tree creation (5x5x5)", () => {
 // ============================================
 // Benchmark: Apply snapshot to existing tree
 // ============================================
-describe("Apply snapshot to large array", () => {
-  const initialSnapshot = generateLargeArraySnapshot(100)
-  const updateSnapshot = generateLargeArraySnapshot(100)
-  // Modify some items
-  updateSnapshot.items.forEach((item, i) => {
-    item.name = `Updated ${i}`
-  })
-
-  let store1: any
-  let store2: any
-
+describe("Apply snapshot to array (100 items)", () => {
   bench(
     branch1Name,
     () => {
-      store1 = models1.Container.create(initialSnapshot)
-      mstBranch1.applySnapshot(store1, updateSnapshot)
+      const initialSnapshot = generateLargeArraySnapshot(100)
+      const updateSnapshot = generateLargeArraySnapshot(100)
+      const store = models1.Container.create(initialSnapshot)
+      mstBranch1.applySnapshot(store, updateSnapshot)
     },
     benchOpts
   )
@@ -209,22 +207,23 @@ describe("Apply snapshot to large array", () => {
   bench(
     branch2Name,
     () => {
-      store2 = models2.Container.create(initialSnapshot)
-      mstBranch2.applySnapshot(store2, updateSnapshot)
+      const initialSnapshot = generateLargeArraySnapshot(100)
+      const updateSnapshot = generateLargeArraySnapshot(100)
+      const store = models2.Container.create(initialSnapshot)
+      mstBranch2.applySnapshot(store, updateSnapshot)
     },
     benchOpts
   )
 })
 
 // ============================================
-// Benchmark: type.is() validation
+// Benchmark: type.is() validation with unique snapshots
 // ============================================
-describe("type.is() validation (1000 items)", () => {
-  const snapshot = generateLargeArraySnapshot(1000)
-
+describe("type.is() validation (1000 items, unique snapshots)", () => {
   bench(
     branch1Name,
     () => {
+      const snapshot = generateLargeArraySnapshot(1000)
       models1.Container.is(snapshot)
     },
     benchOpts
@@ -233,6 +232,7 @@ describe("type.is() validation (1000 items)", () => {
   bench(
     branch2Name,
     () => {
+      const snapshot = generateLargeArraySnapshot(1000)
       models2.Container.is(snapshot)
     },
     benchOpts
@@ -240,14 +240,13 @@ describe("type.is() validation (1000 items)", () => {
 })
 
 // ============================================
-// Benchmark: Union type.is() validation
+// Benchmark: Union type.is() validation with unique snapshots
 // ============================================
-describe("Union type.is() validation (500 animals)", () => {
-  const snapshot = generateZooSnapshot(500)
-
+describe("Union type.is() validation (500 animals, unique)", () => {
   bench(
     branch1Name,
     () => {
+      const snapshot = generateZooSnapshot(500)
       models1.Zoo.is(snapshot)
     },
     benchOpts
@@ -256,7 +255,54 @@ describe("Union type.is() validation (500 animals)", () => {
   bench(
     branch2Name,
     () => {
+      const snapshot = generateZooSnapshot(500)
       models2.Zoo.is(snapshot)
+    },
+    benchOpts
+  )
+})
+
+// ============================================
+// Benchmark: Very large deeply nested tree (10x10x10 = 1000 leaf nodes)
+// ============================================
+describe("Large nested tree creation (10x10x10 = 1000 leaves)", () => {
+  bench(
+    branch1Name,
+    () => {
+      const snapshot = generateDeepTreeSnapshot(10)
+      models1.DeepTree.create(snapshot)
+    },
+    benchOpts
+  )
+
+  bench(
+    branch2Name,
+    () => {
+      const snapshot = generateDeepTreeSnapshot(10)
+      models2.DeepTree.create(snapshot)
+    },
+    benchOpts
+  )
+})
+
+// ============================================
+// Benchmark: Large union type array (1000 animals)
+// ============================================
+describe("Large union array creation (1000 animals)", () => {
+  bench(
+    branch1Name,
+    () => {
+      const snapshot = generateZooSnapshot(1000)
+      models1.Zoo.create(snapshot)
+    },
+    benchOpts
+  )
+
+  bench(
+    branch2Name,
+    () => {
+      const snapshot = generateZooSnapshot(1000)
+      models2.Zoo.create(snapshot)
     },
     benchOpts
   )
