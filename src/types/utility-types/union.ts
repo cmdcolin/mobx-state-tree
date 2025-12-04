@@ -190,15 +190,29 @@ export class Union extends BaseType<any, any, any> {
 
   private snapshotLooksLikeType(value: any, type: IAnyType): boolean {
     // for model types, check if snapshot has all the required property keys
+    // and that any literal-typed properties match exactly
     if (type instanceof ModelType) {
       const props = type.properties
       const propKeys = Object.keys(props)
-      // check that all non-optional properties exist in value
       for (const key of propKeys) {
         const propType = props[key]!
         const isOptional = propType.flags & TypeFlags.Optional
-        if (!isOptional && !(key in value)) {
-          return false
+        const propValue = value[key]
+
+        // check required properties exist and are not undefined
+        // (unless the type accepts undefined, which Optional types do)
+        if (!isOptional) {
+          if (!(key in value) || propValue === undefined) {
+            return false
+          }
+        }
+
+        // for literal types, verify the value matches exactly
+        // this is critical for discriminated unions
+        if (propType.flags & TypeFlags.Literal) {
+          if (!propType.is(propValue)) {
+            return false
+          }
         }
       }
       return true
