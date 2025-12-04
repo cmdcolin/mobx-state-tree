@@ -20,6 +20,7 @@ import {
   fail,
   flattenTypeErrors,
   isPlainObject,
+  isStateTreeNode,
   isType,
   isTypeCheckingEnabled,
   typeCheckFailure,
@@ -139,6 +140,12 @@ export class Union extends BaseType<any, any, any> {
     value: any,
     reconcileCurrentType: IAnyType | undefined
   ): IAnyType | undefined {
+    // state tree nodes need full type compatibility checking
+    // (e.g., A.is(B.create()) must return false even if snapshots are compatible)
+    if (isStateTreeNode(value)) {
+      return undefined
+    }
+
     // for non-object values, try primitive matching
     if (!isPlainObject(value)) {
       return this.tryMatchPrimitive(value)
