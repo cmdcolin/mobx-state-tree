@@ -16,6 +16,8 @@
     "test-ci": "yarn test:dev --run && yarn test:prod --run",
     "test:dev": "cross-env NODE_ENV=development vitest",
     "test:prod": "cross-env NODE_ENV=production vitest",
+    "prebench": "./scripts/build-both-branches.sh",
+    "bench": "cross-env NODE_ENV=production vitest bench --run",
     "preversion": "yarn build && yarn test-ci",
     "postversion": "git push --follow-tags"
   },
