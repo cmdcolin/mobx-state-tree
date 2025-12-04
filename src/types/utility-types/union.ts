@@ -210,8 +210,8 @@ export class Union extends BaseType<any, any, any> {
     // and that any literal-typed properties match exactly
     if (type instanceof ModelType) {
       const props = type.properties
-      const propKeys = Object.keys(props)
-      for (const key of propKeys) {
+      // use cached propertyNames from ModelType instead of Object.keys()
+      for (const key of type.propertyNames) {
         const propType = props[key]!
         const isOptional = propType.flags & TypeFlags.Optional
         const propValue = value[key]

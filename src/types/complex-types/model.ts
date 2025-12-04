@@ -387,7 +387,7 @@ export class ModelType<
 
   private preProcessor!: (snapshot: any) => any | undefined
   private postProcessor!: (snapshot: any) => any | undefined
-  private readonly propertyNames: string[]
+  readonly propertyNames: string[]
 
   constructor(opts: ModelTypeConfig) {
     super(opts.name || defaultObjectOptions.name)
