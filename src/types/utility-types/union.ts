@@ -120,6 +120,16 @@ export class Union extends BaseType<any, any, any> {
       if (quickMatch) {
         return quickMatch
       }
+      // for plain object snapshots that didn't match via quick path, try all types
+      // with quick matching before falling back to full validation
+      // (state tree nodes must go through full validation for type identity checks)
+      if (isPlainObject(value) && !isStateTreeNode(value)) {
+        for (const type of this._types) {
+          if (this.snapshotLooksLikeType(value, type)) {
+            return type
+          }
+        }
+      }
     }
 
     // find the most accomodating type

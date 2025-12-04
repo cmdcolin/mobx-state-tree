@@ -13,9 +13,9 @@
     "format": "yarn prettier --write .",
     "build": "tsc && cpr lib dist --filter=\\.js$ && rollup -c",
     "test": "vitest",
-    "test-ci": "yarn test:dev && yarn test:prod",
-    "test:dev": "cross-env NODE_ENV=development vitest --run",
-    "test:prod": "cross-env NODE_ENV=production vitest --run",
+    "test-ci": "yarn test:dev --run && yarn test:prod --run",
+    "test:dev": "cross-env NODE_ENV=development vitest",
+    "test:prod": "cross-env NODE_ENV=production vitest",
     "preversion": "yarn build && yarn test-ci",
     "postversion": "git push --follow-tags"
   },
