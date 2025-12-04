@@ -37,7 +37,6 @@ import {
   createObjectNode,
   devMode,
   fail,
-  flattenTypeErrors,
   getContextForPath,
   getStateTreeNode,
   isArray,
@@ -47,7 +46,9 @@ import {
   isType,
   mobxShallow,
   normalizeIdentifier,
+  popContext,
   typeCheckFailure,
+  typeCheckSuccess,
   typecheckInternal
 } from "../../internal.ts"
 
@@ -333,14 +334,15 @@ export class ArrayType<IT extends IAnyType> extends ComplexType<
       return typeCheckFailure(context, value, "Value is not an array")
     }
 
-    return flattenTypeErrors(
-      value.map((item, index) =>
-        this._subType.validate(
-          item,
-          getContextForPath(context, "" + index, this._subType)
-        )
-      )
-    )
+    for (let i = 0; i < value.length; i++) {
+      getContextForPath(context, "" + i, this._subType)
+      const errors = this._subType.validate(value[i], context)
+      popContext(context)
+      if (errors.length > 0) {
+        return errors
+      }
+    }
+    return typeCheckSuccess()
   }
 
   getDefaultSnapshot(): this["C"] {

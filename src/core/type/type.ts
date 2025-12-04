@@ -15,6 +15,13 @@ import {
   typecheckInternal
 } from "../../internal.ts"
 
+// Cache for validation results to avoid re-validating the same object against the same type
+// Uses WeakMap so cached objects can be garbage collected
+const validationCache = new WeakMap<
+  object,
+  WeakMap<BaseType<any, any, any, any>, IValidationResult>
+>()
+
 import type {
   AnyNode,
   AnyObjectNode,
@@ -364,7 +371,31 @@ export abstract class BaseType<
         : typeCheckFailure(context, value)
       // it is tempting to compare snapshots, but in that case we should always clone on assignments...
     }
-    return this.isValidSnapshot(value as C, context)
+
+    // check cache for object values (only at root level to avoid context mismatches)
+    if (typeof value === "object" && value !== null && context.length === 1) {
+      const typeCache = validationCache.get(value)
+      if (typeCache) {
+        const cached = typeCache.get(this)
+        if (cached !== undefined) {
+          return cached
+        }
+      }
+    }
+
+    const result = this.isValidSnapshot(value as C, context)
+
+    // cache result for object values (only at root level)
+    if (typeof value === "object" && value !== null && context.length === 1) {
+      let typeCache = validationCache.get(value)
+      if (!typeCache) {
+        typeCache = new WeakMap()
+        validationCache.set(value, typeCache)
+      }
+      typeCache.set(this, result)
+    }
+
+    return result
   }
 
   is(thing: any): thing is any {

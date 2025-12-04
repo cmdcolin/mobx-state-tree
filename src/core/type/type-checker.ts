@@ -100,13 +100,26 @@ function toErrorString(error: IValidationError): string {
 /**
  * @internal
  * @hidden
+ * Pushes a new entry onto the context array (mutates in place for performance).
+ * Returns the same context array for chaining.
  */
 export function getContextForPath(
   context: IValidationContext,
   path: string,
   type: IAnyType
 ): IValidationContext {
-  return context.concat([{ path, type }])
+  context.push({ path, type })
+  return context
+}
+
+/**
+ * @internal
+ * @hidden
+ * Pops the last entry from the context array (mutates in place).
+ * Must be called after validation to restore context state.
+ */
+export function popContext(context: IValidationContext): void {
+  context.pop()
 }
 
 /**
@@ -126,7 +139,8 @@ export function typeCheckFailure(
   value: any,
   message?: string
 ): IValidationResult {
-  return [{ context, value, message }]
+  // Clone context since it may be mutated after this error is created
+  return [{ context: context.slice(), value, message }]
 }
 
 /**
@@ -136,7 +150,7 @@ export function typeCheckFailure(
 export function flattenTypeErrors(
   errors: IValidationResult[]
 ): IValidationResult {
-  return errors.reduce((a, i) => a.concat(i), [])
+  return errors.flat()
 }
 
 // TODO; doublecheck: typecheck should only needed to be invoked from: type.create and array / map / value.property will change

@@ -19,4 +19,5 @@ jobs:
           node-version: 22
       - run: yarn install --frozen-lockfile
       - run: yarn build
-      - run: yarn test-ci
+      - run: yarn test:dev
+      - run: yarn test:prod

@@ -4,6 +4,9 @@ export default defineConfig({
   test: {
     include: ["__tests__/**/*.test.ts"],
     environment: "node",
-    setupFiles: ["__tests__/setup.ts"]
+    setupFiles: ["__tests__/setup.ts"],
+    benchmark: {
+      include: ["__tests__/**/*.bench.ts"]
+    }
   }
 })

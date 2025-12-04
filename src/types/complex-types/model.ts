@@ -44,7 +44,6 @@ import {
   devMode,
   escapeJsonPath,
   fail,
-  flattenTypeErrors,
   freeze,
   getContextForPath,
   getPrimitiveFactoryFromValue,
@@ -55,7 +54,9 @@ import {
   isType,
   mobxShallow,
   optional,
+  popContext,
   typeCheckFailure,
+  typeCheckSuccess,
   typecheckInternal
 } from "../../internal.ts"
 
@@ -386,7 +387,7 @@ export class ModelType<
 
   private preProcessor!: (snapshot: any) => any | undefined
   private postProcessor!: (snapshot: any) => any | undefined
-  private readonly propertyNames: string[]
+  readonly propertyNames: string[]
 
   constructor(opts: ModelTypeConfig) {
     super(opts.name || defaultObjectOptions.name)
@@ -787,14 +788,16 @@ export class ModelType<
       return typeCheckFailure(context, snapshot, "Value is not a plain object")
     }
 
-    return flattenTypeErrors(
-      this.propertyNames.map(key =>
-        this.properties[key].validate(
-          snapshot[key],
-          getContextForPath(context, key, this.properties[key])
-        )
-      )
-    )
+    for (const key of this.propertyNames) {
+      const propType = this.properties[key]!
+      getContextForPath(context, key, propType)
+      const errors = propType.validate(snapshot[key], context)
+      popContext(context)
+      if (errors.length > 0) {
+        return errors
+      }
+    }
+    return typeCheckSuccess()
   }
 
   private forAllProps(fn: (name: string, type: IAnyType) => void) {

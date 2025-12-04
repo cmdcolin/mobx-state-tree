@@ -11,6 +11,7 @@ import {
   type ModelInstanceType,
   type ModelProperties,
   type ModelSnapshotType2,
+  ModelType,
   TypeFlags,
   type _NotCustomized,
   assertArg,
@@ -19,7 +20,9 @@ import {
   fail,
   flattenTypeErrors,
   isPlainObject,
+  isStateTreeNode,
   isType,
+  isTypeCheckingEnabled,
   typeCheckFailure,
   typeCheckSuccess
 } from "../../internal.ts"
@@ -111,6 +114,24 @@ export class Union extends BaseType<any, any, any> {
       return this._dispatcher(value)
     }
 
+    // fast path: when type checking is disabled, try quick structural matching first
+    if (!isTypeCheckingEnabled()) {
+      const quickMatch = this.tryQuickMatch(value, reconcileCurrentType)
+      if (quickMatch) {
+        return quickMatch
+      }
+      // for plain object snapshots that didn't match via quick path, try all types
+      // with quick matching before falling back to full validation
+      // (state tree nodes must go through full validation for type identity checks)
+      if (isPlainObject(value) && !isStateTreeNode(value)) {
+        for (const type of this._types) {
+          if (this.snapshotLooksLikeType(value, type)) {
+            return type
+          }
+        }
+      }
+    }
+
     // find the most accomodating type
     // if we are using reconciliation try the current node type first (fix for #1045)
     if (reconcileCurrentType) {
@@ -123,6 +144,97 @@ export class Union extends BaseType<any, any, any> {
     } else {
       return this._types.find(type => type.is(value))
     }
+  }
+
+  private tryQuickMatch(
+    value: any,
+    reconcileCurrentType: IAnyType | undefined
+  ): IAnyType | undefined {
+    // state tree nodes need full type compatibility checking
+    // (e.g., A.is(B.create()) must return false even if snapshots are compatible)
+    if (isStateTreeNode(value)) {
+      return undefined
+    }
+
+    // for non-object values, try primitive matching
+    if (!isPlainObject(value)) {
+      return this.tryMatchPrimitive(value)
+    }
+
+    // for objects, try structural matching against model types
+    const typesToCheck = reconcileCurrentType
+      ? [
+          reconcileCurrentType,
+          ...this._types.filter(t => t !== reconcileCurrentType)
+        ]
+      : this._types
+
+    for (const type of typesToCheck) {
+      if (this.snapshotLooksLikeType(value, type)) {
+        return type
+      }
+    }
+    return undefined
+  }
+
+  private tryMatchPrimitive(value: any): IAnyType | undefined {
+    const valueType = typeof value
+    for (const type of this._types) {
+      const flags = type.flags
+      if (
+        (valueType === "string" && flags & TypeFlags.String) ||
+        (valueType === "number" &&
+          flags &
+            (TypeFlags.Number |
+              TypeFlags.Integer |
+              TypeFlags.Float |
+              TypeFlags.Finite)) ||
+        (valueType === "boolean" && flags & TypeFlags.Boolean) ||
+        (value === null && flags & TypeFlags.Null) ||
+        (value === undefined && flags & TypeFlags.Undefined)
+      ) {
+        return type
+      }
+      // for literals, check exact value match
+      if (flags & TypeFlags.Literal) {
+        if (type.is(value)) {
+          return type
+        }
+      }
+    }
+    return undefined
+  }
+
+  private snapshotLooksLikeType(value: any, type: IAnyType): boolean {
+    // for model types, check if snapshot has all the required property keys
+    // and that any literal-typed properties match exactly
+    if (type instanceof ModelType) {
+      const props = type.properties
+      // use cached propertyNames from ModelType instead of Object.keys()
+      for (const key of type.propertyNames) {
+        const propType = props[key]!
+        const isOptional = propType.flags & TypeFlags.Optional
+        const propValue = value[key]
+
+        // check required properties exist and are not undefined
+        // (unless the type accepts undefined, which Optional types do)
+        if (!isOptional) {
+          if (!(key in value) || propValue === undefined) {
+            return false
+          }
+        }
+
+        // for literal types, verify the value matches exactly
+        // this is critical for discriminated unions
+        if (propType.flags & TypeFlags.Literal) {
+          if (!propType.is(propValue)) {
+            return false
+          }
+        }
+      }
+      return true
+    }
+    return false
   }
 
   isValidSnapshot(

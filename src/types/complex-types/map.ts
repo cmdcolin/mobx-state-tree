@@ -41,7 +41,6 @@ import {
   devMode,
   escapeJsonPath,
   fail,
-  flattenTypeErrors,
   getContextForPath,
   getSnapshot,
   getStateTreeNode,
@@ -51,7 +50,9 @@ import {
   isType,
   isValidIdentifier,
   normalizeIdentifier,
+  popContext,
   typeCheckFailure,
+  typeCheckSuccess,
   typecheckInternal
 } from "../../internal.ts"
 
@@ -515,14 +516,15 @@ export class MapType<IT extends IAnyType> extends ComplexType<
       return typeCheckFailure(context, value, "Value is not a plain object")
     }
 
-    return flattenTypeErrors(
-      Object.keys(value).map(path =>
-        this._subType.validate(
-          value[path],
-          getContextForPath(context, path, this._subType)
-        )
-      )
-    )
+    for (const key of Object.keys(value)) {
+      getContextForPath(context, key, this._subType)
+      const errors = this._subType.validate(value[key], context)
+      popContext(context)
+      if (errors.length > 0) {
+        return errors
+      }
+    }
+    return typeCheckSuccess()
   }
 
   getDefaultSnapshot(): this["C"] {
